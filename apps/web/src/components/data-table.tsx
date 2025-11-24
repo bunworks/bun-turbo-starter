@@ -61,8 +61,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Checkbox } from "@/components/ui/checkbox";
+} from "@acme/ui";
+import { Checkbox } from "@acme/ui";
 import {
   Drawer,
   DrawerClose,
@@ -80,17 +80,17 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@acme/ui";
+import { Input } from "@acme/ui";
+import { Label } from "@acme/ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+} from "@acme/ui";
+import { Separator } from "@acme/ui";
 import {
   Table,
   TableBody,
@@ -98,8 +98,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from "@acme/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@acme/ui";
 
 export const schema = z.object({
   id: z.number(),

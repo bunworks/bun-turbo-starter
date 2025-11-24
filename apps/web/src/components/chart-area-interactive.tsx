@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@acme/ui";
-import { ToggleGroup, ToggleGroupItem } from "@acme/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@acme/ui";
 
 export const description = "An interactive area chart";
 
