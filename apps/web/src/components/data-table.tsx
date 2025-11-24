@@ -72,7 +72,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "@acme/ui";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
