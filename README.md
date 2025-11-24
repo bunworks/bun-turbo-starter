@@ -35,7 +35,7 @@ It uses [Turborepo](https://turborepo.com) and [Bun](https://bun.sh) and contain
 .vscode
   └─ Recommended extensions and settings for VSCode users
 apps
-  └─ nextjs
+  └─ web
       ├─ Next.js 16
       ├─ React 19
       ├─ Tailwind CSS v4
