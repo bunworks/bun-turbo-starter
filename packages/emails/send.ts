@@ -26,7 +26,7 @@ export type EmailHtml = {
 export const sendEmail = async (email: Emails) => {
   if (env.EMAIL_SANDBOX_ENABLED === "true") {
     const mailOptions: Mail.Options = {
-      from: email.from,
+      from: email.from ?? env.EMAIL_FROM,
       to: email.to,
       html: await render(email.react),
       subject: email.subject,
@@ -40,13 +40,13 @@ export const sendEmail = async (email: Emails) => {
   }
   if (!resend) {
     console.log(
-      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work.",
+      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work."
     );
     return Promise.resolve();
   }
   await resend.emails.send({
     to: email.to,
-    from: email.from,
+    from: email.from ?? env.EMAIL_FROM,
     subject: email.subject,
     react: email.react as any,
   });
@@ -61,7 +61,7 @@ export const sendEmailHtml = async (email: EmailHtml) => {
     },
     body: JSON.stringify({
       to: email.to,
-      from: email.from,
+      from: email.from ?? env.EMAIL_FROM,
       subject: email.subject,
       html: email.html,
     }),

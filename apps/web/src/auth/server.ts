@@ -22,10 +22,19 @@ export const auth = initAuth({
   googleClientId: env.AUTH_GOOGLE_ID,
   googleClientSecret: env.AUTH_GOOGLE_SECRET,
   extraPlugins: [nextCookies()],
-  sendEmail: async ({ email, otp, type }) => {
+  // sendEmail is used by the internal emailOTP plugin defined in @acme/auth
+  sendEmail: async ({
+    email,
+    otp,
+    type,
+  }: {
+    email: string;
+    otp: string;
+    type: "sign-in" | "email-verification" | "forget-password";
+  }) => {
     await sendEmail({
       to: [email],
-      from: "Acme <onboarding@resend.dev>", // TODO: Update with your domain
+      from: "Acme <onboarding@resend.dev>", // TODO: replace with your domain
       subject: type === "sign-in" ? "Your Sign In Code" : "Verify Your Email",
       react: OtpSignInEmail({ otp, isSignUp: type !== "sign-in" }),
     });
