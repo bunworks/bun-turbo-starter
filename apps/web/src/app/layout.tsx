@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
       ? "https://turbo.t3.gg"
-      : "http://localhost:3000"
+      : "http://localhost:3000",
   ),
   title: "Bun Turbo Starter",
   description: "Simple monorepo with shared backend for web & mobile apps",
@@ -46,7 +46,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         className={cn(
           "bg-background text-foreground min-h-screen font-sans antialiased",
           geistSans.variable,
-          geistMono.variable
+          geistMono.variable,
         )}
       >
         <ThemeProvider>
