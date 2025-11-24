@@ -13,7 +13,7 @@
     "db:push": "turbo -F @acme/db push",
     "db:studio": "turbo -F @acme/db studio",
     "dev": "turbo watch dev --continue",
-    "dev:next": "turbo watch dev -F @acme/nextjs...",
+    "dev:next": "turbo watch dev -F @acme/web...",
     "format": "biome format . --skip-parse-errors",
     "format:fix": "biome format --write . --skip-parse-errors",
     "lint": "biome lint . --skip-parse-errors",
