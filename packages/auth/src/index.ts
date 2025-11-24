@@ -10,9 +10,8 @@ export function initAuth<
   baseUrl: string;
   productionUrl: string;
   secret: string | undefined;
-
-  discordClientId: string;
-  discordClientSecret: string;
+  googleClientId: string;
+  googleClientSecret: string;
   sendEmail?: (data: {
     email: string;
     otp: string;
@@ -40,10 +39,10 @@ export function initAuth<
       ...(options.extraPlugins ?? []),
     ],
     socialProviders: {
-      discord: {
-        clientId: options.discordClientId,
-        clientSecret: options.discordClientSecret,
-        redirectURI: `${options.productionUrl}/api/auth/callback/discord`,
+      google: {
+        clientId: options.googleClientId,
+        clientSecret: options.googleClientSecret,
+        redirectURI: `${options.productionUrl}/api/auth/callback/google`,
       },
     },
     onAPIError: {
