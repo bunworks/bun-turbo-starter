@@ -25,10 +25,10 @@
     "@trpc/server": "^11.7.2",
     "better-auth": "1.4.0-beta.9",
     "superjson": "2.2.5",
-    "zod": "^4.1.13"
+    "zod": "4.1.13"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "typescript": "^5.9.3"
+    "typescript": "5.9.3"
   }
 }

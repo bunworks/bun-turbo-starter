@@ -33,11 +33,11 @@
     "@vercel/postgres": "^0.10.0",
     "drizzle-orm": "^0.44.7",
     "drizzle-zod": "^0.8.3",
-    "zod": "^4.1.13"
+    "zod": "4.1.13"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "drizzle-kit": "^0.31.7",
-    "typescript": "^5.9.3"
+    "typescript": "5.9.3"
   }
 }

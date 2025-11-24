@@ -1,0 +1,16 @@
+version: "3"
+volumes:
+  minio:
+services:
+  inbucket:
+    restart: always
+    image: inbucket/inbucket:latest
+    container_name: inbucket
+    ports:
+      - 9000:9000
+      - 2500:2500
+      - 1100:1100
+    environment:
+      - INBUCKET_WEB_ADDR=0.0.0.0:9000
+      - INBUCKET_SMTP_ADDR=0.0.0.0:2500
+      - INBUCKET_POP3_ADDR=0.0.0.0:1100

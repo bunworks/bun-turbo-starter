@@ -19,13 +19,13 @@
   },
   "dependencies": {
     "@acme/db": "workspace:*",
-    "@t3-oss/env-core": "^0.13.8",
+    "@t3-oss/env-core": "0.13.8",
     "better-auth": "1.4.0-beta.9",
-    "zod": "^4.1.13"
+    "zod": "4.1.13"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "@better-auth/cli": "1.4.0-beta.9",
-    "typescript": "^5.9.3"
+    "typescript": "5.9.3"
   }
 }

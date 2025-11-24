@@ -2,7 +2,7 @@ import { db } from "@acme/db/client";
 import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { oAuthProxy } from "better-auth/plugins";
+import { emailOTP, oAuthProxy } from "better-auth/plugins";
 
 export function initAuth<
   TExtraPlugins extends BetterAuthPlugin[] = [],
@@ -13,6 +13,11 @@ export function initAuth<
 
   discordClientId: string;
   discordClientSecret: string;
+  sendEmail?: (data: {
+    email: string;
+    otp: string;
+    type: "sign-in" | "email-verification" | "forget-password";
+  }) => Promise<void>;
   extraPlugins?: TExtraPlugins;
 }) {
   const config = {
@@ -24,6 +29,13 @@ export function initAuth<
     plugins: [
       oAuthProxy({
         productionURL: options.productionUrl,
+      }),
+      emailOTP({
+        async sendVerificationOTP(data) {
+          if (options.sendEmail) {
+            await options.sendEmail(data);
+          }
+        },
       }),
       ...(options.extraPlugins ?? []),
     ],

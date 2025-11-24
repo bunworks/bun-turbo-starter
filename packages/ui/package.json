@@ -38,9 +38,9 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/react": "^19.2.7",
+    "@types/react": "19.2.7",
     "react": "19.2.0",
-    "typescript": "^5.9.3",
-    "zod": "^4.1.13"
+    "typescript": "5.9.3",
+    "zod": "4.1.13"
   }
 }

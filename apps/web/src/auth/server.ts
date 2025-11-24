@@ -21,8 +21,14 @@ export const auth = initAuth({
   discordClientId: env.AUTH_DISCORD_ID,
   discordClientSecret: env.AUTH_DISCORD_SECRET,
   extraPlugins: [nextCookies()],
+  sendEmail: async ({ email, otp, type }) => {
+    // TODO: Implement actual email sending (e.g. Resend, Nodemailer)
+    console.log(
+      `[EMAIL OTP] Sending ${type} email to ${email} with OTP: ${otp}`
+    );
+  },
 });
 
 export const getSession = cache(async () =>
-  auth.api.getSession({ headers: await headers() }),
+  auth.api.getSession({ headers: await headers() })
 );

@@ -19,10 +19,10 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "zod": "^4.1.13"
+    "zod": "4.1.13"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "typescript": "^5.9.3"
+    "typescript": "5.9.3"
   }
 }
