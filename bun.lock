@@ -19,6 +19,7 @@
         "@acme/api": "workspace:*",
         "@acme/auth": "workspace:*",
         "@acme/db": "workspace:*",
+        "@acme/emails": "workspace:*",
         "@acme/ui": "workspace:*",
         "@acme/validators": "workspace:*",
         "@dnd-kit/core": "^6.3.1",

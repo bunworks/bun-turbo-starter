@@ -5,9 +5,19 @@ import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@acme/ui";
 
+import { getSession } from "~/auth/server";
+
 import data from "./data.json";
 
-export default function Page() {
+export default async function Page() {
+  const session = await getSession();
+
+  const user = {
+    name: session?.user?.name ?? "User",
+    email: session?.user?.email ?? "",
+    avatar: session?.user?.image ?? "",
+  };
+
   return (
     <SidebarProvider
       style={
@@ -17,7 +27,7 @@ export default function Page() {
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="inset" />
+      <AppSidebar variant="inset" user={user} />
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">

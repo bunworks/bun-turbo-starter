@@ -24,6 +24,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@acme/ui";
+import { useRouter } from "next/navigation";
+
+import { authClient } from "~/auth/client";
 
 export function NavUser({
   user,
@@ -35,6 +38,12 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.push("/login");
+  };
 
   return (
     <SidebarMenu>
@@ -94,7 +103,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <IconLogout />
               Log out
             </DropdownMenuItem>

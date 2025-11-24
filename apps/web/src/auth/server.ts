@@ -1,6 +1,7 @@
 import "server-only";
 
 import { initAuth } from "@acme/auth";
+import { OtpSignInEmail, sendEmail } from "@acme/emails";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
 import { cache } from "react";
@@ -22,10 +23,12 @@ export const auth = initAuth({
   discordClientSecret: env.AUTH_DISCORD_SECRET,
   extraPlugins: [nextCookies()],
   sendEmail: async ({ email, otp, type }) => {
-    // TODO: Implement actual email sending (e.g. Resend, Nodemailer)
-    console.log(
-      `[EMAIL OTP] Sending ${type} email to ${email} with OTP: ${otp}`
-    );
+    await sendEmail({
+      to: [email],
+      from: "Acme <onboarding@resend.dev>", // TODO: Update with your domain
+      subject: type === "sign-in" ? "Your Sign In Code" : "Verify Your Email",
+      react: OtpSignInEmail({ otp, isSignUp: type !== "sign-in" }),
+    });
   },
 });
 
