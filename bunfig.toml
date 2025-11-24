@@ -1,0 +1,31 @@
+[install]
+
+# whether to install optionalDependencies
+optional = true
+
+# whether to install devDependencies
+dev = true
+
+# whether to install peerDependencies
+peer = true
+
+# equivalent to `--production` flag
+production = false
+
+# equivalent to `--save-text-lockfile` flag
+saveTextLockfile = false
+
+# equivalent to `--frozen-lockfile` flag
+frozenLockfile = false
+
+# equivalent to `--dry-run` flag
+dryRun = false
+
+# equivalent to `--concurrent-scripts` flag
+concurrentScripts = 16 # (cpu count or GOMAXPROCS) x2
+
+# installation strategy: "hoisted" or "isolated"
+# default depends on lockfile configVersion and workspaces:
+# - configVersion = 1: "isolated" if using workspaces, otherwise "hoisted"
+# - configVersion = 0: "hoisted"
+linker = "hoisted"

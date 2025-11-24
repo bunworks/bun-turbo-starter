@@ -1,0 +1,31 @@
+{
+  "name": "@acme/auth",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./middleware": "./src/middleware.ts",
+    "./client": "./src/client.ts",
+    "./env": "./env.ts"
+  },
+  "license": "MIT",
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "biome format .",
+    "lint": "biome lint .",
+    "check": "biome check .",
+    "generate": "dotenv -e ../../.env -- bunx @better-auth/cli generate --config script/auth-cli.ts --output ../db/src/auth-schema.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@acme/db": "workspace:*",
+    "@t3-oss/env-core": "^0.13.8",
+    "better-auth": "1.4.0-beta.9",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
+    "@better-auth/cli": "1.4.0-beta.9",
+    "typescript": "^5.9.3"
+  }
+}

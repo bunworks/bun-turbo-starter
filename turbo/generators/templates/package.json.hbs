@@ -1,0 +1,6 @@
+{ "name": "@acme/{{name}}", "private": true, "type": "module", "exports": { ".":
+"./src/index.ts" }, "license": "MIT", "scripts": { "build": "tsc", "clean": "git
+clean -xdf .cache .turbo dist node_modules", "dev": "tsc", "format": "biome
+format .", "lint": "biome lint .", "check": "biome check .", "typecheck": "tsc
+--noEmit --emitDeclarationOnly false" }, "devDependencies": { "@acme/tsconfig":
+"workspace:*", "typescript": "catalog:" } }
