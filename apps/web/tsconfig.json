@@ -4,7 +4,8 @@
     "lib": ["ES2022", "dom", "dom.iterable"],
     "jsx": "preserve",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@/*": ["./src/*"]
     },
     "plugins": [{ "name": "next" }]
   },
