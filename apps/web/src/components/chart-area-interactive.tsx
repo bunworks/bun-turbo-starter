@@ -1,9 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-
-import { useIsMobile } from "@acme/ui/hooks";
 import {
   Card,
   CardAction,
@@ -11,21 +7,21 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@acme/ui";
-import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@acme/ui";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  ToggleGroup,
+  ToggleGroupItem,
 } from "@acme/ui";
-import { ToggleGroup, ToggleGroupItem } from "@acme/ui";
+import { useIsMobile } from "@acme/ui/hooks";
+import * as React from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 export const description = "An interactive area chart";
 

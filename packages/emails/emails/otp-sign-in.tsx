@@ -3,12 +3,12 @@ import {
   Container,
   Head,
   Heading,
+  Hr,
   Html,
+  Link,
   Preview,
   Tailwind,
   Text,
-  Link,
-  Hr,
 } from "@react-email/components";
 
 import { emailTailwindConfig } from "../tailwind";

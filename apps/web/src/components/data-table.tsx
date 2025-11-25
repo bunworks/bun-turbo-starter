@@ -1,16 +1,71 @@
 "use client";
 
-import * as React from "react";
+import {
+  Badge,
+  Button,
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  Checkbox,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Separator,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@acme/ui";
+import { useIsMobile } from "@acme/ui/hooks";
+import {
+  type DataTableItemData,
+  dataTableItemSchema,
+  type LimitFormData,
+  limitFormSchema,
+  type TargetFormData,
+  targetFormSchema,
+} from "@acme/validators";
 import {
   closestCenter,
   DndContext,
+  type DragEndEvent,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
+  type UniqueIdentifier,
   useSensor,
   useSensors,
-  type DragEndEvent,
-  type UniqueIdentifier,
 } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
@@ -20,6 +75,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IconChevronDown,
   IconChevronLeft,
@@ -49,67 +105,14 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
+import * as React from "react";
+import { useForm } from "react-hook-form";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { toast } from "sonner";
-import { z } from "zod";
+import type { z } from "zod";
 
-import { useIsMobile } from "@acme/ui/hooks";
-import { Badge } from "@acme/ui";
-import { Button } from "@acme/ui";
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@acme/ui";
-import { Checkbox } from "@acme/ui";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@acme/ui";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@acme/ui";
-import { Input } from "@acme/ui";
-import { Label } from "@acme/ui";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@acme/ui";
-import { Separator } from "@acme/ui";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@acme/ui";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@acme/ui";
-
-export const schema = z.object({
-  id: z.number(),
-  header: z.string(),
-  type: z.string(),
-  status: z.string(),
-  target: z.string(),
-  limit: z.string(),
-  reviewer: z.string(),
-});
+// Use schema from @acme/validators
+export const schema = dataTableItemSchema;
 
 // Create a separate component for the drag handle
 function DragHandle({ id }: { id: number }) {
@@ -128,6 +131,98 @@ function DragHandle({ id }: { id: number }) {
       <IconGripVertical className="text-muted-foreground size-3" />
       <span className="sr-only">Drag to reorder</span>
     </Button>
+  );
+}
+
+// Inline edit component for Target field
+function TargetCell({ row }: { row: Row<z.infer<typeof schema>> }) {
+  const form = useForm<TargetFormData>({
+    resolver: zodResolver(targetFormSchema),
+    defaultValues: {
+      target: row.original.target,
+    },
+  });
+
+  const onSubmit = async (data: TargetFormData) => {
+    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+      loading: `Saving ${row.original.header}`,
+      success: "Done",
+      error: "Error",
+    });
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="target"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel
+                htmlFor={`${row.original.id}-target`}
+                className="sr-only"
+              >
+                Target
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+                  id={`${row.original.id}-target`}
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </form>
+    </Form>
+  );
+}
+
+// Inline edit component for Limit field
+function LimitCell({ row }: { row: Row<z.infer<typeof schema>> }) {
+  const form = useForm<LimitFormData>({
+    resolver: zodResolver(limitFormSchema),
+    defaultValues: {
+      limit: row.original.limit,
+    },
+  });
+
+  const onSubmit = async (data: LimitFormData) => {
+    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+      loading: `Saving ${row.original.header}`,
+      success: "Done",
+      error: "Error",
+    });
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="limit"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel
+                htmlFor={`${row.original.id}-limit`}
+                className="sr-only"
+              >
+                Limit
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+                  id={`${row.original.id}-limit`}
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </form>
+    </Form>
   );
 }
 
@@ -199,52 +294,12 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     accessorKey: "target",
     header: () => <div className="w-full text-right">Target</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: "Done",
-            error: "Error",
-          });
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.target}
-          id={`${row.original.id}-target`}
-        />
-      </form>
-    ),
+    cell: ({ row }) => <TargetCell row={row} />,
   },
   {
     accessorKey: "limit",
     header: () => <div className="w-full text-right">Limit</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: "Done",
-            error: "Error",
-          });
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-          Limit
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.limit}
-          id={`${row.original.id}-limit`}
-        />
-      </form>
-    ),
+    cell: ({ row }) => <LimitCell row={row} />,
   },
   {
     accessorKey: "reviewer",
@@ -645,6 +700,27 @@ const chartConfig = {
 function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
   const isMobile = useIsMobile();
 
+  const form = useForm<DataTableItemData>({
+    resolver: zodResolver(dataTableItemSchema),
+    defaultValues: {
+      id: item.id,
+      header: item.header,
+      type: item.type,
+      status: item.status,
+      target: item.target,
+      limit: item.limit,
+      reviewer: item.reviewer,
+    },
+  });
+
+  const onSubmit = async (data: DataTableItemData) => {
+    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+      loading: "Saving changes...",
+      success: "Changes saved!",
+      error: "Failed to save changes",
+    });
+  };
+
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
@@ -717,81 +793,157 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
               <Separator />
             </>
           )}
-          <form className="flex flex-col gap-4">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="header">Header</Label>
-              <Input id="header" defaultValue={item.header} />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="type">Type</Label>
-                <Select defaultValue={item.type}>
-                  <SelectTrigger id="type" className="w-full">
-                    <SelectValue placeholder="Select a type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Table of Contents">
-                      Table of Contents
-                    </SelectItem>
-                    <SelectItem value="Executive Summary">
-                      Executive Summary
-                    </SelectItem>
-                    <SelectItem value="Technical Approach">
-                      Technical Approach
-                    </SelectItem>
-                    <SelectItem value="Design">Design</SelectItem>
-                    <SelectItem value="Capabilities">Capabilities</SelectItem>
-                    <SelectItem value="Focus Documents">
-                      Focus Documents
-                    </SelectItem>
-                    <SelectItem value="Narrative">Narrative</SelectItem>
-                    <SelectItem value="Cover Page">Cover Page</SelectItem>
-                  </SelectContent>
-                </Select>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-4"
+            >
+              <FormField
+                control={form.control}
+                name="header"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="header">Header</FormLabel>
+                    <FormControl>
+                      <Input id="header" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="type">Type</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger id="type" className="w-full">
+                            <SelectValue placeholder="Select a type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Table of Contents">
+                            Table of Contents
+                          </SelectItem>
+                          <SelectItem value="Executive Summary">
+                            Executive Summary
+                          </SelectItem>
+                          <SelectItem value="Technical Approach">
+                            Technical Approach
+                          </SelectItem>
+                          <SelectItem value="Design">Design</SelectItem>
+                          <SelectItem value="Capabilities">
+                            Capabilities
+                          </SelectItem>
+                          <SelectItem value="Focus Documents">
+                            Focus Documents
+                          </SelectItem>
+                          <SelectItem value="Narrative">Narrative</SelectItem>
+                          <SelectItem value="Cover Page">Cover Page</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="status">Status</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger id="status" className="w-full">
+                            <SelectValue placeholder="Select a status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Done">Done</SelectItem>
+                          <SelectItem value="In Progress">
+                            In Progress
+                          </SelectItem>
+                          <SelectItem value="Not Started">
+                            Not Started
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
-                <Select defaultValue={item.status}>
-                  <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select a status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Done">Done</SelectItem>
-                    <SelectItem value="In Progress">In Progress</SelectItem>
-                    <SelectItem value="Not Started">Not Started</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="target"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="target">Target</FormLabel>
+                      <FormControl>
+                        <Input id="target" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="limit"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="limit">Limit</FormLabel>
+                      <FormControl>
+                        <Input id="limit" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="target">Target</Label>
-                <Input id="target" defaultValue={item.target} />
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="limit">Limit</Label>
-                <Input id="limit" defaultValue={item.limit} />
-              </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="reviewer">Reviewer</Label>
-              <Select defaultValue={item.reviewer}>
-                <SelectTrigger id="reviewer" className="w-full">
-                  <SelectValue placeholder="Select a reviewer" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                  <SelectItem value="Jamik Tashpulatov">
-                    Jamik Tashpulatov
-                  </SelectItem>
-                  <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </form>
+              <FormField
+                control={form.control}
+                name="reviewer"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="reviewer">Reviewer</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger id="reviewer" className="w-full">
+                          <SelectValue placeholder="Select a reviewer" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
+                        <SelectItem value="Jamik Tashpulatov">
+                          Jamik Tashpulatov
+                        </SelectItem>
+                        <SelectItem value="Emily Whalen">
+                          Emily Whalen
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
         </div>
         <DrawerFooter>
-          <Button>Submit</Button>
+          <Button onClick={form.handleSubmit(onSubmit)}>Submit</Button>
           <DrawerClose asChild>
             <Button variant="outline">Done</Button>
           </DrawerClose>

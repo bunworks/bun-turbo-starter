@@ -1,6 +1,14 @@
 "use client";
 
-import type * as React from "react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@acme/ui";
 import {
   IconCamera,
   IconChartBar,
@@ -18,20 +26,11 @@ import {
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react";
-
+import type * as React from "react";
 import { NavDocuments } from "~/components/nav-documents";
 import { NavMain } from "~/components/nav-main";
 import { NavSecondary } from "~/components/nav-secondary";
 import { NavUser } from "~/components/nav-user";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@acme/ui";
 
 const data = {
   navMain: [

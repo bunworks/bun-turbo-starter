@@ -1,6 +1,4 @@
-import { Button } from "@acme/ui";
-import { Separator } from "@acme/ui";
-import { SidebarTrigger } from "@acme/ui";
+import { Button, Separator, SidebarTrigger } from "@acme/ui";
 
 export function SiteHeader() {
   return (

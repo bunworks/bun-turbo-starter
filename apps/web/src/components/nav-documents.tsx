@@ -1,21 +1,11 @@
 "use client";
 
 import {
-  IconDots,
-  IconFolder,
-  IconShare3,
-  IconTrash,
-  type Icon,
-} from "@tabler/icons-react";
-
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@acme/ui";
-import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -24,6 +14,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@acme/ui";
+import {
+  type Icon,
+  IconDots,
+  IconFolder,
+  IconShare3,
+  IconTrash,
+} from "@tabler/icons-react";
 
 export function NavDocuments({
   items,

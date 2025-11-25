@@ -1,27 +1,44 @@
 "use client";
 
-import { Button } from "@acme/ui";
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
 } from "@acme/ui";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@acme/ui";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@acme/ui";
+import { type OTPFormData, otpFormSchema } from "@acme/validators";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { authClient } from "~/auth/client";
 
 export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
-  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const router = useRouter();
   const [email, setEmail] = useState("");
+
+  const form = useForm<OTPFormData>({
+    resolver: zodResolver(otpFormSchema),
+    defaultValues: {
+      otp: "",
+    },
+  });
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("otp_email");
@@ -40,13 +57,12 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
     }
   }, [countdown]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: OTPFormData) => {
     setLoading(true);
     try {
       await authClient.signIn.emailOtp({
         email,
-        otp,
+        otp: data.otp,
       });
       toast.success("Successfully verified!");
       router.push("/"); // Redirect to dashboard
@@ -83,36 +99,39 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
         <CardDescription>We sent a 6-digit code to {email}.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit}>
-          <FieldGroup>
-            <Field>
-              <FieldLabel htmlFor="otp" className="sr-only">
-                Verification code
-              </FieldLabel>
-              <InputOTP
-                maxLength={6}
-                id="otp"
-                required
-                value={otp}
-                onChange={(value) => setOtp(value)}
-              >
-                <InputOTPGroup className="gap-2.5 *:data-[slot=input-otp-slot]:rounded-md *:data-[slot=input-otp-slot]:border">
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
-                </InputOTPGroup>
-              </InputOTP>
-              <FieldDescription className="text-center">
-                Enter the 6-digit code sent to your email.
-              </FieldDescription>
-            </Field>
-            <Button type="submit" disabled={loading}>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="otp"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="otp" className="sr-only">
+                    Verification code
+                  </FormLabel>
+                  <FormControl>
+                    <InputOTP maxLength={6} id="otp" {...field}>
+                      <InputOTPGroup className="gap-2.5 *:data-[slot=input-otp-slot]:rounded-md *:data-[slot=input-otp-slot]:border">
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </FormControl>
+                  <FormDescription className="text-center">
+                    Enter the 6-digit code sent to your email.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Verifying..." : "Verify"}
             </Button>
-            <FieldDescription className="text-center">
+            <FormDescription className="text-center">
               Didn&apos;t receive the code?{" "}
               <button
                 type="button"
@@ -126,9 +145,9 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
                     ? `Resend (${countdown}s)`
                     : "Resend"}
               </button>
-            </FieldDescription>
-          </FieldGroup>
-        </form>
+            </FormDescription>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );
