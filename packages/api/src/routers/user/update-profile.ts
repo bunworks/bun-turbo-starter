@@ -1,5 +1,4 @@
-import { eq } from "@acme/db";
-import { user } from "@acme/db/schema";
+import { eq, user } from "@acme/db";
 import { profileFormSchema } from "@acme/validators";
 
 import { protectedProcedure } from "../../trpc";

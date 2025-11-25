@@ -1,6 +1,6 @@
 import { SidebarInset, SidebarProvider } from "@acme/ui";
 import type { ReactNode } from "react";
-import { auth } from "~/auth/server";
+import { getSession } from "~/auth/server";
 import { AppSidebar } from "~/components/sidebar";
 
 export default async function DashboardLayout({
@@ -8,7 +8,7 @@ export default async function DashboardLayout({
 }: {
   children: ReactNode;
 }) {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session?.user) {
     return <>{children}</>;

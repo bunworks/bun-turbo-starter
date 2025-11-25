@@ -1,3 +1,4 @@
+"use client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ProfileForm } from "~/components/settings/profile-form";
 import { SettingsSidebar } from "~/components/settings/settings-sidebar";
