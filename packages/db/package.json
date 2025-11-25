@@ -26,6 +26,7 @@
     "check": "biome check .",
     "push": "bun with-env drizzle-kit push",
     "studio": "bun with-env drizzle-kit studio",
+    "drop": "bun with-env bun src/scripts/drop-schema.ts",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "with-env": "dotenv -e ../../.env --"
   },
