@@ -9,11 +9,9 @@ export default async function DashboardLayout({
   children: ReactNode;
 }) {
   const session = await getSession();
-
   if (!session?.user) {
     return <>{children}</>;
   }
-
   return (
     <SidebarProvider>
       <AppSidebar
