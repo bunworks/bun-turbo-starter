@@ -34,7 +34,6 @@ export const auth = initAuth({
   }) => {
     await sendEmail({
       to: [email],
-      from: "Acme <onboarding@resend.dev>", // TODO: replace with your domain
       subject: type === "sign-in" ? "Your Sign In Code" : "Verify Your Email",
       react: OtpSignInEmail({ otp, isSignUp: type !== "sign-in" }),
     });

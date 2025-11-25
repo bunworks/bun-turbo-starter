@@ -14,14 +14,14 @@ export interface Emails {
   react: ReactNode;
   subject: string;
   to: string[];
-  from: string;
+  from?: string;
 }
 
 export type EmailHtml = {
   html: string;
   subject: string;
   to: string[];
-  from: string;
+  from?: string;
 };
 export const sendEmail = async (email: Emails) => {
   if (env.EMAIL_SANDBOX_ENABLED === "true") {
@@ -48,22 +48,21 @@ export const sendEmail = async (email: Emails) => {
     to: email.to,
     from: email.from ?? env.EMAIL_FROM,
     subject: email.subject,
-    react: email.react as any,
+    react: email.react,
   });
 };
 
 export const sendEmailHtml = async (email: EmailHtml) => {
-  await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      to: email.to,
-      from: email.from ?? env.EMAIL_FROM,
-      subject: email.subject,
-      html: email.html,
-    }),
+  if (!resend) {
+    console.log(
+      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work."
+    );
+    return Promise.resolve();
+  }
+  await resend.emails.send({
+    to: email.to,
+    from: email.from ?? env.EMAIL_FROM,
+    subject: email.subject,
+    html: email.html,
   });
 };

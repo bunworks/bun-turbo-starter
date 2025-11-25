@@ -12,11 +12,14 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from "@acme/ui";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@acme/ui";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { authClient } from "~/auth/client";
 
 export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [countdown, setCountdown] = useState(0);
   const router = useRouter();
   const [email, setEmail] = useState("");
 
@@ -30,6 +33,13 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
     }
   }, [router]);
 
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -38,25 +48,31 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
         email,
         otp,
       });
+      toast.success("Successfully verified!");
       router.push("/"); // Redirect to dashboard
     } catch (error) {
       console.error(error);
-      // TODO: Show error toast
+      toast.error("Invalid code. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleResend = async () => {
-    if (!email) return;
+    if (!email || countdown > 0) return;
+    setResending(true);
     try {
       await authClient.emailOtp.sendVerificationOtp({
         email,
         type: "sign-in",
       });
-      // Show success toast
+      toast.success("Code sent! Check your email.");
+      setCountdown(60); // 60 second cooldown
     } catch (error) {
       console.error(error);
+      toast.error("Failed to send code. Please try again.");
+    } finally {
+      setResending(false);
     }
   };
 
@@ -101,9 +117,14 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-primary underline-offset-4 hover:underline"
+                disabled={countdown > 0 || resending}
+                className="text-primary underline-offset-4 hover:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
               >
-                Resend
+                {resending
+                  ? "Sending..."
+                  : countdown > 0
+                    ? `Resend (${countdown}s)`
+                    : "Resend"}
               </button>
             </FieldDescription>
           </FieldGroup>

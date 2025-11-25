@@ -13,6 +13,7 @@ import { Field, FieldGroup, FieldLabel } from "@acme/ui";
 import { Input } from "@acme/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import { authClient } from "~/auth/client";
 
 export function LoginForm({
@@ -33,10 +34,11 @@ export function LoginForm({
       });
       // Store email in localStorage or URL to pre-fill OTP form
       localStorage.setItem("otp_email", email);
+      toast.success("Code sent! Check your email.");
       router.push("/auth/otp");
     } catch (error) {
       console.error(error);
-      // TODO: Show error toast
+      toast.error("Failed to send code. Please try again.");
     } finally {
       setLoading(false);
     }
