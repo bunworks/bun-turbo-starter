@@ -143,7 +143,7 @@ function TargetCell({ row }: { row: Row<z.infer<typeof schema>> }) {
     },
   });
 
-  const onSubmit = async (data: TargetFormData) => {
+  const onSubmit = async (_data: TargetFormData) => {
     toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
       loading: `Saving ${row.original.header}`,
       success: "Done",
@@ -189,7 +189,7 @@ function LimitCell({ row }: { row: Row<z.infer<typeof schema>> }) {
     },
   });
 
-  const onSubmit = async (data: LimitFormData) => {
+  const onSubmit = async (_data: LimitFormData) => {
     toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
       loading: `Saving ${row.original.header}`,
       success: "Done",
@@ -396,7 +396,7 @@ export function DataTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
+    []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pagination, setPagination] = React.useState({
@@ -407,12 +407,12 @@ export function DataTable({
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {}),
+    useSensor(KeyboardSensor, {})
   );
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => data?.map(({ id }) => id) || [],
-    [data],
+    [data]
   );
 
   const table = useReactTable({
@@ -501,7 +501,7 @@ export function DataTable({
                 .filter(
                   (column) =>
                     typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide(),
+                    column.getCanHide()
                 )
                 .map((column) => {
                   return (
@@ -548,7 +548,7 @@ export function DataTable({
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext(),
+                                header.getContext()
                               )}
                         </TableHead>
                       );
@@ -713,7 +713,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
     },
   });
 
-  const onSubmit = async (data: DataTableItemData) => {
+  const onSubmit = async (_data: DataTableItemData) => {
     toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
       loading: "Saving changes...",
       success: "Changes saved!",

@@ -5,6 +5,7 @@ import { type ProfileFormValues, profileFormSchema } from "@acme/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -38,7 +39,7 @@ export function ProfileForm({
       onError: (err) => {
         toast.error(err.message || "Failed to update profile");
       },
-    }),
+    })
   );
 
   function onSubmit(data: ProfileFormValues) {
@@ -51,9 +52,11 @@ export function ProfileForm({
       <div className="flex items-center gap-4">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
           {avatarUrl ? (
-            <img
+            <Image
               src={avatarUrl || "/placeholder.svg"}
               alt="Avatar"
+              width={64}
+              height={64}
               className="h-16 w-16 rounded-full object-cover"
             />
           ) : (

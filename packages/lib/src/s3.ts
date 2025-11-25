@@ -1,20 +1,20 @@
+import { env } from "@acme/config";
 import {
   GetObjectCommand,
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { env } from "@acme/config";
 
 const s3Endpoint = env.AWS_S3_ENDPOINT;
-const s3ForcePathStyle = env.AWS_S3_FORCE_PATH_STYLE === "false" ? false : true;
+const s3ForcePathStyle = env.AWS_S3_FORCE_PATH_STYLE !== "false";
 
 // Validate AWS credentials before creating the client
 const accessKeyId = env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = env.AWS_SECRET_ACCESS_KEY;
 if (!accessKeyId || !secretAccessKey) {
   throw new Error(
-    "AWS credentials (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) are required",
+    "AWS credentials (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) are required"
   );
 }
 
@@ -55,7 +55,7 @@ export function generateS3Key(originalKey: string, temporary = false): string {
 export async function uploadBufferToS3(
   key: string,
   body: Buffer | Uint8Array,
-  contentType?: string,
+  contentType?: string
 ): Promise<{ key: string; bucket: string; etag?: string }> {
   const command = new PutObjectCommand({
     Bucket: BUCKET_NAME,
@@ -75,7 +75,7 @@ export async function uploadBufferToS3(
       stack: e?.stack,
     });
     throw new Error(
-      `Failed to upload to S3 bucket '${BUCKET_NAME}' key '${key}': ${e?.message ?? String(err)}`,
+      `Failed to upload to S3 bucket '${BUCKET_NAME}' key '${key}': ${e?.message ?? String(err)}`
     );
   }
 }

@@ -14,3 +14,30 @@ services:
       - INBUCKET_WEB_ADDR=0.0.0.0:9000
       - INBUCKET_SMTP_ADDR=0.0.0.0:2500
       - INBUCKET_POP3_ADDR=0.0.0.0:1100
+  minio:
+    restart: always
+    image: minio/minio
+    container_name: minio
+    ports:
+      - 9002:9002
+      - 9001:9001
+    volumes:
+      - minio:/data
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: password
+    entrypoint: sh
+    command: -c 'mkdir -p /data/minio && minio server /data --console-address ":9001" --address ":9002"'
+  create-buckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 5;
+      /usr/bin/mc config host add minio http://minio:9002 minio password;
+      /usr/bin/mc rb minio/files.acme.com;
+      /usr/bin/mc mb minio/files.acme.com;
+      /usr/bin/mc anonymous set public minio/files.acme.com;
+      exit 0;
+      "
