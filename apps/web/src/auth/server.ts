@@ -1,12 +1,11 @@
 import "server-only";
 
 import { initAuth } from "@acme/auth";
+import { env } from "@acme/config";
 import { OtpSignInEmail, sendEmail } from "@acme/emails";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
 import { cache } from "react";
-
-import { env } from "~/env";
 
 const baseUrl =
   env.VERCEL_ENV === "production"

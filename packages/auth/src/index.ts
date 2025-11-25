@@ -10,8 +10,8 @@ export function initAuth<
   baseUrl: string;
   productionUrl: string;
   secret: string | undefined;
-  googleClientId: string;
-  googleClientSecret: string;
+  googleClientId?: string;
+  googleClientSecret?: string;
   sendEmail?: (data: {
     email: string;
     otp: string;
@@ -38,13 +38,16 @@ export function initAuth<
       }),
       ...(options.extraPlugins ?? []),
     ],
-    socialProviders: {
-      google: {
-        clientId: options.googleClientId,
-        clientSecret: options.googleClientSecret,
-        redirectURI: `${options.productionUrl}/api/auth/callback/google`,
-      },
-    },
+    socialProviders:
+      options.googleClientId && options.googleClientSecret
+        ? {
+            google: {
+              clientId: options.googleClientId,
+              clientSecret: options.googleClientSecret,
+              redirectURI: `${options.productionUrl}/api/auth/callback/google`,
+            },
+          }
+        : {},
     onAPIError: {
       onError(error, ctx) {
         console.error("BETTER AUTH API ERROR", error, ctx);
