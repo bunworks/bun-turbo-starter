@@ -33,7 +33,7 @@ export function LoginForm({
       });
       // Store email in localStorage or URL to pre-fill OTP form
       localStorage.setItem("otp_email", email);
-      router.push("/otp");
+      router.push("/auth/otp");
     } catch (error) {
       console.error(error);
       // TODO: Show error toast
