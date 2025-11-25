@@ -41,5 +41,5 @@ export const auth = initAuth({
 });
 
 export const getSession = cache(async () =>
-  auth.api.getSession({ headers: await headers() })
+  auth.api.getSession({ headers: await headers() }),
 );

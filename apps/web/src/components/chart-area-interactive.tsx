@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@acme/ui";
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
