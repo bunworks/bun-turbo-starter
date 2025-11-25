@@ -12,7 +12,7 @@ export const env = createEnv({
     // Email
     RESEND_API_KEY: z.string().optional(),
     EMAIL_SANDBOX_ENABLED: z.coerce.boolean().optional().default(false),
-    EMAIL_SANDBOX_HOST: z.string().optional(),
+    EMAIL_SANDBOX_HOST: z.string().default("localhost"),
     EMAIL_FROM: z.string().default("Acme <onboarding@resend.dev>"),
 
     // Auth
@@ -26,7 +26,7 @@ export const env = createEnv({
     AWS_ACCESS_KEY_ID: z.string().optional(),
     AWS_SECRET_ACCESS_KEY: z.string().optional(),
     AWS_REGION: z.string().default("us-east-1"),
-    AWS_S3_BUCKET: z.string().default("synoro-bucket"),
+    AWS_S3_BUCKET: z.string().default("acme-bucket"),
   },
   client: {},
   clientPrefix: "NEXT_PUBLIC_",

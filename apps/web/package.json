@@ -31,6 +31,7 @@
     "@trpc/client": "^11.7.2",
     "@trpc/server": "^11.7.2",
     "@trpc/tanstack-react-query": "^11.7.2",
+    "@vercel/analytics": "^1.5.0",
     "better-auth": "1.4.0-beta.9",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.554.0",
