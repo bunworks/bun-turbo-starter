@@ -4,22 +4,22 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { env } from "@acme/config";
 
-const s3Endpoint = process.env.AWS_S3_ENDPOINT;
-const s3ForcePathStyle =
-  process.env.AWS_S3_FORCE_PATH_STYLE === "false" ? false : true;
+const s3Endpoint = env.AWS_S3_ENDPOINT;
+const s3ForcePathStyle = env.AWS_S3_FORCE_PATH_STYLE === "false" ? false : true;
 
 // Validate AWS credentials before creating the client
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+const accessKeyId = env.AWS_ACCESS_KEY_ID;
+const secretAccessKey = env.AWS_SECRET_ACCESS_KEY;
 if (!accessKeyId || !secretAccessKey) {
   throw new Error(
-    "AWS credentials (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) are required",
+    "AWS credentials (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) are required"
   );
 }
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION || "us-east-1",
+  region: env.AWS_REGION,
   credentials: {
     accessKeyId,
     secretAccessKey,
@@ -32,7 +32,7 @@ const s3Client = new S3Client({
     : {}),
 });
 
-const BUCKET_NAME = process.env.AWS_S3_BUCKET || "synoro-bucket";
+const BUCKET_NAME = env.AWS_S3_BUCKET;
 
 export async function createPresignedUrl(key: string): Promise<string> {
   const command = new PutObjectCommand({
@@ -44,10 +44,7 @@ export async function createPresignedUrl(key: string): Promise<string> {
   return getSignedUrl(s3Client, command, { expiresIn: 3600 }); // 1 hour
 }
 
-export function generateS3Key(
-  originalKey: string,
-  temporary = false,
-): string {
+export function generateS3Key(originalKey: string, temporary = false): string {
   const timestamp = Date.now();
   const randomId = Math.random().toString(36).substring(2, 15);
   const prefix = temporary ? "temp" : "uploads";
@@ -58,7 +55,7 @@ export function generateS3Key(
 export async function uploadBufferToS3(
   key: string,
   body: Buffer | Uint8Array,
-  contentType?: string,
+  contentType?: string
 ): Promise<{ key: string; bucket: string; etag?: string }> {
   const command = new PutObjectCommand({
     Bucket: BUCKET_NAME,
@@ -78,7 +75,7 @@ export async function uploadBufferToS3(
       stack: e?.stack,
     });
     throw new Error(
-      `Failed to upload to S3 bucket '${BUCKET_NAME}' key '${key}': ${e?.message ?? String(err)}`,
+      `Failed to upload to S3 bucket '${BUCKET_NAME}' key '${key}': ${e?.message ?? String(err)}`
     );
   }
 }

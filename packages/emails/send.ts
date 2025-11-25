@@ -24,7 +24,7 @@ export type EmailHtml = {
   from?: string;
 };
 export const sendEmail = async (email: Emails) => {
-  if (env.EMAIL_SANDBOX_ENABLED === "true") {
+  if (env.EMAIL_SANDBOX_ENABLED) {
     const mailOptions: Mail.Options = {
       from: email.from ?? env.EMAIL_FROM,
       to: email.to,
@@ -40,7 +40,7 @@ export const sendEmail = async (email: Emails) => {
   }
   if (!resend) {
     console.log(
-      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work.",
+      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work."
     );
     return Promise.resolve();
   }
@@ -55,7 +55,7 @@ export const sendEmail = async (email: Emails) => {
 export const sendEmailHtml = async (email: EmailHtml) => {
   if (!resend) {
     console.log(
-      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work.",
+      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work."
     );
     return Promise.resolve();
   }

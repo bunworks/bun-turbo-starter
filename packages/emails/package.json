@@ -19,10 +19,10 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@acme/config": "workspace:*",
     "@acme/tsconfig": "workspace:*",
     "@radix-ui/colors": "3.0.0",
     "@react-email/components": "1.0.1",
-    "@t3-oss/env-core": "0.13.8",
     "@tailwindcss/typography": "0.5.19",
     "nodemailer": "^7.0.10",
     "react": "19.2.0",
