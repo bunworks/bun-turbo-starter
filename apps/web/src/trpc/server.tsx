@@ -31,6 +31,14 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
   queryClient: getQueryClient,
 });
 
+/**
+ * Server-side tRPC caller for direct procedure invocation in Server Components
+ */
+export const api = cache(async () => {
+  const context = await createContext();
+  return appRouter.createCaller(context);
+});
+
 export function HydrateClient(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
   return (
@@ -42,7 +50,7 @@ export function HydrateClient(props: { children: React.ReactNode }) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 // biome-ignore lint/suspicious/noExplicitAny: Required for TRPC type compatibility
 export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(
-  queryOptions: T,
+  queryOptions: T
 ) {
   const queryClient = getQueryClient();
   if (queryOptions.queryKey[1]?.type === "infinite") {

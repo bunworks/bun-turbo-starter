@@ -1,13 +1,11 @@
-"use client";
-
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { AccountForm } from "~/components/settings/account-form";
 import { SettingsSidebar } from "~/components/settings/settings-sidebar";
-import { useTRPC } from "~/trpc/react";
+import { api } from "~/trpc/server";
 
-export default function SettingsAccountPage() {
-  const trpc = useTRPC();
-  const { data: user } = useSuspenseQuery(trpc.user.me.queryOptions());
+export default async function SettingsAccountPage() {
+  const caller = await api();
+  const user = await caller.user.me();
+
   return (
     <div className="space-y-6 p-10 pb-16 max-w-5xl">
       <div className="space-y-1">
