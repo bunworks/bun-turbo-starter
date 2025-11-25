@@ -27,10 +27,12 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import type * as React from "react";
-import { NavDocuments } from "~/components/nav-documents";
-import { NavMain } from "~/components/nav-main";
-import { NavSecondary } from "~/components/nav-secondary";
-import { NavUser } from "~/components/nav-user";
+import {
+  NavDocuments,
+  NavMain,
+  NavSecondary,
+  NavUser,
+} from "~/components/sidebar";
 
 const data = {
   navMain: [

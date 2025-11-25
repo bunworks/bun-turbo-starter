@@ -1,9 +1,11 @@
 import { SidebarInset, SidebarProvider } from "@acme/ui";
-import { AppSidebar } from "@/components/app-sidebar";
-import { ChartAreaInteractive } from "@/components/chart-area-interactive";
-import { DataTable } from "@/components/data-table";
-import { SectionCards } from "@/components/section-cards";
-import { SiteHeader } from "@/components/site-header";
+import {
+  ChartAreaInteractive,
+  DataTable,
+  SectionCards,
+} from "@/components/dashboard";
+import { SiteHeader } from "@/components/layout";
+import { AppSidebar } from "@/components/sidebar";
 
 import { getSession } from "~/auth/server";
 
