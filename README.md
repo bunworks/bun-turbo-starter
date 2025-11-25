@@ -52,10 +52,6 @@ packages
   └─ validators
       └─ Shared validation schemas
 tooling
-  ├─ eslint
-  │   └─ Shared, fine-grained ESLint presets
-  ├─ prettier
-  │   └─ Shared Prettier configuration
   ├─ tailwind
   │   └─ Shared Tailwind theme and configuration
   └─ typescript
@@ -187,9 +183,6 @@ bun build
 
 # Run linting across the monorepo
 bun lint
-
-# Format code with Prettier
-bun format
 
 # Type check all packages
 bun typecheck
