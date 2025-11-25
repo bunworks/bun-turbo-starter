@@ -1,7 +1,12 @@
-import { ProfileForm } from "@/components/settings/profile-form";
-import { SettingsSidebar } from "@/components/settings/settings-sidebar";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ProfileForm } from "~/components/settings/profile-form";
+import { SettingsSidebar } from "~/components/settings/settings-sidebar";
+import { useTRPC } from "~/trpc/react";
 
 export default function SettingsProfilePage() {
+  const trpc = useTRPC();
+  const { data: user } = useSuspenseQuery(trpc.user.me.queryOptions());
+
   return (
     <div className="space-y-6 p-10 pb-16 max-w-5xl mx-auto">
       <div className="space-y-1">
@@ -18,7 +23,13 @@ export default function SettingsProfilePage() {
         </aside>
         <div className="flex-1">
           <div className="rounded-lg border p-6">
-            <ProfileForm />
+            <ProfileForm
+              initialData={{
+                username: user?.username || "",
+                email: user?.email || "",
+                bio: user?.bio || "",
+              }}
+            />
           </div>
         </div>
       </div>

@@ -1,39 +1,48 @@
 "use client";
 
-import {
-  Button,
-  Input,
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Textarea,
-} from "@acme/ui";
+import { Button, Input, Label, Textarea, toast } from "@acme/ui";
 import { type ProfileFormValues, profileFormSchema } from "@acme/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const defaultValues: ProfileFormValues = {
-  username: "shadcn",
-  email: "email@example.com",
-  bio: "I own a computer.",
-};
+import { useTRPC } from "~/trpc/react";
 
-export function ProfileForm() {
+export function ProfileForm({
+  initialData,
+}: {
+  initialData?: ProfileFormValues;
+}) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues,
+    defaultValues: initialData || {
+      username: "",
+      email: "",
+      bio: "",
+    },
     mode: "onChange",
   });
 
+  const updateProfile = useMutation(
+    trpc.user.updateProfile.mutationOptions({
+      onSuccess: async () => {
+        toast.success("Profile updated successfully");
+        await queryClient.invalidateQueries(trpc.user.pathFilter());
+      },
+      onError: (err) => {
+        toast.error(err.message || "Failed to update profile");
+      },
+    })
+  );
+
   function onSubmit(data: ProfileFormValues) {
-    console.log(data);
+    updateProfile.mutate(data);
   }
 
   return (
@@ -90,17 +99,12 @@ export function ProfileForm() {
       {/* Email */}
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
-        <Select defaultValue={defaultValues.email}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select a verified email to display" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="email@example.com">email@example.com</SelectItem>
-            <SelectItem value="support@example.com">
-              support@example.com
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        <Input
+          id="email"
+          type="email"
+          placeholder="email@example.com"
+          {...form.register("email")}
+        />
         <p className="text-sm text-muted-foreground">
           You can manage verified email addresses in your email settings.
         </p>
@@ -123,8 +127,9 @@ export function ProfileForm() {
       <Button
         type="submit"
         className="bg-foreground text-background hover:bg-foreground/90"
+        disabled={updateProfile.isPending}
       >
-        Update profile
+        {updateProfile.isPending ? "Updating..." : "Update profile"}
       </Button>
     </form>
   );
