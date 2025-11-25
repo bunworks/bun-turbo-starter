@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Separator, SidebarTrigger } from "@acme/ui";
 
 export function SiteHeader() {

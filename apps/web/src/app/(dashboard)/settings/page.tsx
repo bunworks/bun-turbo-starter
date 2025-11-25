@@ -1,4 +1,5 @@
 "use client";
+
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { AccountForm } from "~/components/settings/account-form";
 import { SettingsSidebar } from "~/components/settings/settings-sidebar";
@@ -8,7 +9,7 @@ export default function SettingsAccountPage() {
   const trpc = useTRPC();
   const { data: user } = useSuspenseQuery(trpc.user.me.queryOptions());
   return (
-    <div className="space-y-6 p-10 pb-16 max-w-5xl mx-auto">
+    <div className="space-y-6 p-10 pb-16 max-w-5xl">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">
