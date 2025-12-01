@@ -30,14 +30,14 @@ export const createTRPCContext = async (opts: {
   headers: Headers;
   auth: Auth;
 }) => {
-  const authApi = opts.auth.api;
+  const authApi = opts.auth.api as any;
   const session = await authApi.getSession({
     headers: opts.headers,
   });
   return {
     authApi,
     session,
-    db,
+    db: db as any,
   };
 };
 /**

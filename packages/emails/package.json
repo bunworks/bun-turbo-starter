@@ -24,7 +24,7 @@
     "@radix-ui/colors": "3.0.0",
     "@react-email/components": "1.0.1",
     "@tailwindcss/typography": "0.5.19",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^7.0.11",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-email": "5.0.5",
