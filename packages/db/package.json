@@ -33,13 +33,13 @@
   "dependencies": {
     "@acme/config": "workspace:*",
     "@vercel/postgres": "0.10.0",
-    "drizzle-orm": "0.44.7",
+    "drizzle-orm": "0.45.1",
     "drizzle-zod": "0.8.3",
     "zod": "4.1.13"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "drizzle-kit": "^0.31.7",
+    "drizzle-kit": "^0.31.8",
     "typescript": "5.9.3"
   }
 }
