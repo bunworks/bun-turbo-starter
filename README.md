@@ -45,8 +45,12 @@ packages
   │   └─ tRPC v11 router definition
   ├─ auth
   │   └─ Authentication using better-auth
+  ├─ config
+  │   └─ Type-safe environment variables with @t3-oss/env-core
   ├─ db
   │   └─ Typesafe db calls using Drizzle & Neon
+  ├─ emails
+  │   └─ Email templates with React Email and Resend
   ├─ ui
   │   └─ UI package for the webapp using shadcn-ui
   └─ validators
@@ -66,6 +70,10 @@ tooling
 - **🎨 Modern UI**: Tailwind CSS v4 and shadcn-ui components
 - **🔐 Authentication**: Secure auth with better-auth
 - **💾 Database**: Type-safe database queries with Drizzle ORM + Neon
+- **📧 Email**: Beautiful email templates with React Email and Resend
+- **⚙️ Background Jobs**: Reliable job processing with Inngest and Trigger.dev
+- **� Enpvironment Variables**: Type-safe env validation with @t3-oss/env-core
+- **�  Deployment**: Optimized for Vercel with zero-config deployment
 - **📦 Shared Packages**: Reusable code across your monorepo
 
 > In this template, we use `@acme` as a placeholder for package names. Replace it with your own organization or project name using find-and-replace to change all instances of `@acme` to something like `@my-company` or `@project-name`.
@@ -158,17 +166,110 @@ If you need to share runtime code between the client and server, such as input v
 
 ## Deployment
 
-### Next.js
+### Deploy to Vercel
 
-#### Deploy to Vercel
+This project is optimized for deployment on [Vercel](https://vercel.com) with zero configuration. If you've never deployed a Turborepo app on Vercel, don't worry - the steps are straightforward. You can also read the [official Turborepo guide](https://vercel.com/docs/concepts/monorepos/turborepo) on deploying to Vercel.
 
-Let's deploy the Next.js application to [Vercel](https://vercel.com). If you've never deployed a Turborepo app there, don't worry, the steps are quite straightforward. You can also read the [official Turborepo guide](https://vercel.com/docs/concepts/monorepos/turborepo) on deploying to Vercel.
+#### Deployment Steps
 
-1. Create a new project on Vercel, select the `apps/nextjs` folder as the root directory. Vercel's zero-config system should handle all configurations for you.
+1. **Create a new project on Vercel**
+   - Select the `apps/web` folder as the root directory
+   - Vercel's zero-config system will automatically handle all configurations
 
-2. Add your `POSTGRES_URL` environment variable.
+2. **Configure environment variables**
 
-3. Done! Your app should successfully deploy.
+   Add the following variables in your Vercel project settings:
+
+   ```bash
+   # Database
+   POSTGRES_URL=your_neon_database_url
+   
+   # Authentication (Better Auth)
+   BETTER_AUTH_SECRET=your_auth_secret
+   BETTER_AUTH_URL=https://your-domain.vercel.app
+   
+   # Email (Resend)
+   RESEND_API_KEY=your_resend_api_key
+   
+   # Background Jobs (choose one)
+   # Inngest
+   INNGEST_EVENT_KEY=your_inngest_event_key
+   INNGEST_SIGNING_KEY=your_inngest_signing_key
+   
+   # or Trigger.dev
+   TRIGGER_API_KEY=your_trigger_api_key
+   TRIGGER_API_URL=https://api.trigger.dev
+   ```
+
+3. **Done!** Your app should successfully deploy.
+
+#### Vercel Integrations
+
+This starter supports the following Vercel integrations:
+
+- **Vercel Postgres**: Automatic environment variable setup for Neon
+- **Vercel Blob**: For file storage (optional)
+- **Vercel KV**: For caching and sessions (optional)
+
+### Background Jobs Setup
+
+#### Inngest
+
+[Inngest](https://inngest.com) is a platform for reliable background job execution with built-in retry support and monitoring.
+
+```bash
+# Install Inngest SDK (if not already installed)
+bun add inngest
+
+# Add environment variables
+INNGEST_EVENT_KEY=your_event_key
+INNGEST_SIGNING_KEY=your_signing_key
+```
+
+#### Trigger.dev
+
+[Trigger.dev](https://trigger.dev) is an alternative platform for background jobs with powerful scheduling and orchestration capabilities.
+
+```bash
+# Install Trigger.dev SDK (if not already installed)
+bun add @trigger.dev/sdk
+
+# Add environment variables
+TRIGGER_API_KEY=your_api_key
+TRIGGER_API_URL=https://api.trigger.dev
+```
+
+### Email Setup with React Email and Resend
+
+[React Email](https://react.email) is used for building beautiful, responsive email templates with React components. [Resend](https://resend.com) handles the actual email delivery. The `@acme/emails` package is already configured to work with both.
+
+```bash
+# Get your API key from resend.com
+RESEND_API_KEY=re_your_api_key
+
+# Configure sending domain (optional)
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+```
+
+The emails package includes:
+
+- Pre-built email templates using React Email components
+- Type-safe email sending functions
+- Preview mode for development
+- Responsive email designs that work across all email clients
+
+### Environment Variables with @t3-oss/env-core
+
+This starter uses [@t3-oss/env-core](https://env.t3.gg) for type-safe environment variable validation. The `@acme/config` package provides centralized environment configuration.
+
+Benefits:
+
+- **Type Safety**: Full TypeScript support for environment variables
+- **Runtime Validation**: Automatic validation using Zod schemas
+- **Client/Server Split**: Separate validation for client and server variables
+- **Early Error Detection**: Fails fast if required variables are missing
+
+Environment variables are validated at build time and runtime, ensuring your app never runs with invalid configuration.
 
 ## Scripts
 
@@ -213,6 +314,10 @@ bun clean
 - **API**: [tRPC v11](https://trpc.io)
 - **Database**: [Drizzle ORM](https://orm.drizzle.team) + [Neon](https://neon.tech)
 - **Authentication**: [Better Auth](https://better-auth.com)
+- **Email**: [React Email](https://react.email) + [Resend](https://resend.com)
+- **Background Jobs**: [Inngest](https://inngest.com) / [Trigger.dev](https://trigger.dev)
+- **Environment Variables**: [@t3-oss/env-core](https://env.t3.gg)
+- **Deployment**: [Vercel](https://vercel.com)
 - **Validation**: [Zod](https://zod.dev)
 - **Linting & Formatting**: [Biome](https://biomejs.dev)
 
