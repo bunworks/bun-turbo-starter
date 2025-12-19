@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import { pgTable } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 export const Post = pgTable("posts", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),

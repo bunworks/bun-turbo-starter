@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 
 // Data table item validation schema
 export const dataTableItemSchema = z.object({

@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 
 // OTP form validation schema
 export const otpFormSchema = z.object({

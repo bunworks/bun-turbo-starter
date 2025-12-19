@@ -2,7 +2,7 @@
 
 import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import * as React from "react";
-import * as z from "zod/v4";
+import * as z from "zod";
 
 import { Button } from "./button";
 import {
@@ -102,7 +102,7 @@ interface ThemeContextProps {
   toggleMode: () => void;
 }
 const ThemeContext = React.createContext<ThemeContextProps | undefined>(
-  undefined,
+  undefined
 );
 
 export function ThemeProvider({ children }: React.PropsWithChildren) {

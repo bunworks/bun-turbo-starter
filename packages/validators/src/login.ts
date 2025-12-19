@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 
 // Login form validation schema
 export const loginFormSchema = z.object({
