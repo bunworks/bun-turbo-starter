@@ -24,11 +24,10 @@
     "format": "biome format .",
     "lint": "biome lint .",
     "check": "biome check .",
-    "push": "bun with-env drizzle-kit push",
-    "studio": "bun with-env drizzle-kit studio",
-    "drop": "bun with-env bun src/scripts/drop-schema.ts",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "with-env": "dotenv -e ../../.env --"
+    "push": "bun --env-file=../../.env run drizzle-kit push",
+    "studio": "bun --env-file=../../.env run drizzle-kit studio",
+    "drop": "bun --env-file=../../.env run src/scripts/drop-schema.ts",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
     "@acme/config": "workspace:*",

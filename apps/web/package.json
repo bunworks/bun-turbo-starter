@@ -3,15 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun with-env next build",
+    "build": "bun --env-file=../../.env run next build",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
-    "dev": "bun with-env next dev",
+    "dev": "bun --env-file=../../.env run next dev",
     "format": "biome format .",
     "lint": "biome lint .",
     "check": "biome check .",
-    "start": "bun with-env next start",
-    "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "start": "bun --env-file=../../.env run next start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@acme/api": "workspace:*",
