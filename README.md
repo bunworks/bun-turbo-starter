@@ -214,8 +214,7 @@ bun clean
 - **Database**: [Drizzle ORM](https://orm.drizzle.team) + [Neon](https://neon.tech)
 - **Authentication**: [Better Auth](https://better-auth.com)
 - **Validation**: [Zod](https://zod.dev)
-- **Linting**: [ESLint](https://eslint.org)
-- **Formatting**: [Prettier](https://prettier.io)
+- **Linting & Formatting**: [Biome](https://biomejs.dev)
 
 ## Contributing
 

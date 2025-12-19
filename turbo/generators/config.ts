@@ -84,7 +84,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           // });
           execSync("bun install", { stdio: "inherit" });
           execSync(
-            `bun prettier --write packages/${answers.name}/** --list-different`,
+            `bun biome check --write packages/${answers.name}/**`,
           );
           return "Package scaffolded";
         }
