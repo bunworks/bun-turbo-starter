@@ -13,7 +13,7 @@ peer = true
 production = false
 
 # equivalent to `--save-text-lockfile` flag
-saveTextLockfile = false
+saveTextLockfile = true
 
 # equivalent to `--frozen-lockfile` flag
 frozenLockfile = false
