@@ -46,7 +46,7 @@ packages
   ├─ auth
   │   └─ Authentication using better-auth
   ├─ db
-  │   └─ Typesafe db calls using Drizzle & Supabase
+  │   └─ Typesafe db calls using Drizzle & Neon
   ├─ ui
   │   └─ UI package for the webapp using shadcn-ui
   └─ validators
@@ -65,7 +65,7 @@ tooling
 - **🔒 Type Safety**: End-to-end type safety with TypeScript and tRPC
 - **🎨 Modern UI**: Tailwind CSS v4 and shadcn-ui components
 - **🔐 Authentication**: Secure auth with better-auth
-- **💾 Database**: Type-safe database queries with Drizzle ORM
+- **💾 Database**: Type-safe database queries with Drizzle ORM + Neon
 - **📦 Shared Packages**: Reusable code across your monorepo
 
 > In this template, we use `@acme` as a placeholder for package names. Replace it with your own organization or project name using find-and-replace to change all instances of `@acme` to something like `@my-company` or `@project-name`.
@@ -73,7 +73,7 @@ tooling
 ## Quick Start
 
 > **Note**
-> The [db](./packages/db) package is preconfigured to use Supabase and is **edge-bound** with the [Vercel Postgres](https://github.com/vercel/storage/tree/main/packages/postgres) driver. If you're using something else, make the necessary modifications to the [schema](./packages/db/src/schema.ts) as well as the [client](./packages/db/src/index.ts) and the [drizzle config](./packages/db/drizzle.config.ts). If you want to switch to a non-edge database driver, remove `export const runtime = "edge";` from all pages and API routes.
+> The [db](./packages/db) package is preconfigured to use Neon and is **edge-bound** with the [Vercel Postgres](https://github.com/vercel/storage/tree/main/packages/postgres) driver. If you're using something else, make the necessary modifications to the [schema](./packages/db/src/schema.ts) as well as the [client](./packages/db/src/index.ts) and the [drizzle config](./packages/db/drizzle.config.ts). If you want to switch to a non-edge database driver, remove `export const runtime = "edge";` from all pages and API routes.
 
 To get it running, follow the steps below:
 
@@ -211,7 +211,7 @@ bun clean
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com)
 - **API**: [tRPC v11](https://trpc.io)
-- **Database**: [Drizzle ORM](https://orm.drizzle.team) + [Supabase](https://supabase.com)
+- **Database**: [Drizzle ORM](https://orm.drizzle.team) + [Neon](https://neon.tech)
 - **Authentication**: [Better Auth](https://better-auth.com)
 - **Validation**: [Zod](https://zod.dev)
 - **Linting**: [ESLint](https://eslint.org)
