@@ -207,7 +207,7 @@ bun clean
 
 - **Runtime**: [Bun](https://bun.sh)
 - **Monorepo**: [Turborepo](https://turborepo.org)
-- **Framework**: [Next.js 15](https://nextjs.org)
+- **Framework**: [Next.js 16](https://nextjs.org)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com)
 - **API**: [tRPC v11](https://trpc.io)
