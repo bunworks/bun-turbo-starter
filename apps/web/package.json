@@ -32,7 +32,7 @@
     "@trpc/server": "^11.7.2",
     "@trpc/tanstack-react-query": "^11.7.2",
     "@vercel/analytics": "^1.6.1",
-    "better-auth": "1.4.6",
+    "better-auth": "1.4.7",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.561.0",
     "next": "16.0.10",
@@ -40,7 +40,7 @@
     "react-dom": "19.2.3",
     "recharts": "2.15.4",
     "superjson": "2.2.6",
-    "zod": "4.1.13"
+    "zod": "4.2.1"
   },
   "devDependencies": {
     "@acme/tailwind-config": "workspace:*",
