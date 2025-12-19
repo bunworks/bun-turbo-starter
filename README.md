@@ -72,6 +72,8 @@ tooling
 - **💾 Database**: Type-safe database queries with Drizzle ORM + Neon
 - **📧 Email**: Beautiful email templates with React Email and Resend
 - **⚙️ Background Jobs**: Reliable job processing with Inngest and Trigger.dev
+- **🔄 Data Fetching**: Powerful async state management with TanStack Query
+- **📝 Forms**: Type-safe form handling with React Hook Form
 - **� Enpvironment Variables**: Type-safe env validation with @t3-oss/env-core
 - **�  Deployment**: Optimized for Vercel with zero-config deployment
 - **📦 Shared Packages**: Reusable code across your monorepo
@@ -312,6 +314,8 @@ bun clean
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com)
 - **API**: [tRPC v11](https://trpc.io)
+- **Data Fetching**: [TanStack Query](https://tanstack.com/query)
+- **Forms**: [React Hook Form](https://react-hook-form.com)
 - **Database**: [Drizzle ORM](https://orm.drizzle.team) + [Neon](https://neon.tech)
 - **Authentication**: [Better Auth](https://better-auth.com)
 - **Email**: [React Email](https://react.email) + [Resend](https://resend.com)
