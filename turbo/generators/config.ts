@@ -83,9 +83,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           //   stdio: "inherit",
           // });
           execSync("bun install", { stdio: "inherit" });
-          execSync(
-            `bun biome check --write packages/${answers.name}/**`,
-          );
+          execSync(`bun biome check --write packages/${answers.name}/**`);
           return "Package scaffolded";
         }
         return "Package not scaffolded";
