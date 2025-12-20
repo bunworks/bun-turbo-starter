@@ -1,6 +1,7 @@
 version: "3"
 volumes:
   minio:
+  postgres:
 services:
   inbucket:
     restart: always
@@ -41,3 +42,15 @@ services:
       /usr/bin/mc anonymous set public minio/files.acme.com;
       exit 0;
       "
+  postgres:
+    restart: always
+    image: postgres:18-alpine
+    container_name: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: acme
