@@ -175,7 +175,7 @@ This project is optimized for deployment on [Vercel](https://vercel.com) with ze
 #### Deployment Steps
 
 1. **Create a new project on Vercel**
-   - Select the `apps/web` folder as the root directory
+   - Select the `apps/app` folder as the root directory
    - Vercel's zero-config system will automatically handle all configurations
 
 2. **Configure environment variables**

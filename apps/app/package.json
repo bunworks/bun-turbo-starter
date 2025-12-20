@@ -1,5 +1,5 @@
 {
-  "name": "@acme/web",
+  "name": "@acme/app",
   "private": true,
   "type": "module",
   "scripts": {
