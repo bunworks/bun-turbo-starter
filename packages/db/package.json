@@ -4,15 +4,15 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
     },
     "./client": {
-      "types": "./dist/client.d.ts",
       "default": "./src/client.ts"
     },
+    "./client.ws": {
+      "default": "./src/client.ws.ts"
+    },
     "./schema": {
-      "types": "./dist/schema/index.d.ts",
       "default": "./src/schema/index.ts"
     }
   },
@@ -31,13 +31,18 @@
   },
   "dependencies": {
     "@acme/config": "workspace:*",
+    "@neondatabase/serverless": "^1.0.2",
     "@vercel/postgres": "0.10.0",
     "drizzle-orm": "0.45.1",
     "drizzle-zod": "0.8.3",
+    "pg": "^8.16.3",
+    "ws": "^8.18.3",
     "zod": "4.2.1"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
+    "@types/pg": "^8.16.0",
+    "@types/ws": "^8.18.1",
     "drizzle-kit": "^0.31.8",
     "typescript": "5.9.3"
   }
