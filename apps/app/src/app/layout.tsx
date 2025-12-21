@@ -1,3 +1,4 @@
+import { APP_CONFIG } from "@acme/config";
 import { cn, ThemeProvider, ThemeToggle, Toaster } from "@acme/ui";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Bun Turbo Starter",
     description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://bun-turbo-starter.vercel.app",
+    url: APP_CONFIG.url,
     siteName: "Bun Turbo Starter",
   },
 };

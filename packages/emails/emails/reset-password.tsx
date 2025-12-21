@@ -16,58 +16,59 @@ import {
 
 import { emailTailwindConfig } from "../tailwind";
 
-export default function WelcomeEmail({
-  username = "username",
+export default function ResetPasswordEmail({
+  resetLink = `${env.APP_URL}/auth/reset-password?token=abc123`,
 }: {
-  username: string;
+  resetLink?: string;
 }) {
   return (
     <Html>
       <Head />
-      <Preview>Welcome to {APP_CONFIG.shortName}</Preview>
+      <Preview>Reset your password - {APP_CONFIG.shortName}</Preview>
       <Tailwind config={emailTailwindConfig}>
         <Body className="mx-auto my-auto bg-white font-sans">
           <Container className="mx-auto my-[40px] w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
             <Heading className="mx-0 my-[30px] p-0 text-center text-[24px] font-normal text-black">
-              Welcome to{" "}
+              Reset your password for{" "}
               <Link href={env.APP_URL} className="text-black">
                 <strong>{APP_CONFIG.shortName}</strong>
               </Link>
             </Heading>
             <Text className="text-[14px] leading-[24px] text-black">
-              Hello {username},
+              Hello,
             </Text>
             <Text className="text-[14px] leading-[24px] text-black">
-              We're excited to welcome you to {APP_CONFIG.shortName}! Your
-              account has been successfully created at{" "}
-              <Link href={env.APP_URL} className="text-black">
-                <strong>{env.APP_URL.replace(/^https?:\/\//, "")}</strong>
-              </Link>
-              .
+              We received a request to reset your password. Click the button
+              below to create a new password:
             </Text>
-            <Section className="mb-[32px] mt-[32px] text-center">
+            <Section className="my-[32px] text-center">
               <Button
-                className="rounded bg-[#000000] px-5 py-3 text-center text-[14px] font-semibold text-white no-underline"
-                href={env.APP_URL}
+                className="rounded bg-[#000000] px-[20px] py-[12px] text-center text-[14px] font-semibold text-white no-underline"
+                href={resetLink}
               >
-                Get Started Now
+                Reset Password
               </Button>
             </Section>
             <Text className="text-[14px] leading-[24px] text-black">
-              If the button above doesn't work, copy and paste this URL into
-              your web browser:
+              Or copy and paste this URL into your browser:
             </Text>
-            <Text className="mb-[20px]">
-              <Link href={env.APP_URL} className="text-black no-underline">
-                <strong>{env.APP_URL}</strong>
-              </Link>
+            <Link
+              href={resetLink}
+              className="text-[14px] text-blue-600 no-underline"
+            >
+              {resetLink}
+            </Link>
+            <Text className="text-[14px] leading-[24px] text-black">
+              This link will expire in 1 hour for security reasons.
+            </Text>
+            <Text className="text-[14px] leading-[24px] text-black">
+              If you didn't request a password reset, please ignore this email
+              or contact support if you have concerns.
             </Text>
             <Hr className="mx-0 my-[26px] w-full border border-solid border-[#eaeaea]" />
             <Text className="text-[12px] leading-[24px] text-[#666666]">
-              This email was sent to{" "}
-              <span className="text-black">{username}</span>. If you did not
-              create an account on {APP_CONFIG.shortName}, please ignore this
-              email or contact our support team if you have any concerns.
+              This is an automated message from {APP_CONFIG.shortName}. Please
+              do not reply to this email.
             </Text>
           </Container>
         </Body>

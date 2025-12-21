@@ -14,7 +14,8 @@ export function initAuth<
   googleClientSecret?: string;
   sendEmail?: (data: {
     email: string;
-    otp: string;
+    otp?: string;
+    url?: string;
     type: "sign-in" | "email-verification" | "forget-password";
   }) => Promise<void>;
   extraPlugins?: TExtraPlugins;
@@ -25,6 +26,19 @@ export function initAuth<
     }),
     baseURL: options.baseUrl,
     secret: options.secret,
+    emailAndPassword: {
+      enabled: true,
+      requireEmailVerification: false,
+      sendResetPassword: async ({ user, url }) => {
+        if (options.sendEmail) {
+          await options.sendEmail({
+            email: user.email,
+            url,
+            type: "forget-password",
+          });
+        }
+      },
+    },
     plugins: [
       oAuthProxy({
         productionURL: options.productionUrl,
@@ -32,7 +46,11 @@ export function initAuth<
       emailOTP({
         async sendVerificationOTP(data) {
           if (options.sendEmail) {
-            await options.sendEmail(data);
+            await options.sendEmail({
+              email: data.email,
+              otp: data.otp,
+              type: data.type,
+            });
           }
         },
       }),

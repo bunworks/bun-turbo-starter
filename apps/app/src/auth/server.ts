@@ -2,7 +2,7 @@ import "server-only";
 
 import { initAuth } from "@acme/auth";
 import { env } from "@acme/config";
-import { OtpSignInEmail, sendEmail } from "@acme/emails";
+import { OtpSignInEmail, ResetPasswordEmail, sendEmail } from "@acme/emails";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
 import { cache } from "react";
@@ -21,21 +21,43 @@ export const auth = initAuth({
   googleClientId: env.AUTH_GOOGLE_ID,
   googleClientSecret: env.AUTH_GOOGLE_SECRET,
   extraPlugins: [nextCookies()],
-  // sendEmail is used by the internal emailOTP plugin defined in @acme/auth
+  // sendEmail is used by the internal emailOTP plugin and password reset
   sendEmail: async ({
     email,
     otp,
+    url,
     type,
   }: {
     email: string;
-    otp: string;
+    otp?: string;
+    url?: string;
     type: "sign-in" | "email-verification" | "forget-password";
   }) => {
-    await sendEmail({
-      to: [email],
-      subject: type === "sign-in" ? "Your Sign In Code" : "Verify Your Email",
-      react: OtpSignInEmail({ otp, isSignUp: type !== "sign-in" }),
-    });
+    if (type === "forget-password") {
+      if (!url) {
+        console.error(
+          `[Auth] Missing reset URL for forget-password email to ${email}`,
+        );
+        throw new Error(
+          "Cannot send password reset email: reset URL is missing",
+        );
+      }
+      await sendEmail({
+        to: [email],
+        subject: "Reset Your Password",
+        react: ResetPasswordEmail({ resetLink: url }),
+      });
+    } else {
+      if (!otp) {
+        console.error(`[Auth] Missing OTP for ${type} email to ${email}`);
+        throw new Error(`Cannot send ${type} email: OTP is missing`);
+      }
+      await sendEmail({
+        to: [email],
+        subject: type === "sign-in" ? "Your Sign In Code" : "Verify Your Email",
+        react: OtpSignInEmail({ otp, isSignUp: type !== "sign-in" }),
+      });
+    }
   },
 });
 

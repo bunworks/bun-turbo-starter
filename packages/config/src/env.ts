@@ -14,6 +14,9 @@ export const env = createEnv({
     // Database
     POSTGRES_URL: z.url().optional(),
 
+    // App
+    APP_URL: z.string().default("http://localhost:3000"),
+
     // Email
     RESEND_API_KEY: z.string().optional(),
     EMAIL_SANDBOX_ENABLED: z.coerce.boolean().optional().default(false),
@@ -33,7 +36,11 @@ export const env = createEnv({
     AWS_REGION: z.string().default("us-east-1"),
     AWS_S3_BUCKET: z.string().default("acme-bucket"),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_APP_NAME: z.string().default("Acme Inc."),
+    NEXT_PUBLIC_APP_SHORT_NAME: z.string().default("Acme"),
+    NEXT_PUBLIC_APP_URL: z.string().default("http://localhost:3000"),
+  },
   clientPrefix: "NEXT_PUBLIC_",
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -41,6 +48,7 @@ export const env = createEnv({
     VERCEL_URL: process.env.VERCEL_URL,
     VERCEL_PROJECT_PRODUCTION_URL: process.env.VERCEL_PROJECT_PRODUCTION_URL,
     POSTGRES_URL: process.env.POSTGRES_URL,
+    APP_URL: process.env.APP_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_SANDBOX_ENABLED: process.env.EMAIL_SANDBOX_ENABLED === "true",
     EMAIL_SANDBOX_HOST: process.env.EMAIL_SANDBOX_HOST,
@@ -54,6 +62,9 @@ export const env = createEnv({
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     AWS_REGION: process.env.AWS_REGION,
     AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
+    NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+    NEXT_PUBLIC_APP_SHORT_NAME: process.env.NEXT_PUBLIC_APP_SHORT_NAME,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
   skipValidation:
     !!process.env.CI || process.env.npm_lifecycle_event === "lint",
