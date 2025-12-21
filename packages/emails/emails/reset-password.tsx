@@ -18,7 +18,7 @@ import { emailTailwindConfig } from "../tailwind";
 export default function ResetPasswordEmail({
   resetLink = "https://example.com/auth/reset-password?token=abc123",
 }: {
-  resetLink: string;
+  resetLink?: string;
 }) {
   return (
     <Html>

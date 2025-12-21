@@ -33,13 +33,25 @@ export const auth = initAuth({
     url?: string;
     type: "sign-in" | "email-verification" | "forget-password";
   }) => {
-    if (type === "forget-password" && url) {
+    if (type === "forget-password") {
+      if (!url) {
+        console.error(
+          `[Auth] Missing reset URL for forget-password email to ${email}`,
+        );
+        throw new Error(
+          "Cannot send password reset email: reset URL is missing",
+        );
+      }
       await sendEmail({
         to: [email],
         subject: "Reset Your Password",
         react: ResetPasswordEmail({ resetLink: url }),
       });
-    } else if (otp) {
+    } else {
+      if (!otp) {
+        console.error(`[Auth] Missing OTP for ${type} email to ${email}`);
+        throw new Error(`Cannot send ${type} email: OTP is missing`);
+      }
       await sendEmail({
         to: [email],
         subject: type === "sign-in" ? "Your Sign In Code" : "Verify Your Email",
