@@ -3,7 +3,7 @@
 **A blazingly fast, production-ready monorepo starter**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Bun](https://img.shields.io/badge/Bun-1.3.3-black?logo=bun)](https://bun.sh)
+[![Bun](https://img.shields.io/badge/Bun-1.3.5-black?logo=bun)](https://bun.sh)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Turborepo](https://img.shields.io/badge/Turborepo-2.7-red?logo=turborepo)](https://turborepo.org)
@@ -123,7 +123,7 @@ tooling
 ### Prerequisites
 
 > [!IMPORTANT]
-> Make sure you have [Bun](https://bun.sh) installed. This project requires **Bun v1.3.3** or higher.
+> Make sure you have [Bun](https://bun.sh) installed. This project requires **Bun v1.3.5** or higher.
 
 ```bash
 # Install Bun (if not already installed)
