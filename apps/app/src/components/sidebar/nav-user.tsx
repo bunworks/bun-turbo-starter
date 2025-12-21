@@ -1,5 +1,6 @@
 "use client";
 
+import { paths } from "@acme/config";
 import {
   Avatar,
   AvatarFallback,
@@ -51,7 +52,7 @@ export function NavUser({
 
   const handleLogout = async () => {
     await authClient.signOut();
-    router.push("/auth/login");
+    router.push(paths.auth.login);
   };
 
   return (

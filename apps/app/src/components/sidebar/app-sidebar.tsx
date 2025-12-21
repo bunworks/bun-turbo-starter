@@ -1,6 +1,6 @@
 "use client";
 
-import { APP_CONFIG } from "@acme/config";
+import { APP_CONFIG, paths } from "@acme/config";
 import {
   Sidebar,
   SidebarContent,
@@ -114,7 +114,7 @@ const data = {
   navSecondary: [
     {
       title: "Settings",
-      url: "/settings",
+      url: paths.settings.root,
       icon: IconSettings,
     },
     {
@@ -166,7 +166,7 @@ export function AppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="/">
+              <a href={paths.dashboard.root}>
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">
                   {APP_CONFIG.name}

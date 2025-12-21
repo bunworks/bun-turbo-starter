@@ -1,5 +1,6 @@
 "use client";
 
+import { paths } from "@acme/config";
 import {
   Button,
   Card,
@@ -47,7 +48,7 @@ export function ForgotPasswordForm({
     try {
       await authClient.requestPasswordReset({
         email: data.email,
-        redirectTo: "/auth/reset-password",
+        redirectTo: paths.auth.resetPassword,
       });
       setSent(true);
       toast.success("Password reset link sent! Check your email.");
@@ -75,7 +76,7 @@ export function ForgotPasswordForm({
               expire in 1 hour.
             </p>
             <Button asChild className="w-full" variant="outline">
-              <Link href="/auth/login">Back to sign in</Link>
+              <Link href={paths.auth.login}>Back to sign in</Link>
             </Button>
           </div>
         </CardContent>
@@ -118,7 +119,7 @@ export function ForgotPasswordForm({
               {loading ? "Sending…" : "Send reset link"}
             </Button>
             <Button asChild className="w-full" variant="outline">
-              <Link href="/auth/login">Back to sign in</Link>
+              <Link href={paths.auth.login}>Back to sign in</Link>
             </Button>
           </form>
         </Form>

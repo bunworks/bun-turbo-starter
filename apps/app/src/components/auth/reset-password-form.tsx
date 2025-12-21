@@ -1,5 +1,6 @@
 "use client";
 
+import { paths } from "@acme/config";
 import {
   Button,
   Card,
@@ -65,7 +66,7 @@ export function ResetPasswordForm({
         token,
       });
       toast.success("Password reset successfully!");
-      router.push("/auth/login");
+      router.push(paths.auth.login);
     } catch (error) {
       console.error(error);
       toast.error("Failed to reset password. The link may have expired.");
@@ -85,7 +86,7 @@ export function ResetPasswordForm({
         </CardHeader>
         <CardContent>
           <Button asChild className="w-full">
-            <Link href="/auth/forgot-password">Request new link</Link>
+            <Link href={paths.auth.forgotPassword}>Request new link</Link>
           </Button>
         </CardContent>
       </Card>

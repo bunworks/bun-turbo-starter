@@ -1,5 +1,6 @@
 "use client";
 
+import { paths } from "@acme/config";
 import {
   Button,
   Card,
@@ -45,7 +46,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
     if (storedEmail) {
       setEmail(storedEmail);
     } else {
-      router.push("/auth/login");
+      router.push(paths.auth.login);
     }
   }, [router]);
 
@@ -69,7 +70,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
           return;
         }
         toast.success("Successfully verified!");
-        router.push("/");
+        router.push(paths.dashboard.root);
       } catch (error) {
         console.error(error);
         toast.error("Invalid code. Please try again.");
