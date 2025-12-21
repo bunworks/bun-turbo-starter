@@ -1,13 +1,14 @@
 import { GalleryVerticalEnd } from "lucide-react";
 import type { Metadata } from "next";
-import { UnifiedAuthForm } from "~/components/auth";
+import { Suspense } from "react";
+import { ResetPasswordForm } from "~/components/auth";
 
 export const metadata: Metadata = {
-  title: "Sign In",
-  description: "Sign in to your account",
+  title: "Reset Password",
+  description: "Set a new password for your account",
 };
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
@@ -17,7 +18,9 @@ export default function LoginPage() {
           </div>
           Acme Inc.
         </a>
-        <UnifiedAuthForm mode="signin" />
+        <Suspense fallback={<div>Loading…</div>}>
+          <ResetPasswordForm />
+        </Suspense>
       </div>
     </div>
   );

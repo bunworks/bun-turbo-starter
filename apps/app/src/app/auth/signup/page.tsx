@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import { UnifiedAuthForm } from "~/components/auth";
 
 export const metadata: Metadata = {
-  title: "Sign In",
-  description: "Sign in to your account",
+  title: "Sign Up",
+  description: "Create a new account",
 };
 
-export default function LoginPage() {
+export default function SignUpPage() {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
@@ -17,7 +17,7 @@ export default function LoginPage() {
           </div>
           Acme Inc.
         </a>
-        <UnifiedAuthForm mode="signin" />
+        <UnifiedAuthForm mode="signup" />
       </div>
     </div>
   );

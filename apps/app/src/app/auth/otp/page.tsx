@@ -1,6 +1,11 @@
 import { GalleryVerticalEnd } from "lucide-react";
-
+import type { Metadata } from "next";
 import { OTPForm } from "~/components/auth";
+
+export const metadata: Metadata = {
+  title: "Verify Code",
+  description: "Enter your verification code",
+};
 
 export default function OTPPage() {
   return (
