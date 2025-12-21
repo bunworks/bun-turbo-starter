@@ -14,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  PasswordInput,
   Tabs,
   TabsContent,
   TabsList,
@@ -29,12 +30,12 @@ import { z } from "zod";
 import { authClient } from "~/auth/client";
 
 const emailPasswordSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 const emailOtpSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
 });
 
 type EmailPasswordData = z.infer<typeof emailPasswordSchema>;
@@ -63,17 +64,31 @@ export function UnifiedAuthForm({
     setLoading(true);
     try {
       if (mode === "signup") {
-        await authClient.signUp.email({
+        const { error } = await authClient.signUp.email({
           email: data.email,
           password: data.password,
           name: data.email.split("@")[0] ?? "User",
         });
+        if (error) {
+          if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
+            toast.error("User already exists. Use another email.");
+          } else {
+            toast.error(
+              error.message || "Failed to create account. Please try again.",
+            );
+          }
+          return;
+        }
         toast.success("Account created successfully!");
       } else {
-        await authClient.signIn.email({
+        const { error } = await authClient.signIn.email({
           email: data.email,
           password: data.password,
         });
+        if (error) {
+          toast.error(error.message || "Invalid email or password.");
+          return;
+        }
         toast.success("Signed in successfully!");
       }
       router.push("/");
@@ -92,10 +107,14 @@ export function UnifiedAuthForm({
   const onOtpSubmit = async (data: EmailOtpData) => {
     setLoading(true);
     try {
-      await authClient.emailOtp.sendVerificationOtp({
+      const { error } = await authClient.emailOtp.sendVerificationOtp({
         email: data.email,
         type: "sign-in",
       });
+      if (error) {
+        toast.error(error.message || "Failed to send code. Please try again.");
+        return;
+      }
       localStorage.setItem("otp_email", data.email);
       toast.success("Code sent! Check your email.");
       router.push("/auth/otp");
@@ -205,8 +224,7 @@ export function UnifiedAuthForm({
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
+                          <PasswordInput
                             placeholder="••••••••"
                             autoComplete={
                               mode === "signup"

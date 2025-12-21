@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
+  PasswordInput,
 } from "@acme/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -108,8 +108,7 @@ export function ResetPasswordForm({
                 <FormItem>
                   <FormLabel>New password</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
+                    <PasswordInput
                       placeholder="••••••••"
                       autoComplete="new-password"
                       {...field}
@@ -126,8 +125,7 @@ export function ResetPasswordForm({
                 <FormItem>
                   <FormLabel>Confirm password</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
+                    <PasswordInput
                       placeholder="••••••••"
                       autoComplete="new-password"
                       {...field}

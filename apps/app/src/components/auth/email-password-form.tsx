@@ -14,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  PasswordInput,
 } from "@acme/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -119,8 +120,7 @@ export function EmailPasswordForm({
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
+                    <PasswordInput
                       placeholder="••••••••"
                       autoComplete={
                         mode === "signup" ? "new-password" : "current-password"

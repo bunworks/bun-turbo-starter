@@ -21,7 +21,7 @@ import {
 import { type OTPFormData, otpFormSchema } from "@acme/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { authClient } from "~/auth/client";
@@ -45,7 +45,6 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
     if (storedEmail) {
       setEmail(storedEmail);
     } else {
-      // Redirect back to login if no email found
       router.push("/auth/login");
     }
   }, [router]);
@@ -57,22 +56,38 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
     }
   }, [countdown]);
 
-  const onSubmit = async (data: OTPFormData) => {
-    setLoading(true);
-    try {
-      await authClient.signIn.emailOtp({
-        email,
-        otp: data.otp,
-      });
-      toast.success("Successfully verified!");
-      router.push("/"); // Redirect to dashboard
-    } catch (error) {
-      console.error(error);
-      toast.error("Invalid code. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const onSubmit = useCallback(
+    async (data: OTPFormData) => {
+      setLoading(true);
+      try {
+        const { error } = await authClient.signIn.emailOtp({
+          email,
+          otp: data.otp,
+        });
+        if (error) {
+          toast.error(error.message || "Invalid code. Please try again.");
+          return;
+        }
+        toast.success("Successfully verified!");
+        router.push("/");
+      } catch (error) {
+        console.error(error);
+        toast.error("Invalid code. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [email, router],
+  );
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "otp" && value.otp?.length === 6) {
+        form.handleSubmit(onSubmit)();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form, onSubmit]);
 
   const handleResend = async () => {
     if (!email || countdown > 0) return;
@@ -129,7 +144,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
               )}
             />
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Verifying..." : "Verify"}
+              {loading ? "Verifying…" : "Verify"}
             </Button>
             <FormDescription className="text-center">
               Didn&apos;t receive the code?{" "}
@@ -140,7 +155,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
                 className="text-primary underline-offset-4 hover:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
               >
                 {resending
-                  ? "Sending..."
+                  ? "Sending…"
                   : countdown > 0
                     ? `Resend (${countdown}s)`
                     : "Resend"}
