@@ -1,7 +1,8 @@
+blank_issues_enabled: true
 contact_links:
-  - name: Ask a question
+  - name: Question or Discussion
     url: https://github.com/bunworks/bun-turbo-starter/discussions
-    about: Ask questions and discuss with other community members
-  - name: Feature request
-    url: https://github.com/bunworks/bun-turbo-starter/discussions/new?category=ideas
-    about: Feature requests should be opened as discussions
+    about: Ask questions or discuss ideas with the community
+  - name: Documentation
+    url: https://github.com/bunworks/bun-turbo-starter/blob/main/README.md
+    about: Check the documentation for help

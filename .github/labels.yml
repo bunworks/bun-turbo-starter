@@ -1,0 +1,94 @@
+# GitHub Issue Labels Configuration
+# Use this with https://github.com/crazy-max/ghaction-github-labeler
+
+- name: "bug"
+  color: "d73a4a"
+  description: "Something isn't working"
+
+- name: "documentation"
+  color: "0075ca"
+  description: "Improvements or additions to documentation"
+
+- name: "duplicate"
+  color: "cfd3d7"
+  description: "This issue or pull request already exists"
+
+- name: "enhancement"
+  color: "a2eeef"
+  description: "New feature or request"
+
+- name: "good first issue"
+  color: "7057ff"
+  description: "Good for newcomers"
+
+- name: "help wanted"
+  color: "008672"
+  description: "Extra attention is needed"
+
+- name: "invalid"
+  color: "e4e669"
+  description: "This doesn't seem right"
+
+- name: "question"
+  color: "d876e3"
+  description: "Further information is requested"
+
+- name: "wontfix"
+  color: "ffffff"
+  description: "This will not be worked on"
+
+- name: "dependencies"
+  color: "0366d6"
+  description: "Pull requests that update a dependency file"
+
+- name: "security"
+  color: "ee0701"
+  description: "Security-related issues"
+
+- name: "performance"
+  color: "f9d0c4"
+  description: "Performance improvements"
+
+- name: "refactor"
+  color: "fbca04"
+  description: "Code refactoring"
+
+- name: "breaking change"
+  color: "b60205"
+  description: "Breaking changes that require major version bump"
+
+- name: "needs triage"
+  color: "ededed"
+  description: "Needs to be triaged by maintainers"
+
+- name: "priority: high"
+  color: "d93f0b"
+  description: "High priority issue"
+
+- name: "priority: low"
+  color: "c5def5"
+  description: "Low priority issue"
+
+- name: "area: api"
+  color: "c2e0c6"
+  description: "Related to tRPC API"
+
+- name: "area: auth"
+  color: "c2e0c6"
+  description: "Related to authentication"
+
+- name: "area: database"
+  color: "c2e0c6"
+  description: "Related to database and Drizzle ORM"
+
+- name: "area: ui"
+  color: "c2e0c6"
+  description: "Related to UI components"
+
+- name: "area: email"
+  color: "c2e0c6"
+  description: "Related to email templates and sending"
+
+- name: "area: deployment"
+  color: "c2e0c6"
+  description: "Related to deployment and infrastructure"
