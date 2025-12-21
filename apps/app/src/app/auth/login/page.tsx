@@ -1,3 +1,4 @@
+import { APP_CONFIG } from "@acme/config";
 import { GalleryVerticalEnd } from "lucide-react";
 import type { Metadata } from "next";
 import { UnifiedAuthForm } from "~/components/auth";
@@ -15,7 +16,7 @@ export default function LoginPage() {
           <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
             <GalleryVerticalEnd className="size-4" aria-label="Company logo" />
           </div>
-          Acme Inc.
+          {APP_CONFIG.name}
         </a>
         <UnifiedAuthForm mode="signin" />
       </div>

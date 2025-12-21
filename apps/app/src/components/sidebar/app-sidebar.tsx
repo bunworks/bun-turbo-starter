@@ -1,5 +1,6 @@
 "use client";
 
+import { APP_CONFIG } from "@acme/config";
 import {
   Sidebar,
   SidebarContent,
@@ -167,7 +168,9 @@ export function AppSidebar({
             >
               <a href="/">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">
+                  {APP_CONFIG.name}
+                </span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

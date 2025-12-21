@@ -1,3 +1,4 @@
+import { APP_CONFIG } from "@acme/config";
 import { GalleryVerticalEnd } from "lucide-react";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -16,7 +17,7 @@ export default function ResetPasswordPage() {
           <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
             <GalleryVerticalEnd className="size-4" aria-label="Company logo" />
           </div>
-          Acme Inc.
+          {APP_CONFIG.name}
         </a>
         <Suspense fallback={<div>Loading…</div>}>
           <ResetPasswordForm />
