@@ -1,3 +1,4 @@
+import { paths } from "@acme/config";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -12,7 +13,7 @@ export default async function AuthLayout({
 
   // If user is already authenticated, redirect to dashboard
   if (session?.user) {
-    redirect("/");
+    redirect(paths.dashboard.root);
   }
 
   return <>{children}</>;

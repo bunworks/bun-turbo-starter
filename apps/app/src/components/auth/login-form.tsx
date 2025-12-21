@@ -1,5 +1,6 @@
 "use client";
 
+import { paths } from "@acme/config";
 import {
   Button,
   Card,
@@ -48,7 +49,7 @@ export function LoginForm({
       // Store email in localStorage or URL to pre-fill OTP form
       localStorage.setItem("otp_email", data.email);
       toast.success("Code sent! Check your email.");
-      router.push("/auth/otp");
+      router.push(paths.auth.otp);
     } catch (error) {
       console.error(error);
       toast.error("Failed to send code. Please try again.");

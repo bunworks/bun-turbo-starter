@@ -1,5 +1,6 @@
 "use client";
 
+import { paths } from "@acme/config";
 import { cn } from "@acme/ui";
 import { Bell, Circle, Globe, Monitor, User } from "lucide-react";
 import Link from "next/link";
@@ -8,27 +9,27 @@ import { usePathname } from "next/navigation";
 const sidebarNavItems = [
   {
     title: "Profile",
-    href: "/settings/profile",
+    href: paths.settings.profile,
     icon: User,
   },
   {
     title: "Account",
-    href: "/settings",
+    href: paths.settings.root,
     icon: Circle,
   },
   {
     title: "Appearance",
-    href: "/settings/appearance",
+    href: paths.settings.appearance,
     icon: Globe,
   },
   {
     title: "Notifications",
-    href: "/settings/notifications",
+    href: paths.settings.notifications,
     icon: Bell,
   },
   {
     title: "Display",
-    href: "/settings/display",
+    href: paths.settings.display,
     icon: Monitor,
   },
 ];

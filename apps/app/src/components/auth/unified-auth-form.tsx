@@ -1,5 +1,6 @@
 "use client";
 
+import { paths } from "@acme/config";
 import {
   Button,
   Card,
@@ -91,7 +92,7 @@ export function UnifiedAuthForm({
         }
         toast.success("Signed in successfully!");
       }
-      router.push("/");
+      router.push(paths.dashboard.root);
     } catch (error) {
       console.error(error);
       toast.error(
@@ -117,7 +118,7 @@ export function UnifiedAuthForm({
       }
       localStorage.setItem("otp_email", data.email);
       toast.success("Code sent! Check your email.");
-      router.push("/auth/otp");
+      router.push(paths.auth.otp);
     } catch (error) {
       console.error(error);
       toast.error("Failed to send code. Please try again.");
@@ -241,7 +242,7 @@ export function UnifiedAuthForm({
                   {mode === "signin" && (
                     <div className="text-right">
                       <Link
-                        href="/auth/forgot-password"
+                        href={paths.auth.forgotPassword}
                         className="text-sm text-primary underline-offset-4 hover:underline"
                       >
                         Forgot password?
@@ -299,7 +300,7 @@ export function UnifiedAuthForm({
               <>
                 Already have an account?{" "}
                 <Link
-                  href="/auth/login"
+                  href={paths.auth.login}
                   className="text-primary underline-offset-4 hover:underline"
                 >
                   Sign in
@@ -309,7 +310,7 @@ export function UnifiedAuthForm({
               <>
                 Don&apos;t have an account?{" "}
                 <Link
-                  href="/auth/signup"
+                  href={paths.auth.signup}
                   className="text-primary underline-offset-4 hover:underline"
                 >
                   Sign up
