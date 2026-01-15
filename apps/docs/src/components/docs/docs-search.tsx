@@ -86,9 +86,10 @@ export function DocsSearch() {
               </p>
             ) : (
               <div className="flex flex-col gap-1">
-                {filteredResults.map((result, index) => (
+                {filteredResults.map((result) => (
                   <button
-                    key={index}
+                    key={result.href}
+                    type="button"
                     onClick={() => handleSelect(result.href)}
                     className="flex items-center gap-3 rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent"
                   >

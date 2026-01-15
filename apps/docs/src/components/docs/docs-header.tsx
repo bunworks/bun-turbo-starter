@@ -128,15 +128,15 @@ export function DocsHeader() {
             <DocsSearch />
           </div>
           <nav className="flex flex-col p-4 max-h-[60vh] overflow-y-auto">
-            {docsConfig.sidebarNav.map((section, index) => (
-              <div key={index} className="py-2">
+            {docsConfig.sidebarNav.map((section) => (
+              <div key={section.title} className="py-2">
                 <h4 className="mb-1 text-sm font-semibold text-foreground">
                   {section.title}
                 </h4>
                 <div className="flex flex-col gap-1">
-                  {section.items?.map((item, itemIndex) => (
+                  {section.items?.map((item) => (
                     <Link
-                      key={itemIndex}
+                      key={item.href || item.title}
                       href={item.href || "#"}
                       className={cn(
                         "py-1.5 text-sm",

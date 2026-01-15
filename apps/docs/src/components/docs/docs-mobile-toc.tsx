@@ -1,8 +1,8 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
 
 interface TocItem {
   id: string;
@@ -18,10 +18,11 @@ export function DocsMobileToc({ items }: { items: TocItem[] }) {
   return (
     <div className="mb-6 rounded-lg border border-border lg:hidden">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium"
       >
-        <span>На этой странице</span>
+        <span>On this page</span>
         <ChevronDown
           className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")}
         />

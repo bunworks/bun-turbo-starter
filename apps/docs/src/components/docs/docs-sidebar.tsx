@@ -1,11 +1,11 @@
 "use client";
 
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 import { docsConfig } from "@/lib/docs-config";
-import { ChevronRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export function DocsSidebar() {
   const pathname = usePathname();
@@ -14,8 +14,12 @@ export function DocsSidebar() {
     <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 border-r border-border md:sticky md:block">
       <div className="h-full overflow-y-auto py-6 pr-6 pl-4">
         <nav className="flex flex-col gap-6">
-          {docsConfig.sidebarNav.map((section, index) => (
-            <SidebarSection key={index} section={section} pathname={pathname} />
+          {docsConfig.sidebarNav.map((section) => (
+            <SidebarSection
+              key={section.title}
+              section={section}
+              pathname={pathname}
+            />
           ))}
         </nav>
       </div>
@@ -42,6 +46,7 @@ function SidebarSection({
   return (
     <div className="flex flex-col gap-1">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "flex items-center gap-1 text-sm font-semibold transition-colors",
@@ -64,9 +69,9 @@ function SidebarSection({
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
         )}
       >
-        {section.items?.map((item, index) => (
+        {section.items?.map((item) => (
           <Link
-            key={index}
+            key={item.href || item.title}
             href={item.href || "#"}
             className={cn(
               "relative text-sm py-1.5 transition-colors hover:text-foreground",
