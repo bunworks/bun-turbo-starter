@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { FileQuestion, Home, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { FileQuestion, Home, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
@@ -13,9 +13,12 @@ export default function NotFound() {
         </div>
 
         <h1 className="mb-2 text-4xl font-bold">404</h1>
-        <h2 className="mb-4 text-2xl font-semibold text-foreground">Страница не найдена</h2>
+        <h2 className="mb-4 text-2xl font-semibold text-foreground">
+          Страница не найдена
+        </h2>
         <p className="mb-8 text-muted-foreground">
-          К сожалению, страница, которую вы ищете, не существует или была перемещена.
+          К сожалению, страница, которую вы ищете, не существует или была
+          перемещена.
         </p>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -35,11 +38,11 @@ export default function NotFound() {
 
         <div className="mt-12 rounded-lg border border-border bg-muted/50 p-4">
           <p className="text-sm text-muted-foreground">
-            <strong>Совет:</strong> Воспользуйтесь поиском (⌘K) или навигацией в документации, чтобы найти нужную
-            информацию.
+            <strong>Совет:</strong> Воспользуйтесь поиском (⌘K) или навигацией в
+            документации, чтобы найти нужную информацию.
           </p>
         </div>
       </div>
     </div>
-  )
+  );
 }

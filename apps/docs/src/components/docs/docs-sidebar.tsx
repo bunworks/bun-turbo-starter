@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { docsConfig } from "@/lib/docs-config"
-import { ChevronRight } from "lucide-react"
-import { useState, useEffect } from "react"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { docsConfig } from "@/lib/docs-config";
+import { ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export function DocsSidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 border-r border-border md:sticky md:block">
@@ -20,18 +20,24 @@ export function DocsSidebar() {
         </nav>
       </div>
     </aside>
-  )
+  );
 }
 
-function SidebarSection({ section, pathname }: { section: (typeof docsConfig.sidebarNav)[0]; pathname: string }) {
-  const isActiveSection = section.items?.some((item) => pathname === item.href)
-  const [isOpen, setIsOpen] = useState(true)
+function SidebarSection({
+  section,
+  pathname,
+}: {
+  section: (typeof docsConfig.sidebarNav)[0];
+  pathname: string;
+}) {
+  const isActiveSection = section.items?.some((item) => pathname === item.href);
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     if (isActiveSection) {
-      setIsOpen(true)
+      setIsOpen(true);
     }
-  }, [isActiveSection])
+  }, [isActiveSection]);
 
   return (
     <div className="flex flex-col gap-1">
@@ -39,10 +45,17 @@ function SidebarSection({ section, pathname }: { section: (typeof docsConfig.sid
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "flex items-center gap-1 text-sm font-semibold transition-colors",
-          isActiveSection ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+          isActiveSection
+            ? "text-foreground"
+            : "text-muted-foreground hover:text-foreground",
         )}
       >
-        <ChevronRight className={cn("h-3.5 w-3.5 transition-transform duration-200", isOpen && "rotate-90")} />
+        <ChevronRight
+          className={cn(
+            "h-3.5 w-3.5 transition-transform duration-200",
+            isOpen && "rotate-90",
+          )}
+        />
         {section.title}
       </button>
       <div
@@ -67,5 +80,5 @@ function SidebarSection({ section, pathname }: { section: (typeof docsConfig.sid
         ))}
       </div>
     </div>
-  )
+  );
 }
