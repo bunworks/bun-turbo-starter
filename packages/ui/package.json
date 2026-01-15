@@ -36,7 +36,7 @@
     "lucide-react": "^0.562.0",
     "radix-ui": "^1.4.3",
     "react-day-picker": "^9.13.0",
-    "react-hook-form": "^7.68.0",
+    "react-hook-form": "^7.71.1",
     "recharts": "2.15.4",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/react": "19.2.7",
+    "@types/react": "19.2.8",
     "react": "19.2.3",
     "typescript": "5.9.3",
-    "zod": "4.2.1"
+    "zod": "4.3.5"
   }
 }
