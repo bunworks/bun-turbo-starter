@@ -1,4 +1,4 @@
-import { Database, Key, Rocket, Terminal } from "lucide-react";
+import { Database, Rocket, Terminal } from "lucide-react";
 import Link from "next/link";
 import { DocsBreadcrumb } from "@/components/docs/docs-breadcrumb";
 import { DocsFeedback } from "@/components/docs/docs-feedback";
