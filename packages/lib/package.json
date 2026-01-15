@@ -17,8 +17,13 @@
   },
   "dependencies": {
     "@acme/config": "workspace:*",
+<<<<<<< HEAD
     "@aws-sdk/client-s3": "3.969.0",
     "@aws-sdk/s3-request-presigner": "3.969.0"
+=======
+    "@aws-sdk/client-s3": "3.958.0",
+    "@aws-sdk/s3-request-presigner": "3.958.0"
+>>>>>>> 7adb8caaa8eebfd792d9163cb63690de2ae23be2
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",

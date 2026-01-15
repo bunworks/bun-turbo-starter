@@ -8,7 +8,7 @@
  */
 
 import type { Auth } from "@acme/auth";
-import { db } from "@acme/db/client";
+import { dbEdge as db } from "@acme/db";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError, z } from "zod";

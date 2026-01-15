@@ -1,32 +1,35 @@
-# bun-turbo-starter
+# 🚀 Bun Turbo Starter
 
-A modern, high-performance monorepo starter powered by Bun and Turborepo.
+**A blazingly fast, production-ready monorepo starter**
 
-## Installation
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Bun](https://img.shields.io/badge/Bun-1.3.5-black?logo=bun)](https://bun.sh)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Turborepo](https://img.shields.io/badge/Turborepo-2.7-red?logo=turborepo)](https://turborepo.org)
+[![tRPC](https://img.shields.io/badge/tRPC-11-2596be?logo=trpc)](https://trpc.io)
 
-> [!NOTE]
->
-> Make sure you have [Bun](https://bun.sh) installed. This project requires Bun v1.0.0 or higher.
+[Features](#-key-features) • [Quick Start](#-quick-start) • [Tech Stack](#-tech-stack) • [Deployment](#-deployment)
 
-There are two ways of initializing an app using the `bun-turbo-starter`:
+</div>
 
-### Use as Template
+---
 
-Click the "Use this template" button on GitHub to create a new repository based on this starter.
+## 📖 Overview
 
-### Clone Directly
+Modern, high-performance monorepo starter built with **Bun** and **Turborepo**. Get your full-stack TypeScript application up and running in minutes with end-to-end type safety, authentication, database, emails, and background jobs — all pre-configured and ready to deploy.
 
-```bash
-git clone https://github.com/bunworks/bun-turbo-starter.git
-cd bun-turbo-starter
-bun install
-```
+### Why This Starter?
 
-## About
+- ⚡ **10x faster** package installation with Bun
+- 🔒 **100% type-safe** from database to UI
+- 🎯 **Production-ready** with authentication, emails, and background jobs
+- 🚀 **Zero-config deployment** to Vercel
+- 🏗️ **Scalable architecture** with monorepo best practices
 
-A blazingly fast monorepo starter built with Bun and Turborepo. This starter provides a solid foundation for building full-stack applications with modern tooling and best practices.
+## 📦 What's Inside?
 
-It uses [Turborepo](https://turborepo.com) and [Bun](https://bun.sh) and contains:
+This monorepo uses [Turborepo](https://turborepo.com) and [Bun](https://bun.sh) and includes:
 
 ```text
 .github
@@ -35,7 +38,7 @@ It uses [Turborepo](https://turborepo.com) and [Bun](https://bun.sh) and contain
 .vscode
   └─ Recommended extensions and settings for VSCode users
 apps
-  └─ web
+  └─ app
       ├─ Next.js 16
       ├─ React 19
       ├─ Tailwind CSS v4
@@ -62,272 +65,309 @@ tooling
       └─ Shared tsconfig you can extend from
 ```
 
-## Key Features
+> 💡 **Tip**: Replace `@acme` with your organization name using find-and-replace across the project.
 
-- **⚡ Bun Runtime**: Lightning-fast package management, testing, and bundling
-- **🏗️ Turborepo**: Efficient monorepo management with smart caching
-- **🔒 Type Safety**: End-to-end type safety with TypeScript and tRPC
-- **🎨 Modern UI**: Tailwind CSS v4 and shadcn-ui components
-- **🔐 Authentication**: Secure auth with better-auth
-- **💾 Database**: Type-safe database queries with Drizzle ORM + Neon
-- **📧 Email**: Beautiful email templates with React Email and Resend
-- **⚙️ Background Jobs**: Reliable job processing with Inngest and Trigger.dev
-- **🔄 Data Fetching**: Powerful async state management with TanStack Query
-- **📝 Forms**: Type-safe form handling with React Hook Form
-- **� Enpvironment Variables**: Type-safe env validation with @t3-oss/env-core
-- **�  Deployment**: Optimized for Vercel with zero-config deployment
-- **📦 Shared Packages**: Reusable code across your monorepo
+## ✨ Key Features
 
-> In this template, we use `@acme` as a placeholder for package names. Replace it with your own organization or project name using find-and-replace to change all instances of `@acme` to something like `@my-company` or `@project-name`.
+<table>
+<tr>
+<td width="50%">
 
-## Quick Start
+### �  Performance
+- **Bun Runtime** — Lightning-fast package management & bundling
+- **Turborepo** — Smart caching & parallel execution
+- **Edge-ready** — Optimized for Vercel Edge Runtime
 
-> **Note**
-> The [db](./packages/db) package is preconfigured to use Neon and is **edge-bound** with the [Vercel Postgres](https://github.com/vercel/storage/tree/main/packages/postgres) driver. If you're using something else, make the necessary modifications to the [schema](./packages/db/src/schema.ts) as well as the [client](./packages/db/src/index.ts) and the [drizzle config](./packages/db/drizzle.config.ts). If you want to switch to a non-edge database driver, remove `export const runtime = "edge";` from all pages and API routes.
+### � Tyrpe Safety
+- **End-to-end TypeScript** — From database to UI
+- **tRPC v11** — Type-safe API without code generation
+- **Zod Validation** — Runtime type checking
 
-To get it running, follow the steps below:
+### 🎨 Modern UI
+- **Tailwind CSS v4** — Latest styling features
+- **shadcn/ui** — Beautiful, accessible components
+- **React 19** — Latest React features
 
-### 1. Setup dependencies
+</td>
+<td width="50%">
+
+### 🔐 Authentication
+- **Better Auth** — Modern, flexible auth solution
+- **Session Management** — Secure, type-safe sessions
+- **Social Providers** — Easy OAuth integration
+
+### 💾 Database
+- **Drizzle ORM** — Type-safe SQL queries
+- **Neon Postgres** — Serverless, auto-scaling database
+- **Migrations** — Version-controlled schema changes
+
+### 📧 Communication
+- **React Email** — Beautiful email templates
+- **Resend** — Reliable email delivery
+- **Background Jobs** — Inngest or Trigger.dev
+
+</td>
+</tr>
+</table>
+
+### 🛠️ Developer Experience
+
+- ✅ **Type-safe environment variables** with @t3-oss/env-core
+- ✅ **Shared packages** for code reuse across apps
+- ✅ **Biome** for fast linting & formatting
+- ✅ **GitHub Actions** with Bun caching
+- ✅ **VSCode integration** with recommended extensions
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+> [!IMPORTANT]
+> Make sure you have [Bun](https://bun.sh) installed. This project requires **Bun v1.3.5** or higher.
 
 ```bash
-# Install dependencies
+# Install Bun (if not already installed)
+curl -fsSL https://bun.sh/install | bash
+```
+
+### Installation
+
+**Option 1: Use as Template** (Recommended)
+
+Click the **"Use this template"** button on GitHub to create a new repository.
+
+**Option 2: Clone Directly**
+
+```bash
+git clone https://github.com/bunworks/bun-turbo-starter.git my-project
+cd my-project
+bun install
+```
+
+### Setup
+
+> [!NOTE]
+> The database is preconfigured for **Neon** (serverless Postgres) with the Vercel Postgres driver. For other databases, modify `packages/db/src/index.ts` and `drizzle.config.ts`.
+
+**Step 1: Install dependencies & configure environment**
+
+```bash
+# Install all dependencies
 bun install
 
-# Configure environment variables
-# There is an `.env.example` in the root directory you can use for reference
+# Copy environment variables template
 cp .env.example .env
 
-# Push the Drizzle schema to the database
+# Edit .env with your credentials
+# - POSTGRES_URL (get from neon.tech)
+# - BETTER_AUTH_SECRET (generate with: openssl rand -base64 32)
+# - RESEND_API_KEY (get from resend.com)
+```
+
+**Step 2: Setup database**
+
+```bash
+# Push schema to database
 bun db:push
+
+# (Optional) Open Drizzle Studio to view your database
+bun db:studio
 ```
 
-### 2. Generate Better Auth Schema
-
-This project uses [Better Auth](https://www.better-auth.com) for authentication. The auth schema needs to be generated using the Better Auth CLI before you can use the authentication features.
+**Step 3: Generate authentication schema**
 
 ```bash
-# Generate the Better Auth schema
-bun --filter @acme/auth generate
+# Generate Better Auth schema
+bun auth:generate
 ```
 
-This command runs the Better Auth CLI with the following configuration:
-
-- **Config file**: `packages/auth/script/auth-cli.ts` - A CLI-only configuration file (isolated from src to prevent imports)
-- **Output**: `packages/db/src/auth-schema.ts` - Generated Drizzle schema for authentication tables
-
-The generation process:
-
-1. Reads the Better Auth configuration from `packages/auth/script/auth-cli.ts`
-2. Generates the appropriate database schema based on your auth setup
-3. Outputs a Drizzle-compatible schema file to the `@acme/db` package
-
-> **Note**: The `auth-cli.ts` file is placed in the `script/` directory (instead of `src/`) to prevent accidental imports from other parts of the codebase. This file is exclusively for CLI schema generation and should **not** be used directly in your application. For runtime authentication, use the configuration from `packages/auth/src/index.ts`.
-
-For more information about the Better Auth CLI, see the [official documentation](https://www.better-auth.com/docs/concepts/cli#generate).
-
-### 3. Start the development server
+**Step 4: Start development server**
 
 ```bash
+# Start all apps in watch mode
 bun dev
+
+# Or start only Next.js app
+bun dev:next
 ```
 
-This will start the Next.js development server. Open [http://localhost:3000](http://localhost:3000) to see your app.
+Open [http://localhost:3000](http://localhost:3000) 🎉
 
-### 4. When it's time to add a new UI component
-
-Run the `ui-add` script to add a new UI component using the interactive `shadcn/ui` CLI:
+### Adding UI Components
 
 ```bash
+# Interactive shadcn/ui component installer
 bun ui-add
 ```
 
-When the component(s) has been installed, you should be good to go and start using it in your app.
-
-### 5. When it's time to add a new package
-
-To add a new package, simply run `bun turbo gen init` in the monorepo root. This will prompt you for a package name as well as if you want to install any dependencies to the new package (of course you can also do this yourself later).
-
-The generator sets up the `package.json`, `tsconfig.json` and a `index.ts`, as well as configures all the necessary configurations for tooling around your package such as formatting, linting and typechecking. When the package is created, you're ready to go build out the package.
-
-## FAQ
-
-### Why Bun?
-
-Bun is a modern JavaScript runtime that's significantly faster than Node.js for many operations. It includes a built-in package manager, test runner, and bundler, making it an all-in-one solution for JavaScript development. With Bun, you get:
-
-- Faster package installation
-- Built-in TypeScript support
-- Native test runner
-- Better performance for development tasks
-
-### Does this pattern leak backend code to my client applications?
-
-No, it does not. The `api` package should only be a production dependency in the Next.js application where it's served. Any other apps you may add in the future should only add the `api` package as a dev dependency. This lets you have full type safety in your client applications, while keeping your backend code safe.
-
-If you need to share runtime code between the client and server, such as input validation schemas, you can create a separate `shared` package for this and import it on both sides.
-
-## Deployment
-
-### Deploy to Vercel
-
-This project is optimized for deployment on [Vercel](https://vercel.com) with zero configuration. If you've never deployed a Turborepo app on Vercel, don't worry - the steps are straightforward. You can also read the [official Turborepo guide](https://vercel.com/docs/concepts/monorepos/turborepo) on deploying to Vercel.
-
-#### Deployment Steps
-
-1. **Create a new project on Vercel**
-   - Select the `apps/web` folder as the root directory
-   - Vercel's zero-config system will automatically handle all configurations
-
-2. **Configure environment variables**
-
-   Add the following variables in your Vercel project settings:
-
-   ```bash
-   # Database
-   POSTGRES_URL=your_neon_database_url
-   
-   # Authentication (Better Auth)
-   BETTER_AUTH_SECRET=your_auth_secret
-   BETTER_AUTH_URL=https://your-domain.vercel.app
-   
-   # Email (Resend)
-   RESEND_API_KEY=your_resend_api_key
-   
-   # Background Jobs (choose one)
-   # Inngest
-   INNGEST_EVENT_KEY=your_inngest_event_key
-   INNGEST_SIGNING_KEY=your_inngest_signing_key
-   
-   # or Trigger.dev
-   TRIGGER_API_KEY=your_trigger_api_key
-   TRIGGER_API_URL=https://api.trigger.dev
-   ```
-
-3. **Done!** Your app should successfully deploy.
-
-#### Vercel Integrations
-
-This starter supports the following Vercel integrations:
-
-- **Vercel Postgres**: Automatic environment variable setup for Neon
-- **Vercel Blob**: For file storage (optional)
-- **Vercel KV**: For caching and sessions (optional)
-
-### Background Jobs Setup
-
-#### Inngest
-
-[Inngest](https://inngest.com) is a platform for reliable background job execution with built-in retry support and monitoring.
+### Creating New Packages
 
 ```bash
-# Install Inngest SDK (if not already installed)
-bun add inngest
+# Generate a new package with Turborepo
+bun turbo gen init
+```
 
-# Add environment variables
+## 🛠️ Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `bun dev` | Start all apps in development mode with watch |
+| `bun dev:next` | Start only Next.js app |
+| `bun build` | Build all apps and packages |
+| `bun lint` | Run Biome linting |
+| `bun lint:fix` | Fix linting issues automatically |
+| `bun format` | Check code formatting |
+| `bun format:fix` | Fix formatting issues |
+| `bun check` | Run both linting and formatting checks |
+| `bun check:fix` | Fix all linting and formatting issues |
+| `bun typecheck` | Type check all packages |
+| `bun db:push` | Push database schema changes |
+| `bun db:studio` | Open Drizzle Studio |
+| `bun auth:generate` | Generate Better Auth schema |
+| `bun ui-add` | Add new shadcn/ui component |
+| `bun clean` | Clean all node_modules |
+
+## 🏗️ Tech Stack
+
+<table>
+<tr>
+<td>
+
+**Core**
+- [Bun](https://bun.sh) — Runtime & package manager
+- [Turborepo](https://turborepo.org) — Monorepo build system
+- [TypeScript](https://www.typescriptlang.org/) — Type safety
+
+**Frontend**
+- [Next.js 16](https://nextjs.org) — React framework
+- [React 19](https://react.dev) — UI library
+- [Tailwind CSS v4](https://tailwindcss.com) — Styling
+- [shadcn/ui](https://ui.shadcn.com) — UI components
+
+</td>
+<td>
+
+**Backend**
+- [tRPC v11](https://trpc.io) — Type-safe APIs
+- [Drizzle ORM](https://orm.drizzle.team) — Database ORM
+- [Neon](https://neon.tech) — Serverless Postgres
+- [Better Auth](https://better-auth.com) — Authentication
+
+**Tools**
+- [TanStack Query](https://tanstack.com/query) — Data fetching
+- [React Hook Form](https://react-hook-form.com) — Forms
+- [Zod](https://zod.dev) — Validation
+- [Biome](https://biomejs.dev) — Linting & formatting
+
+</td>
+</tr>
+</table>
+
+## 📊 Comparison with Alternatives
+
+| Feature | This Starter | T3 Stack | Create Next App |
+|---------|-------------|----------|-----------------|
+| Runtime | **Bun** ⚡ | Node.js | Node.js |
+| Monorepo | ✅ Turborepo | ❌ | ❌ |
+| Type-safe API | ✅ tRPC | ✅ tRPC | ❌ |
+| Database ORM | ✅ Drizzle | ✅ Drizzle/Prisma | ❌ |
+| Authentication | ✅ Better Auth | ✅ NextAuth | ❌ |
+| Email Templates | ✅ React Email | ❌ | ❌ |
+| Background Jobs | ✅ Inngest/Trigger | ❌ | ❌ |
+| UI Components | ✅ shadcn/ui | ❌ | ❌ |
+| Setup Time | ~5 min | ~10 min | ~2 min |
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+This project is optimized for **zero-config deployment** on Vercel.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/bunworks/bun-turbo-starter)
+
+**Manual Deployment:**
+
+1. Push your code to GitHub
+2. Import project on [Vercel](https://vercel.com/new)
+3. Select `apps/app` as root directory
+4. Add environment variables (see below)
+5. Deploy! 🎉
+
+**Required Environment Variables:**
+
+```bash
+# Database
+POSTGRES_URL=postgresql://user:pass@host/db
+
+# Authentication
+BETTER_AUTH_SECRET=your-secret-key
+BETTER_AUTH_URL=https://your-domain.vercel.app
+
+# Email (optional)
+RESEND_API_KEY=re_your_api_key
+
+# Background Jobs (optional)
 INNGEST_EVENT_KEY=your_event_key
 INNGEST_SIGNING_KEY=your_signing_key
 ```
 
-#### Trigger.dev
+### Other Platforms
 
-[Trigger.dev](https://trigger.dev) is an alternative platform for background jobs with powerful scheduling and orchestration capabilities.
+This starter can be deployed to any platform that supports Next.js:
+- **Netlify** — Add `apps/app` as base directory
+- **Railway** — Auto-detects Next.js configuration
+- **Fly.io** — Use provided Dockerfile
+- **Self-hosted** — Run `bun build` and serve the output
 
-```bash
-# Install Trigger.dev SDK (if not already installed)
-bun add @trigger.dev/sdk
+## 📚 Documentation
 
-# Add environment variables
-TRIGGER_API_KEY=your_api_key
-TRIGGER_API_URL=https://api.trigger.dev
+### Project Structure
+
+```
+├── apps/
+│   └── app/              # Next.js application
+├── packages/
+│   ├── api/              # tRPC API routes
+│   ├── auth/             # Authentication logic
+│   ├── config/           # Environment config
+│   ├── db/               # Database schema & client
+│   ├── emails/           # Email templates
+│   ├── ui/               # Shared UI components
+│   └── validators/       # Shared Zod schemas
+└── tooling/
+    ├── tailwind/         # Tailwind config
+    └── typescript/       # TypeScript config
 ```
 
-### Email Setup with React Email and Resend
+### Key Concepts
 
-[React Email](https://react.email) is used for building beautiful, responsive email templates with React components. [Resend](https://resend.com) handles the actual email delivery. The `@acme/emails` package is already configured to work with both.
+**Better Auth Setup**
 
-```bash
-# Get your API key from resend.com
-RESEND_API_KEY=re_your_api_key
+The `auth:generate` command creates database schema from your Better Auth configuration:
+- Config: `packages/auth/script/auth-cli.ts`
+- Output: `packages/db/src/auth-schema.ts`
+- Runtime config: `packages/auth/src/index.ts`
 
-# Configure sending domain (optional)
-RESEND_FROM_EMAIL=noreply@yourdomain.com
-```
+**Type-safe Environment Variables**
 
-The emails package includes:
+Environment variables are validated using `@t3-oss/env-core`:
+- Define schema in `packages/config/src/index.ts`
+- Import and use across packages
+- Fails fast if variables are missing or invalid
 
-- Pre-built email templates using React Email components
-- Type-safe email sending functions
-- Preview mode for development
-- Responsive email designs that work across all email clients
+**Shared Packages**
 
-### Environment Variables with @t3-oss/env-core
+The `api` package should be:
+- **Production dependency** in apps that serve the API
+- **Dev dependency** in apps that only consume the API
 
-This starter uses [@t3-oss/env-core](https://env.t3.gg) for type-safe environment variable validation. The `@acme/config` package provides centralized environment configuration.
-
-Benefits:
-
-- **Type Safety**: Full TypeScript support for environment variables
-- **Runtime Validation**: Automatic validation using Zod schemas
-- **Client/Server Split**: Separate validation for client and server variables
-- **Early Error Detection**: Fails fast if required variables are missing
-
-Environment variables are validated at build time and runtime, ensuring your app never runs with invalid configuration.
-
-## Scripts
-
-Here are the main scripts you can run from the root of the monorepo:
-
-```bash
-# Start all apps in development mode
-bun dev
-
-# Build all apps and packages
-bun build
-
-# Run linting across the monorepo
-bun lint
-
-# Type check all packages
-bun typecheck
-
-# Push database schema changes
-bun db:push
-
-# Generate database migrations
-bun db:generate
-
-# Open Drizzle Studio
-bun db:studio
-
-# Add a new UI component
-bun ui-add
-
-# Clean all node_modules and build artifacts
-bun clean
-```
-
-## Tech Stack
-
-- **Runtime**: [Bun](https://bun.sh)
-- **Monorepo**: [Turborepo](https://turborepo.org)
-- **Framework**: [Next.js 16](https://nextjs.org)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
-- **UI Components**: [shadcn/ui](https://ui.shadcn.com)
-- **API**: [tRPC v11](https://trpc.io)
-- **Data Fetching**: [TanStack Query](https://tanstack.com/query)
-- **Forms**: [React Hook Form](https://react-hook-form.com)
-- **Database**: [Drizzle ORM](https://orm.drizzle.team) + [Neon](https://neon.tech)
-- **Authentication**: [Better Auth](https://better-auth.com)
-- **Email**: [React Email](https://react.email) + [Resend](https://resend.com)
-- **Background Jobs**: [Inngest](https://inngest.com) / [Trigger.dev](https://trigger.dev)
-- **Environment Variables**: [@t3-oss/env-core](https://env.t3.gg)
-- **Deployment**: [Vercel](https://vercel.com)
-- **Validation**: [Zod](https://zod.dev)
-- **Linting & Formatting**: [Biome](https://biomejs.dev)
+This ensures backend code never leaks to client bundles.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please read our [Contributing Guide](./CONTRIBUTING.md) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes.
+
+Please note that this project is released with a [Code of Conduct](./CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 ## License
 
