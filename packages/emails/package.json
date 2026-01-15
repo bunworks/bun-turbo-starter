@@ -21,16 +21,11 @@
     "@acme/config": "workspace:*",
     "@acme/tsconfig": "workspace:*",
     "@radix-ui/colors": "3.0.0",
-<<<<<<< HEAD
     "@react-email/components": "1.0.4",
-=======
-    "@react-email/components": "1.0.3",
->>>>>>> 7adb8caaa8eebfd792d9163cb63690de2ae23be2
     "@tailwindcss/typography": "0.5.19",
     "nodemailer": "^7.0.12",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-<<<<<<< HEAD
     "react-email": "5.2.5",
     "resend": "^6.7.0",
     "sharp": "^0.34.5",
@@ -43,20 +38,6 @@
     "@types/node": "25.0.8",
     "@types/nodemailer": "^7.0.5",
     "@types/react": "19.2.8",
-=======
-    "react-email": "5.1.1",
-    "resend": "^6.6.0",
-    "sharp": "^0.34.5",
-    "tailwindcss": "4.1.18",
-    "tailwindcss-animate": "1.0.7",
-    "zod": "4.3.4"
-  },
-  "devDependencies": {
-    "@react-email/preview-server": "5.1.1",
-    "@types/node": "25.0.3",
-    "@types/nodemailer": "^7.0.4",
-    "@types/react": "19.2.7",
->>>>>>> 7adb8caaa8eebfd792d9163cb63690de2ae23be2
     "@types/react-dom": "19.2.3",
     "tsup": "8.5.1",
     "typescript": "5.9.3"

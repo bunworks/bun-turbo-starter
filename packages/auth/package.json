@@ -20,21 +20,12 @@
   "dependencies": {
     "@acme/config": "workspace:*",
     "@acme/db": "workspace:*",
-<<<<<<< HEAD
     "better-auth": "1.4.13",
     "zod": "4.3.5"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "@better-auth/cli": "1.4.13",
-=======
-    "better-auth": "1.4.10",
-    "zod": "4.3.4"
-  },
-  "devDependencies": {
-    "@acme/tsconfig": "workspace:*",
-    "@better-auth/cli": "1.4.10",
->>>>>>> 7adb8caaa8eebfd792d9163cb63690de2ae23be2
     "typescript": "5.9.3"
   }
 }

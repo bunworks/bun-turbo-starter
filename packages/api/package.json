@@ -23,15 +23,9 @@
     "@acme/db": "workspace:*",
     "@acme/validators": "workspace:*",
     "@trpc/server": "^11.8.1",
-<<<<<<< HEAD
     "better-auth": "1.4.13",
     "superjson": "2.2.6",
     "zod": "4.3.5"
-=======
-    "better-auth": "1.4.10",
-    "superjson": "2.2.6",
-    "zod": "4.3.4"
->>>>>>> 7adb8caaa8eebfd792d9163cb63690de2ae23be2
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",

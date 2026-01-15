@@ -35,13 +35,7 @@
     "@vercel/postgres": "0.10.0",
     "drizzle-orm": "0.45.1",
     "drizzle-zod": "0.8.3",
-<<<<<<< HEAD
     "zod": "4.3.5"
-=======
-    "pg": "^8.16.3",
-    "ws": "^8.18.3",
-    "zod": "4.3.4"
->>>>>>> 7adb8caaa8eebfd792d9163cb63690de2ae23be2
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",

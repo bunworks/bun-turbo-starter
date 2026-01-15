@@ -19,11 +19,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-<<<<<<< HEAD
     "zod": "4.3.5"
-=======
-    "zod": "4.3.4"
->>>>>>> 7adb8caaa8eebfd792d9163cb63690de2ae23be2
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
