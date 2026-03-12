@@ -43,6 +43,7 @@ app.on(["GET", "POST"], "/api/orpc/*", async (c) => {
   console.log("[oRPC] Incoming request:", c.req.path);
   try {
     const context = await createORPCContext({
+      // @ts-expect-error - Type mismatch due to better-auth being in multiple packages
       auth,
       headers: c.req.raw.headers,
     });

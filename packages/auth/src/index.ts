@@ -16,7 +16,7 @@ export function initAuth<
     email: string;
     otp?: string;
     url?: string;
-    type: "sign-in" | "email-verification" | "forget-password";
+    type: "sign-in" | "email-verification" | "forget-password" | "change-email";
   }) => Promise<void>;
   extraPlugins?: TExtraPlugins;
 }) {

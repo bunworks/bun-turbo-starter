@@ -28,7 +28,7 @@ export const auth = initAuth({
     email: string;
     otp?: string;
     url?: string;
-    type: "sign-in" | "email-verification" | "forget-password";
+    type: "sign-in" | "email-verification" | "forget-password" | "change-email";
   }) => {
     if (type === "forget-password") {
       if (!url) {
