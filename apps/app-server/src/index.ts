@@ -1,11 +1,8 @@
-import { onError } from "@orpc/server";
-import { RPCHandler } from "@orpc/server/fetch";
 import { appRouter, createContext } from "@acme/api";
 import { env } from "@acme/config";
-import {
-  addAPISecurityHeaders,
-  captureExceptionToPostHog,
-} from "@acme/server-utils";
+import { onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
