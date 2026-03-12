@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
-import { useTRPC } from "~/trpc/react";
+import { useORPC } from "~/orpc/react";
 
 const languages = [
   { label: "English", value: "en" },
@@ -39,7 +39,7 @@ export function AccountForm({
 }: {
   initialData?: Partial<AccountFormValues>;
 }) {
-  const trpc = useTRPC();
+  const orpc = useORPC();
   const queryClient = useQueryClient();
 
   const form = useForm<AccountFormValues>({
@@ -50,12 +50,12 @@ export function AccountForm({
   });
 
   const updateAccount = useMutation(
-    trpc.user.updateAccount.mutationOptions({
+    orpc.user.updateAccount.mutationOptions({
       onSuccess: async () => {
         toast.success("Account updated successfully");
-        await queryClient.invalidateQueries(trpc.user.pathFilter());
+        await queryClient.invalidateQueries(orpc.user.pathFilter());
       },
-      onError: (err) => {
+      onError: (err: { message?: string }) => {
         toast.error(err.message || "Failed to update account");
       },
     }),

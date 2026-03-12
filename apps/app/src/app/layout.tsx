@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { env } from "~/env";
-import { TRPCReactProvider } from "~/trpc/react";
+import { ORPCReactProvider } from "~/orpc/react";
 
 import "~/app/styles.css";
 

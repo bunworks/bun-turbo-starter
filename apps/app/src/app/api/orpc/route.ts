@@ -1,12 +1,11 @@
-import { appRouter, createTRPCContext } from "@acme/api";
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import { appRouter, createORPCContext } from "@acme/api";
+import { toFetchHandler } from "@orpc/next/fetch";
 import type { NextRequest } from "next/server";
 
 import { auth } from "~/auth/server";
 
 /**
  * Configure basic CORS headers
- * You should extend this to match your needs
  */
 const setCorsHeaders = (res: Response) => {
   res.headers.set("Access-Control-Allow-Origin", "*");
@@ -23,23 +22,16 @@ export const OPTIONS = () => {
   return response;
 };
 
-const handler = async (req: NextRequest) => {
-  const response = await fetchRequestHandler({
-    endpoint: "/api/trpc",
-    router: appRouter,
-    req,
-    createContext: () =>
-      createTRPCContext({
-        auth: auth,
-        headers: req.headers,
-      }),
-    onError({ error, path }) {
-      console.error(`>>> tRPC Error on '${path}'`, error);
-    },
-  });
-
-  setCorsHeaders(response);
-  return response;
-};
+const handler = toFetchHandler(appRouter, {
+  context: async ({ req }) => {
+    return createORPCContext({
+      auth: auth,
+      headers: req.headers,
+    });
+  },
+  onError({ error, path }) {
+    console.error(`>>> oRPC Error on '${path}'`, error);
+  },
+});
 
 export { handler as GET, handler as POST };
