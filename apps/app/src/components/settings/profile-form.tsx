@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useORPC } from "~/orpc/react";
+import { orpc } from "~/orpc/react";
 
 export function ProfileForm({
   initialData,
@@ -17,7 +17,6 @@ export function ProfileForm({
   initialData?: ProfileFormValues;
 }) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const orpc = useORPC();
   const queryClient = useQueryClient();
 
   const form = useForm<ProfileFormValues>({
@@ -31,7 +30,7 @@ export function ProfileForm({
   });
 
   const updateProfile = useMutation({
-    mutationFn: (data: ProfileFormValues) => orpc.user.updateProfile.call(data),
+    ...orpc.user.updateProfile.mutationOptions(),
     onSuccess: async () => {
       toast.success("Profile updated successfully");
       await queryClient.invalidateQueries({

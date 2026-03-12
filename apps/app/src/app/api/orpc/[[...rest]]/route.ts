@@ -1,25 +1,31 @@
 import { appRouter, createORPCContext } from "@acme/api";
-import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
 
-import { auth } from "~/auth/server";
-
-const handler = new RPCHandler(appRouter, {
-  interceptors: [
-    onError((error) => {
-      console.error(`>>> oRPC Error`, error);
-    }),
-  ],
-});
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 async function handleRequest(request: Request) {
+  const { auth } = await import("~/auth/server");
+
+  const handler = new RPCHandler(appRouter, {
+    interceptors: [
+      async ({ next }) => {
+        try {
+          return await next();
+        } catch (error) {
+          console.error(">>> oRPC Error", error);
+          throw error;
+        }
+      },
+    ],
+  });
+
   const { response } = await handler.handle(request, {
     prefix: "/api/orpc",
-    context: async () =>
-      createORPCContext({
-        auth: auth,
-        headers: request.headers,
-      }),
+    context: await createORPCContext({
+      auth: auth,
+      headers: request.headers,
+    }),
   });
 
   return response ?? new Response("Not found", { status: 404 });

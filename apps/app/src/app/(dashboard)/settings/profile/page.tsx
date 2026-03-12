@@ -2,6 +2,8 @@ import { ProfileForm } from "~/components/settings/profile-form";
 import { SettingsSidebar } from "~/components/settings/settings-sidebar";
 import { api } from "~/orpc/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function SettingsProfilePage() {
   const user = await api.user.me();
 

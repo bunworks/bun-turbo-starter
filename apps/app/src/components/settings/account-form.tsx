@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
-import { useORPC } from "~/orpc/react";
+import { orpc } from "~/orpc/react";
 
 const languages = [
   { label: "English", value: "en" },
@@ -39,7 +39,6 @@ export function AccountForm({
 }: {
   initialData?: Partial<AccountFormValues>;
 }) {
-  const orpc = useORPC();
   const queryClient = useQueryClient();
 
   const form = useForm<AccountFormValues>({
@@ -50,7 +49,7 @@ export function AccountForm({
   });
 
   const updateAccount = useMutation({
-    mutationFn: (data: AccountFormValues) => orpc.user.updateAccount.call(data),
+    ...orpc.user.updateAccount.mutationOptions(),
     onSuccess: async () => {
       toast.success("Account updated successfully");
       await queryClient.invalidateQueries({

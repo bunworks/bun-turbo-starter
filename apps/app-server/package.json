@@ -1,0 +1,34 @@
+{
+  "name": "@acme/app-server",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsdown",
+    "check-types": "tsc -b",
+    "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
+    "dev": "bun with-env bun run --hot src/index.ts",
+    "start": "bun run dist/index.mjs",
+    "with-env": "bun run --env-file ../../.env"
+
+  },
+  "dependencies": {
+    "@orpc/server": "1.13.6",
+    "@acme/api": "workspace:*",
+    "@acme/auth": "workspace:*",
+    "@acme/config": "workspace:*",
+    "@acme/db": "workspace:*",
+    "@acme/emails": "workspace:*",
+    "@acme/lib": "workspace:*",
+    "@acme/server-utils": "workspace:*",
+    "better-auth": "1.5.4",
+    "hono": "4.12.5",
+    "superjson": "2.2.6",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
+    "@types/bun": "1.3.10",
+    "tsdown": "0.21.0",
+    "typescript": "5.9.3"
+  }
+}

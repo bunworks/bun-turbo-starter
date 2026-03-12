@@ -1,9 +1,3 @@
-import type { Auth } from "@acme/auth";
-import { dbEdge as db } from "@acme/db";
-import { ORPCError, os } from "@orpc/server";
-import superjson from "superjson";
-import { ZodError, z } from "zod";
-
 /**
  * 1. CONTEXT
  *
@@ -16,64 +10,72 @@ import { ZodError, z } from "zod";
  *
  * @see https://orpc.dev/docs/server/context
  */
-export const createORPCContext = async (opts: {
+
+import type { Auth } from "@acme/auth";
+import { dbEdge as db } from "@acme/db";
+import { ORPCError, os } from "@orpc/server";
+
+export async function createORPCContext(opts: {
   headers: Headers;
   auth: Auth;
-}) => {
-  const authApi = opts.auth.api;
-  const session = await authApi.getSession({
+}) {
+  const session = await opts.auth.api.getSession({
     headers: opts.headers,
   });
+
   return {
-    authApi,
     session,
-    db: db,
+    db,
   };
-};
+}
 
 /**
- * 2. ERROR FORMATTER
+ * 2. INITIALIZATION
  *
- * This is the error formatter used to format errors before sending them to the client.
- * It mirrors the one used in the tRPC setup.
+ * This is where the oRPC api is initialized, connecting the context
  */
-export const oRPCErrorFormatter = ({
-  shape,
-  error,
-}: {
-  shape: any;
-  error: any;
-}) => ({
-  ...shape,
-  data: {
-    ...shape.data,
-    zodError:
-      error.cause instanceof ZodError
-        ? z.flattenError(error.cause as ZodError<Record<string, unknown>>)
-        : null,
-  },
+const o = os.$context<Awaited<ReturnType<typeof createORPCContext>>>();
+
+/**
+ * Timing middleware
+ */
+const timingMiddleware = o.middleware(async ({ next, path }) => {
+  const start = Date.now();
+
+  try {
+    return await next();
+  } finally {
+    console.log(`[oRPC] ${path} took ${Date.now() - start}ms to execute`);
+  }
 });
 
 /**
- * 3. INITIALIZATION
+ * Public (unauthenticated) procedure
  *
- * This is where the orpc api is initialized, connecting the context and
- * transformer
+ * This is the base piece you use to build new queries and mutations on your oRPC API. It does not
+ * guarantee that a user querying is authorized, but you can still access user session data if they
+ * are logged in.
  */
-const base = os.$context<typeof createORPCContext>();
+export const publicProcedure = o.use(timingMiddleware);
 
 /**
- * 4. PROCEDURES
+ * Protected (authenticated) procedure
  *
- * These are the base procedures for building queries and mutations.
+ * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
+ * the session is valid and guarantees `context.session.user` is not null.
+ *
+ * @see https://orpc.dev/docs/server/procedures
  */
-export const publicProcedure = base.procedure;
-
-export const protectedProcedure = base.procedure.use(({ ctx, next }) => {
-  if (!ctx.session?.user) {
-    throw new ORPCError({ code: "UNAUTHORIZED" });
+export const protectedProcedure = publicProcedure.use(({ context, next }) => {
+  if (!context.session?.user) {
+    throw new ORPCError("UNAUTHORIZED");
   }
-  return next();
+
+  return next({
+    context: {
+      session: { ...context.session, user: context.session.user },
+    },
+  });
 });
 
 // Export the context type for use in other files
