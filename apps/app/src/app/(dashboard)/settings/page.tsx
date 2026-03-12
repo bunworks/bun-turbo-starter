@@ -1,10 +1,9 @@
 import { AccountForm } from "~/components/settings/account-form";
 import { SettingsSidebar } from "~/components/settings/settings-sidebar";
-import { api } from "~/trpc/server";
+import { api } from "~/orpc/server";
 
 export default async function SettingsAccountPage() {
-  const caller = await api();
-  const user = await caller.user.me();
+  const user = await api.user.me();
 
   return (
     <div className="space-y-6 p-10 pb-16 max-w-5xl">

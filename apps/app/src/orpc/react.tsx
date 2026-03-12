@@ -1,8 +1,8 @@
 "use client";
 
 import type { AppRouter } from "@acme/api";
-import { createORPCClient, httpBatchStreamLink } from "@orpc/client";
-import { createORPCReact } from "@orpc/tanstack-query/react";
+import { createORPCClient } from "@orpc/client";
+import { RPCLink } from "@orpc/client/fetch";
 import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
@@ -12,53 +12,52 @@ import { env } from "~/env";
 import { createQueryClient } from "./query-client";
 
 /**
- * Create the oRPC client with HTTP batch stream link
+ * Create the oRPC client
  */
 const createORPCClientInstance = () => {
-  return createORPCClient<AppRouter>({
-    links: [
-      httpBatchStreamLink({
-        transformer: SuperJSON,
-        url: `${getBaseUrl()}/api/orpc`,
-        headers() {
-          const headers = new Headers();
-          headers.set("x-orpc-source", "nextjs-react");
-          return headers;
-        },
-      }),
-    ],
+  const link = new RPCLink({
+    url: `${getBaseUrl()}/api/orpc`,
+    headers: () => ({
+      "x-orpc-source": "nextjs-react",
+    }),
   });
+
+  return createORPCClient<AppRouter>(link);
 };
 
 let clientQueryClientSingleton: QueryClient | undefined;
 const getQueryClient = () => {
   if (typeof window === "undefined") {
-    // Server: always make a new query client
     return createQueryClient();
   } else {
-    // Browser: use singleton pattern to keep the same query client
     return (clientQueryClientSingleton ??= createQueryClient());
   }
 };
 
-/**
- * Create React hooks for oRPC
- */
-export const { useORPC, ORPCProvider } = createORPCReact<AppRouter>();
-
 export function ORPCReactProvider(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
-
   const [orpcClient] = useState(() => createORPCClientInstance());
+
+  // Store client in global for hooks
+  if (typeof window !== "undefined") {
+    (window as any).__orpcClient = orpcClient;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ORPCProvider client={orpcClient} queryClient={queryClient}>
-        {props.children}
-      </ORPCProvider>
+      {props.children}
     </QueryClientProvider>
   );
 }
+
+export const useORPC = () => {
+  if (typeof window === "undefined") {
+    throw new Error("useORPC can only be used in client components");
+  }
+  return (window as any).__orpcClient as ReturnType<
+    typeof createORPCClientInstance
+  >;
+};
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return window.location.origin;

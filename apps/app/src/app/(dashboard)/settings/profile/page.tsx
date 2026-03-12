@@ -1,10 +1,9 @@
 import { ProfileForm } from "~/components/settings/profile-form";
 import { SettingsSidebar } from "~/components/settings/settings-sidebar";
-import { api } from "~/trpc/server";
+import { api } from "~/orpc/server";
 
 export default async function SettingsProfilePage() {
-  const caller = await api();
-  const user = await caller.user.me();
+  const user = await api.user.me();
 
   return (
     <div className="space-y-6 p-10 pb-16 max-w-5xl">

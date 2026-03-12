@@ -30,17 +30,18 @@ export function ProfileForm({
     mode: "onChange",
   });
 
-  const updateProfile = useMutation(
-    orpc.user.updateProfile.mutationOptions({
-      onSuccess: async () => {
-        toast.success("Profile updated successfully");
-        await queryClient.invalidateQueries(orpc.user.pathFilter());
-      },
-      onError: (err) => {
-        toast.error(err.message || "Failed to update profile");
-      },
-    }),
-  );
+  const updateProfile = useMutation({
+    mutationFn: (data: ProfileFormValues) => orpc.user.updateProfile.call(data),
+    onSuccess: async () => {
+      toast.success("Profile updated successfully");
+      await queryClient.invalidateQueries({
+        queryKey: orpc.user.key(),
+      });
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || "Failed to update profile");
+    },
+  });
 
   function onSubmit(data: ProfileFormValues) {
     updateProfile.mutate(data);
