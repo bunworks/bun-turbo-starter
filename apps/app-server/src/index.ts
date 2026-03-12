@@ -7,13 +7,6 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { auth } from "./auth";
-import { handleChatStream } from "./routes/chat-stream";
-import { extensionTokenRoutes } from "./routes/extension-token";
-import { handleGigChatGenerate } from "./routes/gig-chat-generate";
-import { googleCalendarRoutes } from "./routes/google-calendar";
-import { resumeDownloadRoutes } from "./routes/resume-download";
-import { testSetupRoutes } from "./routes/test-setup";
-import { handleVacancyChatGenerate } from "./routes/vacancy-chat-generate";
 
 const app = new Hono();
 
@@ -25,21 +18,12 @@ app.use(
   cors({
     origin: corsOrigin,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-ORPC-Source",
-      "x-interview-token",
-    ],
+    allowHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   }),
 );
 
-// Google Calendar OAuth + Extension token (до Better Auth catch-all)
-app.route("/api/auth", googleCalendarRoutes);
-app.route("/api/auth", extensionTokenRoutes);
-
-// Better Auth — все оставшиеся пути /api/auth/*
+// Better Auth
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 // oRPC handler
@@ -58,7 +42,6 @@ const rpcHandler = new RPCHandler(appRouter, {
 app.on(["GET", "POST"], "/api/orpc/*", async (c) => {
   console.log("[oRPC] Incoming request:", c.req.path);
   try {
-    // @ts-expect-error - Type mismatch due to better-auth being in multiple packages
     const context = await createORPCContext({
       auth,
       headers: c.req.raw.headers,
@@ -77,7 +60,6 @@ app.on(["GET", "POST"], "/api/orpc/*", async (c) => {
       return c.notFound();
     }
 
-    // Проверяем статус ответа (ошибки API уже зафиксированы в onError)
     if (result.response.status >= 400) {
       const responseClone = result.response.clone();
       const body = await responseClone.text();
@@ -99,21 +81,6 @@ app.on(["GET", "POST"], "/api/orpc/*", async (c) => {
     return c.json({ error: "Internal Server Error" }, 500);
   }
 });
-
-// Chat stream (streaming)
-app.post("/api/chat/stream", handleChatStream);
-
-// Vacancy chat generate (streaming)
-app.post("/api/vacancy/chat-generate", handleVacancyChatGenerate);
-
-// Gig chat generate (streaming)
-app.post("/api/gig/chat-generate", handleGigChatGenerate);
-
-// Resume PDF download (с именем ФИО.pdf)
-app.route("/api/resume", resumeDownloadRoutes);
-
-// Test setup (только в dev)
-app.route("/api/test", testSetupRoutes);
 
 // Health check
 app.get("/", (c) => c.text("OK"));
@@ -158,8 +125,4 @@ console.log(
 export default {
   port,
   fetch: app.fetch,
-  // Длинные запросы (parseResume: Docling + LLM) могут занимать 60–90 сек.
-  // По умолчанию Bun закрывает соединение через 10 сек «неактивности»,
-  // включая время, пока handler ещё не отправил ни байта. max 255.
-  idleTimeout: 120,
 };

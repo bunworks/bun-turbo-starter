@@ -5,11 +5,11 @@ import { sendEmail } from "@acme/emails/send";
 
 const baseUrl = env.APP_URL ?? "http://localhost:3000";
 
-const authSecret = env.BETTER_AUTH_SECRET ?? env.AUTH_SECRET;
+const authSecret = env.AUTH_SECRET;
 if (!authSecret) {
   console.warn(
-    "BETTER_AUTH_SECRET или AUTH_SECRET не установлен. " +
-      "Пожалуйста, установите переменную окружения BETTER_AUTH_SECRET.",
+    "AUTH_SECRET не установлен. " +
+      "Пожалуйста, установите переменную окружения AUTH_SECRET.",
   );
 }
 
