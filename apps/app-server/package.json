@@ -11,14 +11,13 @@
     "with-env": "bun run --env-file ../../.env"
   },
   "dependencies": {
-    "@orpc/server": "1.13.6",
     "@acme/api": "workspace:*",
     "@acme/auth": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/db": "workspace:*",
     "@acme/emails": "workspace:*",
     "@acme/lib": "workspace:*",
-    "better-auth": "1.5.5",
+    "@orpc/server": "^1.13.6",
     "hono": "4.12.7",
     "superjson": "2.2.6",
     "zod": "4.3.6"

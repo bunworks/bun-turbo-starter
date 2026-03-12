@@ -1,10 +1,6 @@
 import { initAuth } from "@acme/auth";
 import { env } from "@acme/config";
-import {
-  OtpSignInEmail,
-  ResetPasswordEmail,
-  WelcomeEmail,
-} from "@acme/emails";
+import { OtpSignInEmail, ResetPasswordEmail } from "@acme/emails";
 import { sendEmail } from "@acme/emails/send";
 
 const baseUrl = env.APP_URL ?? "http://localhost:3000";
@@ -23,7 +19,6 @@ export const auth = initAuth({
   secret: authSecret,
   googleClientId: env.AUTH_GOOGLE_ID,
   googleClientSecret: env.AUTH_GOOGLE_SECRET,
-  useNextCookies: false, // Standalone server — используем стандартные cookie headers
   sendEmail: async ({
     email,
     otp,
@@ -33,7 +28,7 @@ export const auth = initAuth({
     email: string;
     otp?: string;
     url?: string;
-    type: "sign-in" | "email-verification" | "forget-password" | "change-email";
+    type: "sign-in" | "email-verification" | "forget-password";
   }) => {
     if (type === "forget-password") {
       if (!url) {
@@ -56,19 +51,6 @@ export const auth = initAuth({
         react: OtpSignInEmail({ otp, isSignUp: type !== "sign-in" }),
       });
     }
-  },
-  sendWelcomeEmail: async ({
-    email,
-    username,
-  }: {
-    email: string;
-    username: string;
-  }) => {
-    await sendEmail({
-      to: [email],
-      subject: "Добро пожаловать!",
-      react: WelcomeEmail({ username }),
-    });
   },
 });
 
