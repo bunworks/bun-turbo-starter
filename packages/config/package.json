@@ -16,8 +16,8 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
-    "build:watch": "tsup --watch",
+    "build": "tsdown",
+    "build:watch": "tsdown --watch",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsc",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "tsup": "8.5.1",
+    "tsdown": "latest",
     "typescript": "5.9.3"
   }
 }

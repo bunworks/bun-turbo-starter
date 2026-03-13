@@ -10,7 +10,7 @@
   "types": "./dist/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsc",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "tsup": "8.5.1",
+    "tsdown": "latest",
     "typescript": "5.9.3"
   }
 }
