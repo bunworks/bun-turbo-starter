@@ -9,5 +9,7 @@ export default defineConfig({
   sourcemap: false,
   clean: true,
   minify: isProduction,
-  external: ["react"],
+  deps: {
+    neverBundle: ["react"],
+  },
 });

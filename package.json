@@ -26,10 +26,10 @@
     "ui-add": "turbo run ui-add"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.6",
-    "@turbo/gen": "^2.8.16",
-    "turbo": "^2.8.16",
-    "typescript": "5.9.3"
+    "@biomejs/biome": "2.4.12",
+    "@turbo/gen": "^2.9.6",
+    "turbo": "^2.9.6",
+    "typescript": "6.0.3"
   },
   "packageManager": "bun@1.3.6",
   "workspaces": [

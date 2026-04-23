@@ -17,12 +17,12 @@
   },
   "dependencies": {
     "@acme/config": "workspace:*",
-    "@aws-sdk/client-s3": "3.1007.0",
-    "@aws-sdk/s3-request-presigner": "3.1007.0"
+    "@aws-sdk/client-s3": "3.1035.0",
+    "@aws-sdk/s3-request-presigner": "3.1035.0"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "tsdown": "latest",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
   }
 }

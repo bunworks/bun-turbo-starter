@@ -22,14 +22,14 @@
     "@acme/auth": "workspace:*",
     "@acme/db": "workspace:*",
     "@acme/validators": "workspace:*",
-    "@orpc/contract": "^1.13.6",
-    "@orpc/server": "^1.13.6",
-    "better-auth": "1.5.5",
+    "@orpc/contract": "^1.14.0",
+    "@orpc/server": "^1.14.0",
+    "better-auth": "1.6.8",
     "superjson": "2.2.6",
     "zod": "4.3.6"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
   }
 }

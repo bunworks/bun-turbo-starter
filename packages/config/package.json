@@ -5,12 +5,12 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     }
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
@@ -23,12 +23,12 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@t3-oss/env-core": "0.13.10",
+    "@t3-oss/env-core": "0.13.11",
     "zod": "4.3.6"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "tsdown": "latest",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
   }
 }

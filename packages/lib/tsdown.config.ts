@@ -6,5 +6,7 @@ export default defineConfig({
   dts: false,
   sourcemap: false,
   clean: true,
-  external: [],
+  deps: {
+    neverBundle: [],
+  },
 });

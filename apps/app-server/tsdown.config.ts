@@ -10,7 +10,8 @@ export default defineConfig({
   target: "es2022",
   outDir: "./dist",
   treeshake: false,
-  inlineOnly: false,
-  noExternal: [/@acme\/.*/],
-  external: ["sanitize-html"],
+  deps: {
+    alwaysBundle: [/@acme\/.*/],
+    neverBundle: ["sanitize-html"],
+  },
 });
