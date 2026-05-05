@@ -49,6 +49,14 @@
     "ui-add": {
       "cache": false,
       "interactive": true
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "//#db:generate": {
+      "cache": false,
+      "interactive": true
     }
   },
   "globalEnv": [

@@ -31,7 +31,8 @@
       "suspicious": {
         "noExplicitAny": "warn",
         "noAssignInExpressions": "off",
-        "noArrayIndexKey": "warn"
+        "noArrayIndexKey": "warn",
+        "noConsole": "warn"
       },
       "style": {
         "noNonNullAssertion": "warn",
@@ -42,7 +43,7 @@
         "useSemanticElements": "warn"
       },
       "security": {
-        "noDangerouslySetInnerHtml": "warn"
+        "noDangerouslySetInnerHtml": "error"
       },
       "correctness": {
         "noUnusedVariables": {
