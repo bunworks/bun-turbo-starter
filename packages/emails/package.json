@@ -23,15 +23,15 @@
     "@radix-ui/colors": "3.0.0",
     "@react-email/components": "1.0.12",
     "@tailwindcss/typography": "0.5.19",
-    "nodemailer": "^8.0.5",
+    "nodemailer": "^8.0.7",
     "react": "19.2.5",
     "react-dom": "19.2.5",
-    "react-email": "6.0.0",
+    "react-email": "6.0.8",
     "resend": "^6.12.2",
     "sharp": "^0.34.5",
     "tailwindcss": "4.2.4",
     "tailwindcss-animate": "1.0.7",
-    "zod": "4.3.6"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@react-email/preview-server": "5.2.10",

@@ -17,10 +17,10 @@
     "@acme/db": "workspace:*",
     "@acme/emails": "workspace:*",
     "@acme/lib": "workspace:*",
-    "@orpc/server": "^1.14.0",
-    "hono": "4.12.14",
+    "@orpc/server": "^1.14.1",
+    "hono": "4.12.16",
     "superjson": "2.2.6",
-    "zod": "4.3.6"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
