@@ -233,9 +233,10 @@ export function ChartAreaInteractive() {
                 />
               </linearGradient>
             </defs>
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={false} xAxisId={0} yAxisId={0} />
             <XAxis
               dataKey="date"
+              xAxisId={0}
               tickLine={false}
               axisLine={false}
               tickMargin={8}
