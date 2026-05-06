@@ -16,7 +16,7 @@
     "@acme/config": "workspace:*",
     "@acme/db": "workspace:*",
     "@acme/emails": "workspace:*",
-    "@acme/lib": "workspace:*",
+    "@acme/storage": "workspace:*",
     "@orpc/server": "^1.14.1",
     "hono": "4.12.16",
     "superjson": "2.2.6",
