@@ -71,8 +71,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
         }
         toast.success("Successfully verified!");
         router.push(paths.dashboard.root);
-      } catch (error) {
-        console.error(error);
+      } catch (_error) {
         toast.error("Invalid code. Please try again.");
       } finally {
         setLoading(false);
@@ -100,8 +99,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
       });
       toast.success("Code sent! Check your email.");
       setCountdown(60); // 60 second cooldown
-    } catch (error) {
-      console.error(error);
+    } catch (_error) {
       toast.error("Failed to send code. Please try again.");
     } finally {
       setResending(false);

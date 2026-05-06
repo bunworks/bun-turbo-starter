@@ -45,6 +45,7 @@ const timingMiddleware = o.middleware(async ({ next, path }) => {
   try {
     return await next();
   } finally {
+    // biome-ignore lint/suspicious/noConsole: Server timing logging
     console.log(`[oRPC] ${path} took ${Date.now() - start}ms to execute`);
   }
 });

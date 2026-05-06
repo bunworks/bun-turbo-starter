@@ -68,8 +68,7 @@ export function EmailPasswordForm({
         toast.success("Signed in successfully!");
       }
       router.push(paths.dashboard.root);
-    } catch (error) {
-      console.error(error);
+    } catch (_error) {
       toast.error(
         mode === "signup"
           ? "Failed to create account. Please try again."

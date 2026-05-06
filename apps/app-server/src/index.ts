@@ -30,7 +30,9 @@ app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 const rpcHandler = new RPCHandler(appRouter, {
   interceptors: [
     onError((error) => {
+      // biome-ignore lint/suspicious/noConsole: Server error logging
       console.error(">>> RPCHandler onError:", error);
+      // biome-ignore lint/suspicious/noConsole: Server error logging
       console.error(
         ">>> Error stack:",
         error instanceof Error ? error.stack : "No stack",
@@ -40,6 +42,7 @@ const rpcHandler = new RPCHandler(appRouter, {
 });
 
 app.on(["GET", "POST"], "/api/orpc/*", async (c) => {
+  // biome-ignore lint/suspicious/noConsole: Server request logging
   console.log("[oRPC] Incoming request:", c.req.path);
   try {
     const context = await createORPCContext({
@@ -47,6 +50,7 @@ app.on(["GET", "POST"], "/api/orpc/*", async (c) => {
       auth,
       headers: c.req.raw.headers,
     });
+    // biome-ignore lint/suspicious/noConsole: Server request logging
     console.log(
       "[oRPC] Context created, session:",
       context.session?.user?.id || "no session",
@@ -64,6 +68,7 @@ app.on(["GET", "POST"], "/api/orpc/*", async (c) => {
     if (result.response.status >= 400) {
       const responseClone = result.response.clone();
       const body = await responseClone.text();
+      // biome-ignore lint/suspicious/noConsole: Server error logging
       console.error(">>> oRPC Error Response:", {
         status: result.response.status,
         path: c.req.path,
@@ -73,11 +78,14 @@ app.on(["GET", "POST"], "/api/orpc/*", async (c) => {
 
     return result.response;
   } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: Server error logging
     console.error(">>> oRPC Error:", error);
+    // biome-ignore lint/suspicious/noConsole: Server error logging
     console.error(
       ">>> Stack:",
       error instanceof Error ? error.stack : "No stack",
     );
+    // biome-ignore lint/suspicious/noConsole: Server error logging
     console.error(">>> Path:", c.req.path);
     return c.json({ error: "Internal Server Error" }, 500);
   }
@@ -107,6 +115,7 @@ app.notFound((c) =>
 
 // Error handler
 app.onError((err, c) => {
+  // biome-ignore lint/suspicious/noConsole: Server error logging
   console.error("App server error:", err);
   return c.json(
     {
@@ -119,6 +128,7 @@ app.onError((err, c) => {
 
 const port = Number(process.env.PORT ?? 7000);
 
+// biome-ignore lint/suspicious/noConsole: Server startup message
 console.log(
   `[app-server] Running on http://localhost:${port} (env: ${process.env.NODE_ENV ?? "development"})`,
 );
