@@ -17,10 +17,13 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
+    "noUncheckedSideEffectImports": true,
 
     "module": "Preserve",
     "moduleResolution": "Bundler",
-    "noEmit": true
+    "noEmit": true,
+
+    "libReplacement": true
   },
   "exclude": ["node_modules", "build", "dist", ".next"]
 }

@@ -35,6 +35,7 @@ export const auth = initAuth({
   }) => {
     if (type === "forget-password") {
       if (!url) {
+        // biome-ignore lint/suspicious/noConsole: Server error logging
         console.error(
           `[Auth] Missing reset URL for forget-password email to ${email}`,
         );
@@ -49,6 +50,7 @@ export const auth = initAuth({
       });
     } else {
       if (!otp) {
+        // biome-ignore lint/suspicious/noConsole: Server error logging
         console.error(`[Auth] Missing OTP for ${type} email to ${email}`);
         throw new Error(`Cannot send ${type} email: OTP is missing`);
       }

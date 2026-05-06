@@ -11,8 +11,7 @@ export function DocsFeedback() {
 
   const handleFeedback = (type: "positive" | "negative") => {
     setFeedback(type);
-    // Analytics can be sent here
-    console.log(`[v0] User feedback: ${type}`);
+    // TODO: Send analytics
   };
 
   if (feedback) {

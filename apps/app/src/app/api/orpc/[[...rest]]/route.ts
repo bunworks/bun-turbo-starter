@@ -13,6 +13,7 @@ async function handleRequest(request: Request) {
         try {
           return await next();
         } catch (error) {
+          // biome-ignore lint/suspicious/noConsole: Server error logging
           console.error(">>> oRPC Error", error);
           throw error;
         }

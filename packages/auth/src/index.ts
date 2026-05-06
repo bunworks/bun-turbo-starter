@@ -68,6 +68,7 @@ export function initAuth<
         : {},
     onAPIError: {
       onError(error, ctx) {
+        // biome-ignore lint/suspicious/noConsole: Auth API error logging
         console.error("BETTER AUTH API ERROR", error, ctx);
       },
     },

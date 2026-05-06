@@ -93,8 +93,7 @@ export function UnifiedAuthForm({
         toast.success("Signed in successfully!");
       }
       router.push(paths.dashboard.root);
-    } catch (error) {
-      console.error(error);
+    } catch (_error) {
       toast.error(
         mode === "signup"
           ? "Failed to create account. Please try again."
@@ -119,8 +118,7 @@ export function UnifiedAuthForm({
       localStorage.setItem("otp_email", data.email);
       toast.success("Code sent! Check your email.");
       router.push(paths.auth.otp);
-    } catch (error) {
-      console.error(error);
+    } catch (_error) {
       toast.error("Failed to send code. Please try again.");
     } finally {
       setLoading(false);

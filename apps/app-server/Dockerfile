@@ -4,7 +4,7 @@ FROM base AS builder
 RUN apk update
 RUN apk add --no-cache libc6-compat
 # Install bun
-RUN npm install -g bun@1.3.10
+RUN npm install -g bun@1.3.13
 # Set working directory
 WORKDIR /app
 # Install turbo globally
@@ -19,7 +19,7 @@ FROM base AS installer
 RUN apk update
 RUN apk add --no-cache libc6-compat
 # Install bun
-RUN npm install -g bun@1.3.10
+RUN npm install -g bun@1.3.13
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
@@ -44,7 +44,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 bunuser
 
 # Install bun in runner stage
-RUN npm install -g bun@1.3.10
+RUN npm install -g bun@1.3.13
 
 USER bunuser
 
