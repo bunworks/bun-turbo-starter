@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
+    // biome-ignore lint/a11y/useSemanticElements: InputGroup uses div with role="group" to avoid fieldset styling
     <div
       data-slot="input-group"
       role="group"
@@ -68,6 +69,7 @@ function InputGroupAddon({
   };
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: InputGroupAddon uses div with role="group" to avoid fieldset styling
     <div
       role="group"
       data-slot="input-group-addon"
@@ -170,7 +172,7 @@ export {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupText,
   InputGroupInput,
+  InputGroupText,
   InputGroupTextarea,
 };
