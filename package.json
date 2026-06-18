@@ -11,6 +11,8 @@
     "clean:workspaces": "turbo run clean",
     "auth:generate": "bun --filter @acme/auth generate",
     "db:push": "turbo -F @acme/db push",
+    "db:generate": "turbo -F @acme/db generate",
+    "db:migrate": "turbo -F @acme/db migrate",
     "db:studio": "turbo -F @acme/db studio",
     "dev": "turbo watch dev --continue",
     "dev:next": "turbo watch dev -F @acme/app...",
@@ -22,12 +24,15 @@
     "check:fix": "biome check --write . --skip-parse-errors",
     "lint:ws": "bunx sherif@latest",
     "postinstall": "bun lint:ws",
+    "prepare": "lefthook install",
+    "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "ui-add": "turbo run ui-add"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.0",
     "@turbo/gen": "^2.9.18",
+    "lefthook": "^1.13.0",
     "turbo": "^2.9.18",
     "typescript": "6.0.3"
   },

@@ -1,4 +1,4 @@
-import { dbEdge as db } from "@acme/db";
+import { db } from "@acme/db";
 import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -26,6 +26,16 @@ export function initAuth<
     }),
     baseURL: options.baseUrl,
     secret: options.secret,
+    /**
+     * Built-in rate limiting protects auth endpoints (sign-in, OTP, password
+     * reset) from brute-force and abuse. Tune per environment as needed.
+     * @see https://www.better-auth.com/docs/concepts/rate-limit
+     */
+    rateLimit: {
+      enabled: true,
+      window: 60,
+      max: 100,
+    },
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: false,

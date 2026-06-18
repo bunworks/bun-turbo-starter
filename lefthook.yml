@@ -1,0 +1,14 @@
+# Git hooks managed by lefthook (https://lefthook.dev)
+# Installed automatically via the root `prepare` script after `bun install`.
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: "*.{js,jsx,ts,tsx,json,jsonc,css}"
+      run: bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    typecheck:
+      run: bun typecheck

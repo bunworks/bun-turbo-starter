@@ -31,6 +31,8 @@ const getQueryClient = () => {
 };
 
 const getBaseUrl = () => {
+  // Explicit override: point the web client at a standalone API server.
+  if (env.NEXT_PUBLIC_API_URL) return env.NEXT_PUBLIC_API_URL;
   if (typeof window !== "undefined") return window.location.origin;
   if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`;
   return `http://localhost:${env.PORT || 3000}`;

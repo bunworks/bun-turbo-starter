@@ -3,11 +3,11 @@
 **A blazingly fast, production-ready monorepo starter**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Bun](https://img.shields.io/badge/Bun-1.3.5-black?logo=bun)](https://bun.sh)
+[![Bun](https://img.shields.io/badge/Bun-1.3-black?logo=bun)](https://bun.sh)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![Turborepo](https://img.shields.io/badge/Turborepo-2.7-red?logo=turborepo)](https://turborepo.org)
-[![tRPC](https://img.shields.io/badge/tRPC-11-2596be?logo=trpc)](https://trpc.io)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Turborepo](https://img.shields.io/badge/Turborepo-2.9-red?logo=turborepo)](https://turborepo.org)
+[![oRPC](https://img.shields.io/badge/oRPC-1.x-2596be)](https://orpc.unnoq.com)
 
 [Features](#-key-features) • [Quick Start](#-quick-start) • [Tech Stack](#-tech-stack) • [Deployment](#-deployment)
 
@@ -17,13 +17,13 @@
 
 ## 📖 Overview
 
-Modern, high-performance monorepo starter built with **Bun** and **Turborepo**. Get your full-stack TypeScript application up and running in minutes with end-to-end type safety, authentication, database, emails, and background jobs — all pre-configured and ready to deploy.
+Modern, high-performance monorepo starter built with **Bun** and **Turborepo**. Get your full-stack TypeScript application up and running in minutes with end-to-end type safety, authentication, database, emails, and observability — all pre-configured and ready to deploy.
 
 ### Why This Starter?
 
 - ⚡ **10x faster** package installation with Bun
 - 🔒 **100% type-safe** from database to UI
-- 🎯 **Production-ready** with authentication, emails, and background jobs
+- 🎯 **Production-ready** with authentication, emails, tests, and observability
 - 🚀 **Zero-config deployment** to Vercel
 - 🏗️ **Scalable architecture** with monorepo best practices
 
@@ -34,31 +34,40 @@ This monorepo uses [Turborepo](https://turborepo.com) and [Bun](https://bun.sh) 
 ```text
 .github
   └─ workflows
-        └─ CI with Bun cache setup
+        └─ CI with Bun cache setup (lint, format, typecheck, test)
 .vscode
   └─ Recommended extensions and settings for VSCode users
 apps
-  └─ app
-      ├─ Next.js 16
-      ├─ React 19
-      ├─ Tailwind CSS v4
-      └─ E2E Typesafe API Server & Client
+  ├─ app
+  │   ├─ Next.js 16 (App Router, RSC)
+  │   ├─ React 19
+  │   ├─ Tailwind CSS v4
+  │   ├─ OpenTelemetry via instrumentation.ts
+  │   └─ E2E Typesafe API Server & Client (oRPC)
+  ├─ app-server
+  │   └─ Optional standalone API server (Hono) — run the API separately
+  └─ docs
+      └─ Documentation site (Next.js)
 packages
   ├─ api
-  │   └─ tRPC v11 router definition
+  │   └─ oRPC router definition (end-to-end type-safe, no codegen)
   ├─ auth
-  │   └─ Authentication using better-auth
+  │   └─ Authentication using better-auth (single source of truth)
   ├─ config
-  │   └─ Type-safe environment variables with @t3-oss/env-core
+  │   └─ Type-safe env (@t3-oss/env-core) + structured logger
   ├─ db
-  │   └─ Typesafe db calls using Drizzle & Neon
+  │   └─ Drizzle ORM with an env-aware driver (node-postgres / Neon HTTP)
   ├─ emails
-  │   └─ Email templates with React Email and Resend
+  │   └─ Email templates with React Email + Resend / nodemailer
+  ├─ storage
+  │   └─ S3-compatible storage (AWS SDK v3, works with MinIO locally)
   ├─ ui
   │   └─ UI package for the webapp using shadcn-ui
   └─ validators
-      └─ Shared validation schemas
+      └─ Shared Zod validation schemas (+ bun:test unit tests)
 tooling
+  ├─ github
+  │   └─ Shared GitHub Actions setup
   ├─ tailwind
   │   └─ Shared Tailwind theme and configuration
   └─ typescript
@@ -78,9 +87,9 @@ tooling
 - **Turborepo** — Smart caching & parallel execution
 - **Edge-ready** — Optimized for Vercel Edge Runtime
 
-### � Tyrpe Safety
+### Type Safety
 - **End-to-end TypeScript** — From database to UI
-- **tRPC v11** — Type-safe API without code generation
+- **oRPC** — Type-safe API (RPC + OpenAPI ready) without code generation
 - **Zod Validation** — Runtime type checking
 
 ### 🎨 Modern UI
@@ -98,13 +107,14 @@ tooling
 
 ### 💾 Database
 - **Drizzle ORM** — Type-safe SQL queries
-- **Neon Postgres** — Serverless, auto-scaling database
-- **Migrations** — Version-controlled schema changes
+- **Env-aware driver** — `node-postgres` locally, Neon HTTP auto-detected in the cloud
+- **Migrations** — Version-controlled schema changes (`db:generate` / `db:migrate`)
 
-### 📧 Communication
+### 📧 Communication & Observability
 - **React Email** — Beautiful email templates
-- **Resend** — Reliable email delivery
-- **Background Jobs** — Inngest or Trigger.dev
+- **Resend / Nodemailer** — Reliable email delivery (inbucket sandbox locally)
+- **OpenTelemetry** — Built-in tracing via `instrumentation.ts`
+- **Structured logging** — JSON logs through a shared logger
 
 </td>
 </tr>
@@ -147,7 +157,7 @@ bun install
 ### Setup
 
 > [!NOTE]
-> The database is preconfigured for **Neon** (serverless Postgres) with the Vercel Postgres driver. For other databases, modify `packages/db/src/index.ts` and `drizzle.config.ts`.
+> The database driver is selected automatically: a `*.neon.tech` URL uses the Neon HTTP driver, anything else (local Docker Postgres, Supabase, self-hosted) uses `node-postgres`. Override with `DB_DRIVER=node|neon-http`. A local Postgres, MinIO (S3) and inbucket (email) are provided via `docker-compose.yml`.
 
 **Step 1: Install dependencies & configure environment**
 
@@ -159,9 +169,9 @@ bun install
 cp .env.example .env
 
 # Edit .env with your credentials
-# - POSTGRES_URL (get from neon.tech)
-# - BETTER_AUTH_SECRET (generate with: openssl rand -base64 32)
-# - RESEND_API_KEY (get from resend.com)
+# - POSTGRES_URL (local docker-compose Postgres, or get one from neon.tech)
+# - AUTH_SECRET (generate with: openssl rand -base64 32)
+# - RESEND_API_KEY (optional, get from resend.com)
 ```
 
 **Step 2: Setup database**
@@ -221,7 +231,10 @@ bun turbo gen init
 | `bun check` | Run both linting and formatting checks |
 | `bun check:fix` | Fix all linting and formatting issues |
 | `bun typecheck` | Type check all packages |
+| `bun test` | Run unit tests (bun:test) |
 | `bun db:push` | Push database schema changes |
+| `bun db:generate` | Generate SQL migrations from schema |
+| `bun db:migrate` | Apply migrations |
 | `bun db:studio` | Open Drizzle Studio |
 | `bun auth:generate` | Generate Better Auth schema |
 | `bun ui-add` | Add new shadcn/ui component |
@@ -248,10 +261,11 @@ bun turbo gen init
 <td>
 
 **Backend**
-- [tRPC v11](https://trpc.io) — Type-safe APIs
+- [oRPC](https://orpc.unnoq.com) — Type-safe APIs (RPC + OpenAPI)
 - [Drizzle ORM](https://orm.drizzle.team) — Database ORM
-- [Neon](https://neon.tech) — Serverless Postgres
+- [Neon](https://neon.tech) / Postgres — Serverless or self-hosted
 - [Better Auth](https://better-auth.com) — Authentication
+- [Hono](https://hono.dev) — Optional standalone API server
 
 **Tools**
 - [TanStack Query](https://tanstack.com/query) — Data fetching
@@ -269,11 +283,11 @@ bun turbo gen init
 |---------|-------------|----------|-----------------|
 | Runtime | **Bun** ⚡ | Node.js | Node.js |
 | Monorepo | ✅ Turborepo | ❌ | ❌ |
-| Type-safe API | ✅ tRPC | ✅ tRPC | ❌ |
+| Type-safe API | ✅ oRPC | ✅ tRPC | ❌ |
 | Database ORM | ✅ Drizzle | ✅ Drizzle/Prisma | ❌ |
 | Authentication | ✅ Better Auth | ✅ NextAuth | ❌ |
 | Email Templates | ✅ React Email | ❌ | ❌ |
-| Background Jobs | ✅ Inngest/Trigger | ❌ | ❌ |
+| Observability | ✅ OpenTelemetry | ❌ | ❌ |
 | UI Components | ✅ shadcn/ui | ❌ | ❌ |
 | Setup Time | ~5 min | ~10 min | ~2 min |
 
@@ -298,17 +312,19 @@ This project is optimized for **zero-config deployment** on Vercel.
 ```bash
 # Database
 POSTGRES_URL=postgresql://user:pass@host/db
+# Optional: force a driver ("node" or "neon-http"); auto-detected otherwise
+# DB_DRIVER=
 
 # Authentication
-BETTER_AUTH_SECRET=your-secret-key
-BETTER_AUTH_URL=https://your-domain.vercel.app
+AUTH_SECRET=your-secret-key
+AUTH_GOOGLE_ID=optional-google-oauth-id
+AUTH_GOOGLE_SECRET=optional-google-oauth-secret
 
 # Email (optional)
 RESEND_API_KEY=re_your_api_key
 
-# Background Jobs (optional)
-INNGEST_EVENT_KEY=your_event_key
-INNGEST_SIGNING_KEY=your_signing_key
+# API origin (optional) — point the web client at a standalone app-server
+# NEXT_PUBLIC_API_URL=https://api.your-domain.com
 ```
 
 ### Other Platforms
@@ -325,16 +341,20 @@ This starter can be deployed to any platform that supports Next.js:
 
 ```
 ├── apps/
-│   └── app/              # Next.js application
+│   ├── app/              # Next.js application (serves the API itself)
+│   ├── app-server/       # Optional standalone API server (Hono)
+│   └── docs/             # Documentation site
 ├── packages/
-│   ├── api/              # tRPC API routes
-│   ├── auth/             # Authentication logic
-│   ├── config/           # Environment config
-│   ├── db/               # Database schema & client
+│   ├── api/              # oRPC router & procedures
+│   ├── auth/             # Authentication logic (better-auth)
+│   ├── config/           # Env config + structured logger
+│   ├── db/               # Drizzle schema & env-aware client
 │   ├── emails/           # Email templates
+│   ├── storage/          # S3-compatible storage helpers
 │   ├── ui/               # Shared UI components
 │   └── validators/       # Shared Zod schemas
 └── tooling/
+    ├── github/           # Shared GitHub Actions setup
     ├── tailwind/         # Tailwind config
     └── typescript/       # TypeScript config
 ```

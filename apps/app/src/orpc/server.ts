@@ -11,9 +11,11 @@ const createServerContext = cache(async () => {
   const heads = new Headers(await headers());
   heads.set("x-orpc-source", "rsc");
 
+  const session = await auth.api.getSession({ headers: heads });
+
   return createORPCContext({
     headers: heads,
-    auth,
+    session,
   });
 });
 
