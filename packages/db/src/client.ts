@@ -1,9 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import { drizzle as drizzleNeonHttp } from "drizzle-orm/neon-http";
-import {
-  drizzle as drizzlePg,
-  type NodePgDatabase,
-} from "drizzle-orm/node-postgres";
+import { drizzle as drizzlePg } from "drizzle-orm/node-postgres";
+import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import { Pool } from "pg";
 import { selectDbDriver } from "./driver";
 import * as schema from "./schema";
@@ -11,11 +9,13 @@ import * as schema from "./schema";
 /**
  * Unified database type used across the codebase.
  *
- * Both the `node-postgres` and `neon-http` drivers produce a structurally
- * compatible relational query API for our schema, so we expose a single type
- * and pick the concrete driver at runtime based on the environment.
+ * Both the `node-postgres` and `neon-http` drivers extend `PgDatabase` with
+ * different query-result HKTs but share the same relational query API for a
+ * given schema.  Using `PgDatabase` as the common interface avoids unsafe
+ * double-casting while keeping full access to select/insert/update/delete and
+ * the relational `query` builder.
  */
-export type Database = NodePgDatabase<typeof schema>;
+export type Database = PgDatabase<PgQueryResultHKT, typeof schema>;
 
 function createDatabase(): Database {
   const connectionString = process.env.POSTGRES_URL;
@@ -29,11 +29,10 @@ function createDatabase(): Database {
 
   if (driver === "neon-http") {
     const sql = neon(connectionString);
-    // Structurally compatible with NodePgDatabase for our query usage.
     return drizzleNeonHttp(sql, {
       schema,
       casing: "snake_case",
-    }) as unknown as Database;
+    });
   }
 
   const pool = new Pool({ connectionString });
