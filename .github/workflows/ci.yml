@@ -55,3 +55,19 @@ jobs:
 
       - name: Typecheck
         run: bun typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup
+        uses: ./tooling/github/setup
+
+      - name: Copy env
+        shell: bash
+        run: cp .env.example .env
+
+      - name: Test
+        run: bun test
+

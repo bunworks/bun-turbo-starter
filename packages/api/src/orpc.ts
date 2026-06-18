@@ -6,25 +6,32 @@
  * These allow you to access things when processing a request, like the database, the session, etc.
  *
  * This helper generates the "internals" for an oRPC context. The API handler and RSC clients each
- * wrap this and provides the required context.
+ * wrap this and provide the required context.
+ *
+ * The context is intentionally decoupled from any concrete `better-auth` instance: callers resolve
+ * the session themselves (via `auth.api.getSession`) and pass it in. This keeps `@acme/api` free of
+ * the `Auth` type, which previously caused cross-package type mismatches when `better-auth` resolved
+ * to more than one instance in the workspace.
  *
  * @see https://orpc.dev/docs/server/context
  */
 
-import type { Auth } from "@acme/auth";
-import { dbEdge as db } from "@acme/db";
+import type { Session } from "@acme/auth";
+import { logger } from "@acme/config";
+import { db } from "@acme/db";
 import { ORPCError, os } from "@orpc/server";
 
-export async function createORPCContext(opts: {
+export interface CreateORPCContextOptions {
+  /** Request headers, kept on the context for procedures that need them. */
   headers: Headers;
-  auth: Auth;
-}) {
-  const session = await opts.auth.api.getSession({
-    headers: opts.headers,
-  });
+  /** Pre-resolved session (or `null` for anonymous requests). */
+  session: Session | null;
+}
 
+export function createORPCContext(opts: CreateORPCContextOptions) {
   return {
-    session,
+    session: opts.session,
+    headers: opts.headers,
     db,
   };
 }
@@ -34,10 +41,12 @@ export async function createORPCContext(opts: {
  *
  * This is where the oRPC api is initialized, connecting the context
  */
-const o = os.$context<Awaited<ReturnType<typeof createORPCContext>>>();
+const o = os.$context<ReturnType<typeof createORPCContext>>();
 
 /**
  * Timing middleware
+ *
+ * Emits a structured log line per request instead of a raw `console.log`.
  */
 const timingMiddleware = o.middleware(async ({ next, path }) => {
   const start = Date.now();
@@ -45,8 +54,10 @@ const timingMiddleware = o.middleware(async ({ next, path }) => {
   try {
     return await next();
   } finally {
-    // biome-ignore lint/suspicious/noConsole: Server timing logging
-    console.log(`[oRPC] ${path} took ${Date.now() - start}ms to execute`);
+    logger.info("orpc.request", {
+      path: Array.isArray(path) ? path.join(".") : path,
+      durationMs: Date.now() - start,
+    });
   }
 });
 
@@ -80,4 +91,4 @@ export const protectedProcedure = publicProcedure.use(({ context, next }) => {
 });
 
 // Export the context type for use in other files
-export type ORPCContext = Awaited<ReturnType<typeof createORPCContext>>;
+export type ORPCContext = ReturnType<typeof createORPCContext>;

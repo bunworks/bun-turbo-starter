@@ -27,6 +27,9 @@
     "push": "bun --env-file=../../.env run drizzle-kit push",
     "studio": "bun --env-file=../../.env run drizzle-kit studio",
     "drop": "bun --env-file=../../.env run src/scripts/drop-schema.ts",
+    "generate": "bun --env-file=../../.env run drizzle-kit generate",
+    "migrate": "bun --env-file=../../.env run drizzle-kit migrate",
+    "test": "bun test",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
@@ -39,6 +42,7 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
+    "@types/bun": "1.3.14",
     "@types/node": "25.9.3",
     "@types/pg": "^8.20.0",
     "@types/ws": "^8.18.1",

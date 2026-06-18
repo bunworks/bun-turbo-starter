@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@acme/auth": "workspace:*",
+    "@acme/config": "workspace:*",
     "@acme/db": "workspace:*",
     "@acme/validators": "workspace:*",
     "@orpc/contract": "^1.14.6",
