@@ -13,7 +13,7 @@
     "dist/**"
   ],
   "scripts": {
-    "dev": "bun --env-file=../../.env run email dev -p 3002",
+    "dev:email": "bun --env-file=../../.env run email dev -p 3002",
     "build": "tsdown",
     "export": "email export"
   },
@@ -23,19 +23,19 @@
     "@radix-ui/colors": "3.0.0",
     "@react-email/components": "1.0.12",
     "@tailwindcss/typography": "0.5.20",
-    "nodemailer": "^8.0.11",
+    "nodemailer": "^9.0.1",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-email": "6.6.3",
     "resend": "^6.14.0",
-    "sharp": "^0.35.1",
+    "sharp": "^0.35.2",
     "tailwindcss": "4.3.1",
     "tailwindcss-animate": "1.0.7",
     "zod": "4.4.3"
   },
   "devDependencies": {
     "@react-email/preview-server": "5.2.10",
-    "@types/node": "25.9.3",
+    "@types/node": "26.0.0",
     "@types/nodemailer": "^8.0.1",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
