@@ -18,7 +18,7 @@
   "dependencies": {
     "@acme/config": "workspace:*",
     "@acme/db": "workspace:*",
-    "better-auth": "1.6.19",
+    "better-auth": "1.6.20",
     "zod": "4.4.3"
   },
   "devDependencies": {

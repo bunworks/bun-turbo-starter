@@ -1,5 +1,5 @@
 {
-  "name": "@acme/api",
+  "name": "@acme/inngest",
   "private": true,
   "type": "module",
   "exports": {
@@ -12,22 +12,14 @@
   "scripts": {
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsc",
+    "dev": "bunx inngest-cli@latest dev --url http://localhost:3000/api/inngest",
     "format": "biome format .",
     "lint": "biome lint .",
     "check": "biome check .",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@acme/auth": "workspace:*",
-    "@acme/config": "workspace:*",
-    "@acme/db": "workspace:*",
-    "@acme/validators": "workspace:*",
-    "@orpc/contract": "^1.14.6",
-    "@orpc/server": "^1.14.6",
-    "better-auth": "1.6.20",
-    "superjson": "2.2.6",
-    "zod": "4.4.3"
+    "inngest": "4.7.0"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
