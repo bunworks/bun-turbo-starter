@@ -65,7 +65,17 @@
     "AUTH_GOOGLE_SECRET",
     "AUTH_REDIRECT_PROXY_URL",
     "AUTH_SECRET",
-    "PORT"
+    "PORT",
+    "RESEND_API_KEY",
+    "EMAIL_FROM",
+    "EMAIL_SANDBOX_ENABLED",
+    "EMAIL_SANDBOX_HOST",
+    "AWS_S3_ENDPOINT",
+    "AWS_S3_FORCE_PATH_STYLE",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "AWS_REGION",
+    "AWS_S3_BUCKET"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",

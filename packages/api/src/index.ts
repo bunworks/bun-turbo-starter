@@ -1,23 +1,25 @@
 import type { InferRouterInputs, InferRouterOutputs } from "@orpc/server";
 
-import type { AppRouter } from "./orpc-root";
+import type { AppRouter } from "./routers";
 
 /**
- * Inference helpers for input types
+ * Inference helpers for input types.
+ *
  * @example
- * type PostByIdInput = RouterInputs['post']['byId']
- *      ^? { id: number }
+ *   type CreatePostInput = RouterInputs['post']['create']
+ *   //   ^? { title: string; content: string }
  */
 type RouterInputs = InferRouterInputs<AppRouter>;
 
 /**
- * Inference helpers for output types
+ * Inference helpers for output types.
+ *
  * @example
- * type AllPostsOutput = RouterOutputs['post']['all']
- *      ^? Post[]
+ *   type PostListOutput = RouterOutputs['post']['list']
+ *   //   ^? { id: string; title: string; ... }[]
  */
 type RouterOutputs = InferRouterOutputs<AppRouter>;
 
 export { createORPCContext } from "./orpc";
-export { type AppRouter, appRouter } from "./orpc-root";
+export { type AppRouter, appRouter } from "./routers";
 export type { RouterInputs, RouterOutputs };

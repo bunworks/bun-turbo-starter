@@ -90,5 +90,29 @@ export const protectedProcedure = publicProcedure.use(({ context, next }) => {
   });
 });
 
+/**
+ * Admin (privileged) procedure
+ *
+ * Builds on `protectedProcedure` and additionally verifies that the
+ * authenticated user has admin privileges.
+ *
+ * Admin access is granted to emails listed in the ADMIN_EMAILS environment
+ * variable (comma-separated).
+ *
+ * @example ADMIN_EMAILS=admin@example.com,ops@example.com
+ */
+export const adminProcedure = protectedProcedure.use(({ context, next }) => {
+  const adminEmails = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+
+  if (!adminEmails.includes(context.session.user.email)) {
+    throw new ORPCError("FORBIDDEN", { message: "Admin access required" });
+  }
+
+  return next();
+});
+
 // Export the context type for use in other files
 export type ORPCContext = ReturnType<typeof createORPCContext>;
