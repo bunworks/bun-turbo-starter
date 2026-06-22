@@ -1,0 +1,30 @@
+{
+  "name": "@acme/trigger",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "bunx trigger.dev@latest dev --env-file ../../.env",
+    "deploy": "bunx trigger.dev@latest deploy --env-file ../../.env",
+    "format": "biome format .",
+    "lint": "biome lint .",
+    "check": "biome check .",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "dependencies": {
+    "@trigger.dev/sdk": "4.4.6"
+  },
+  "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
+    "@types/node": "26.0.0",
+    "typescript": "6.0.3"
+  }
+}

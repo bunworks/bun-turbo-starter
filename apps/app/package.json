@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@acme/api": "workspace:*",
+    "@acme/inngest": "workspace:*",
     "@acme/auth": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/db": "workspace:*",
@@ -36,6 +37,7 @@
     "better-auth": "1.6.19",
     "date-fns": "^4.4.0",
     "lucide-react": "^1.21.0",
+    "inngest": "4.7.0",
     "next": "16.2.9",
     "react": "19.2.7",
     "react-dom": "19.2.7",
