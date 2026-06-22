@@ -5,7 +5,7 @@
   "scripts": {
     "build": "bun run next build",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
-    "dev": "bun run next dev",
+    "dev": "bun run next dev --port 3002",
     "format": "biome format .",
     "lint": "biome lint .",
     "check": "biome check .",

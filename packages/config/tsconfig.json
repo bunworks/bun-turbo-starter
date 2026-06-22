@@ -1,6 +1,7 @@
 {
   "extends": "@acme/tsconfig/compiled-package.json",
   "compilerOptions": {
+    "rootDir": "./src",
     "types": ["node"]
   },
   "include": ["src"],
