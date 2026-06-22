@@ -1,6 +1,5 @@
-import type * as React from "react";
-import type { VariantProps } from "class-variance-authority";
-import { cva } from "class-variance-authority";
+import { Button as ButtonPrimitive } from "@base-ui/react/button";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from ".";
 
@@ -37,30 +36,12 @@ export const buttonVariants = cva(
 
 export function Button({
   className,
-  variant,
-  size,
-  asChild = false,
+  variant = "default",
+  size = "default",
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
-  if (asChild) {
-    // When asChild is true, we render children directly with merged props
-    // Base UI doesn't have a direct Slot equivalent, so we use a simple span wrapper
-    // Consumers should migrate to render prop pattern instead
-    return (
-      <span
-        data-slot="button"
-        className={cn(buttonVariants({ variant, size, className }))}
-      >
-        {props.children}
-      </span>
-    );
-  }
-
+}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
   return (
-    <button
+    <ButtonPrimitive
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}

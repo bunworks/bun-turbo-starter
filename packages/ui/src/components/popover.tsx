@@ -5,45 +5,39 @@ import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 
 import { cn } from ".";
 
-function Popover({
-  children,
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Root>) {
-  return (
-    <PopoverPrimitive.Root data-slot="popover" {...props}>
-      {children}
-    </PopoverPrimitive.Root>
-  );
+function Popover({ ...props }: PopoverPrimitive.Root.Props) {
+  return <PopoverPrimitive.Root data-slot="popover" {...props} />;
 }
 
-function PopoverTrigger({
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
 }
 
 function PopoverContent({
   className,
   align = "center",
+  alignOffset = 0,
+  side = "bottom",
   sideOffset = 4,
-  side,
   ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Popup> & {
-  align?: "start" | "center" | "end";
-  sideOffset?: number;
-  side?: "top" | "bottom" | "left" | "right";
-}) {
+}: PopoverPrimitive.Popup.Props &
+  Pick<
+    PopoverPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset"
+  >) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
-        side={side}
         align={align}
+        alignOffset={alignOffset}
+        side={side}
         sideOffset={sideOffset}
+        className="isolate z-50"
       >
         <PopoverPrimitive.Popup
           data-slot="popover-content"
           className={cn(
-            "bg-popover text-popover-foreground data-[open]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[open]:fade-in-0 data-[ending-style]:zoom-out-95 data-[open]:zoom-in-95 z-50 w-72 rounded-md border p-4 shadow-md outline-hidden",
+            "bg-popover text-popover-foreground data-[open]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[open]:fade-in-0 data-[ending-style]:zoom-out-95 data-[open]:zoom-in-95 z-50 w-72 origin-(--transform-origin) rounded-md border p-4 shadow-md outline-hidden",
             className,
           )}
           {...props}

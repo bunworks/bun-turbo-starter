@@ -1,54 +1,36 @@
 "use client";
 
 import type * as React from "react";
-import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
+import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
 import { XIcon } from "lucide-react";
 
 import { cn } from ".";
 
-function Sheet({
-  children,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  return (
-    <DialogPrimitive.Root data-slot="sheet" {...props}>
-      {children}
-    </DialogPrimitive.Root>
-  );
+function Sheet({ ...props }: SheetPrimitive.Root.Props) {
+  return <SheetPrimitive.Root data-slot="sheet" {...props} />;
 }
 
-function SheetTrigger({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
-  return <DialogPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
+function SheetTrigger({ ...props }: SheetPrimitive.Trigger.Props) {
+  return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
 }
 
-function SheetClose({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Close>) {
-  return <DialogPrimitive.Close data-slot="sheet-close" {...props} />;
+function SheetClose({ ...props }: SheetPrimitive.Close.Props) {
+  return <SheetPrimitive.Close data-slot="sheet-close" {...props} />;
 }
 
-function SheetPortal({
-  children,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Portal>) {
-  return (
-    <DialogPrimitive.Portal data-slot="sheet-portal" {...props}>
-      {children}
-    </DialogPrimitive.Portal>
-  );
+function SheetPortal({ ...props }: SheetPrimitive.Portal.Props) {
+  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
 }
 
 function SheetOverlay({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Backdrop>) {
+}: SheetPrimitive.Backdrop.Props) {
   return (
-    <DialogPrimitive.Backdrop
+    <SheetPrimitive.Backdrop
       data-slot="sheet-overlay"
       className={cn(
-        "data-[open]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
+        "fixed inset-0 z-50 bg-black/50 transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
         className,
       )}
       {...props}
@@ -61,35 +43,36 @@ function SheetContent({
   children,
   side = "right",
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Popup> & {
+}: SheetPrimitive.Popup.Props & {
   side?: "top" | "right" | "bottom" | "left";
 }) {
   return (
-    <DialogPrimitive.Portal>
+    <SheetPortal>
       <SheetOverlay />
-      <DialogPrimitive.Popup
+      <SheetPrimitive.Popup
         data-slot="sheet-content"
+        data-side={side}
         className={cn(
-          "bg-background data-[open]:animate-in data-[ending-style]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[ending-style]:duration-300 data-[open]:duration-500",
+          "bg-background fixed z-50 flex flex-col gap-4 shadow-lg transition-all duration-300 ease-in-out data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
           side === "right" &&
-            "data-[ending-style]:slide-out-to-right data-[open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
+            "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm data-[ending-style]:translate-x-[2.5rem] data-[starting-style]:translate-x-[2.5rem]",
           side === "left" &&
-            "data-[ending-style]:slide-out-to-left data-[open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
+            "inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm data-[ending-style]:translate-x-[-2.5rem] data-[starting-style]:translate-x-[-2.5rem]",
           side === "top" &&
-            "data-[ending-style]:slide-out-to-top data-[open]:slide-in-from-top inset-x-0 top-0 h-auto border-b",
+            "inset-x-0 top-0 h-auto border-b data-[ending-style]:translate-y-[-2.5rem] data-[starting-style]:translate-y-[-2.5rem]",
           side === "bottom" &&
-            "data-[ending-style]:slide-out-to-bottom data-[open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
+            "inset-x-0 bottom-0 h-auto border-t data-[ending-style]:translate-y-[2.5rem] data-[starting-style]:translate-y-[2.5rem]",
           className,
         )}
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="ring-offset-background focus:ring-ring data-[open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+        <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
           <XIcon className="size-4" />
           <span className="sr-only">Close</span>
-        </DialogPrimitive.Close>
-      </DialogPrimitive.Popup>
-    </DialogPrimitive.Portal>
+        </SheetPrimitive.Close>
+      </SheetPrimitive.Popup>
+    </SheetPortal>
   );
 }
 
@@ -113,12 +96,9 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function SheetTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+function SheetTitle({ className, ...props }: SheetPrimitive.Title.Props) {
   return (
-    <DialogPrimitive.Title
+    <SheetPrimitive.Title
       data-slot="sheet-title"
       className={cn("text-foreground font-semibold", className)}
       {...props}
@@ -129,9 +109,9 @@ function SheetTitle({
 function SheetDescription({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Description>) {
+}: SheetPrimitive.Description.Props) {
   return (
-    <DialogPrimitive.Description
+    <SheetPrimitive.Description
       data-slot="sheet-description"
       className={cn("text-muted-foreground text-sm", className)}
       {...props}
