@@ -1,6 +1,6 @@
+import type * as React from "react";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
-import { Slot as SlotPrimitive } from "radix-ui";
 
 import { cn } from ".";
 
@@ -45,10 +45,22 @@ export function Button({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   }) {
-  const Comp = asChild ? SlotPrimitive.Slot : "button";
+  if (asChild) {
+    // When asChild is true, we render children directly with merged props
+    // Base UI doesn't have a direct Slot equivalent, so we use a simple span wrapper
+    // Consumers should migrate to render prop pattern instead
+    return (
+      <span
+        data-slot="button"
+        className={cn(buttonVariants({ variant, size, className }))}
+      >
+        {props.children}
+      </span>
+    );
+  }
 
   return (
-    <Comp
+    <button
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
