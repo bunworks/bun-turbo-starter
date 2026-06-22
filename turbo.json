@@ -85,7 +85,8 @@
     "TRIGGER_PROJECT_REF",
     "INNGEST_EVENT_KEY",
     "INNGEST_SIGNING_KEY",
-    "INNGEST_BASE_URL"
+    "INNGEST_BASE_URL",
+    "HATCHET_CLIENT_TOKEN"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",

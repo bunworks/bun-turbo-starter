@@ -1,4 +1,4 @@
-import { inngest } from "../client.js";
+import { inngest } from "../client";
 
 /**
  * Scheduled (cron) function — runs every hour at :00.

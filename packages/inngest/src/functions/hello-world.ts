@@ -1,4 +1,4 @@
-import { inngest } from "../client.js";
+import { inngest } from "../client";
 
 export interface HelloWorldEventData {
   name: string;
