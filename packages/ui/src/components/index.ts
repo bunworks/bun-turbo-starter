@@ -6,11 +6,13 @@ export const cn = (...inputs: Parameters<typeof cx>) => twMerge(cx(inputs));
 // Export all components
 export * from "./avatar";
 export * from "./badge";
+export * from "./breadcrumb";
 export * from "./button";
 export * from "./calendar";
 export * from "./card";
 export * from "./chart";
 export * from "./checkbox";
+export * from "./collapsible";
 export * from "./drawer";
 export * from "./dropdown-menu";
 export * from "./field";

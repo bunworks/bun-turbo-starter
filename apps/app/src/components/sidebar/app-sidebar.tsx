@@ -9,14 +9,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@acme/ui";
 import {
-  IconCamera,
   IconChartBar,
   IconDashboard,
   IconDatabase,
-  IconFileAi,
-  IconFileDescription,
   IconFileWord,
   IconFolder,
   IconHelp,
@@ -39,75 +37,49 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: paths.dashboard.root,
       icon: IconDashboard,
+      isActive: true,
+      items: [
+        { title: "Overview", url: paths.dashboard.root },
+        { title: "Analytics", url: "#" },
+        { title: "Reports", url: "#" },
+      ],
     },
     {
       title: "Lifecycle",
       url: "#",
       icon: IconListDetails,
+      items: [
+        { title: "Active", url: "#" },
+        { title: "Archived", url: "#" },
+      ],
     },
     {
       title: "Analytics",
       url: "#",
       icon: IconChartBar,
+      items: [
+        { title: "Overview", url: "#" },
+        { title: "Trends", url: "#" },
+      ],
     },
     {
       title: "Projects",
       url: "#",
       icon: IconFolder,
+      items: [
+        { title: "Active Projects", url: "#" },
+        { title: "Archived", url: "#" },
+      ],
     },
     {
       title: "Team",
       url: "#",
       icon: IconUsers,
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: IconCamera,
-      isActive: true,
-      url: "#",
       items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: IconFileDescription,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: IconFileAi,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
+        { title: "Members", url: "#" },
+        { title: "Roles", url: "#" },
       ],
     },
   ],
@@ -158,19 +130,24 @@ export function AppSidebar({
   };
 }) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
+              size="lg"
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href={paths.dashboard.root}>
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">
-                  {APP_CONFIG.name}
-                </span>
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <IconInnerShadowTop className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">
+                    {APP_CONFIG.name}
+                  </span>
+                </div>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -184,6 +161,7 @@ export function AppSidebar({
       <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }
