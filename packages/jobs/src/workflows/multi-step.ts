@@ -36,8 +36,9 @@ const extractMetadata = processDocumentWorkflow.task({
   name: "extract-metadata",
   retries: 3,
   executionTimeout: "30s",
-  fn: async (input: ProcessDocumentInput) => {
-    console.log("[jobs] extract-metadata", { documentId: input.documentId });
+  fn: async (rawInput) => {
+    // Hatchet passes all inputs as JsonObject — cast to the expected shape.
+    const input = rawInput as unknown as ProcessDocumentInput;
 
     // Simulate metadata extraction
     const wordCount = input.content.split(/\s+/).filter(Boolean).length;
@@ -53,14 +54,9 @@ const transformContent = processDocumentWorkflow.task({
   parents: [extractMetadata],
   retries: 3,
   executionTimeout: "60s",
-  fn: async (input: ProcessDocumentInput, ctx) => {
+  fn: async (rawInput, ctx) => {
+    const input = rawInput as unknown as ProcessDocumentInput;
     const { wordCount, language } = await ctx.parentOutput(extractMetadata);
-
-    console.log("[jobs] transform-content", {
-      documentId: input.documentId,
-      wordCount,
-      language,
-    });
 
     // Simulate summarization / tagging — replace with your actual logic
     const summary = `${input.content.slice(0, 80).trim()}…`;
@@ -76,14 +72,8 @@ processDocumentWorkflow.task({
   parents: [transformContent],
   retries: 2,
   executionTimeout: "15s",
-  fn: async (input: ProcessDocumentInput, ctx) => {
-    const { summary, tags } = await ctx.parentOutput(transformContent);
-
-    console.log("[jobs] notify", {
-      documentId: input.documentId,
-      summary,
-      tags,
-    });
+  fn: async (_rawInput, ctx) => {
+    await ctx.parentOutput(transformContent);
 
     // Placeholder — send an email, push to a webhook, etc.
 

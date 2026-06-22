@@ -1,7 +1,7 @@
-import { hatchet } from "./client.js";
-import { helloWorldTask } from "./workflows/hello-world.js";
-import { processDocumentWorkflow } from "./workflows/multi-step.js";
-import { scheduledWorkflow } from "./workflows/scheduled.js";
+import { hatchet } from "./client";
+import { helloWorldTask } from "./workflows/hello-world";
+import { processDocumentWorkflow } from "./workflows/multi-step";
+import { scheduledWorkflow } from "./workflows/scheduled";
 
 /**
  * Hatchet worker — long-running process that polls the Hatchet engine
@@ -30,7 +30,6 @@ async function main() {
   await worker.start();
 }
 
-main().catch((err) => {
-  console.error("[jobs] worker failed to start", err);
+main().catch((_err) => {
   process.exit(1);
 });

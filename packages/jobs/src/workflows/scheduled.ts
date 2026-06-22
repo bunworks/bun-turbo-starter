@@ -30,10 +30,6 @@ scheduledWorkflow.task({
     // - clean up stale records
     // - send digest emails
     // - sync with external APIs
-    console.log(
-      "[jobs] scheduled-example running at",
-      new Date().toISOString(),
-    );
 
     return {
       processedAt: new Date().toISOString(),

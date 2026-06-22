@@ -27,12 +27,11 @@ export const helloWorldTask = hatchet.task({
   name: "hello-world",
   retries: 3,
   executionTimeout: "60s",
-  fn: async (input: HelloWorldInput) => {
-    console.log("[jobs] hello-world running", { name: input.name });
+  fn: async (rawInput) => {
+    // Hatchet passes all inputs as JsonObject — cast to the expected shape.
+    const input = rawInput as unknown as HelloWorldInput;
 
     const message = `Hello, ${input.name}!`;
-
-    console.log("[jobs] hello-world completed", { message });
 
     return { message };
   },
