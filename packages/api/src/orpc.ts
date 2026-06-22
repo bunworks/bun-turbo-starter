@@ -104,10 +104,10 @@ export const protectedProcedure = publicProcedure.use(({ context, next }) => {
 export const adminProcedure = protectedProcedure.use(({ context, next }) => {
   const adminEmails = (process.env.ADMIN_EMAILS ?? "")
     .split(",")
-    .map((e) => e.trim())
+    .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
 
-  if (!adminEmails.includes(context.session.user.email)) {
+  if (!adminEmails.includes(context.session.user.email.toLowerCase())) {
     throw new ORPCError("FORBIDDEN", { message: "Admin access required" });
   }
 
