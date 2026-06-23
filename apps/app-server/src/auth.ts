@@ -7,7 +7,6 @@ const baseUrl = env.APP_URL ?? "http://localhost:3000";
 
 const authSecret = env.AUTH_SECRET;
 if (!authSecret) {
-  // biome-ignore lint/suspicious/noConsole: Configuration warning for developers
   console.warn(
     "AUTH_SECRET не установлен. " +
       "Пожалуйста, установите переменную окружения AUTH_SECRET.",

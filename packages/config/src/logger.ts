@@ -49,11 +49,8 @@ function write(level: LogLevel, message: string, meta?: LogMeta): void {
 
   const line = JSON.stringify(entry);
 
-  // biome-ignore lint/suspicious/noConsole: the logger is the sanctioned console boundary
   if (level === "error") console.error(line);
-  // biome-ignore lint/suspicious/noConsole: the logger is the sanctioned console boundary
   else if (level === "warn") console.warn(line);
-  // biome-ignore lint/suspicious/noConsole: the logger is the sanctioned console boundary
   else console.log(line);
 }
 

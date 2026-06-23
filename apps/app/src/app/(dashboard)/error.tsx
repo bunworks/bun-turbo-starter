@@ -11,7 +11,6 @@ export default function DashboardError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // biome-ignore lint/suspicious/noConsole: Error boundary logging
     console.error(error);
   }, [error]);
 

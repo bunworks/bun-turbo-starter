@@ -39,7 +39,6 @@ export const sendEmail = async (email: Emails) => {
     return transporter.sendMail(mailOptions);
   }
   if (!resend) {
-    // biome-ignore lint/suspicious/noConsole: Configuration warning for developers
     console.log(
       "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work.",
     );
@@ -55,7 +54,6 @@ export const sendEmail = async (email: Emails) => {
 
 export const sendEmailHtml = async (email: EmailHtml) => {
   if (!resend) {
-    // biome-ignore lint/suspicious/noConsole: Configuration warning for developers
     console.log(
       "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work.",
     );

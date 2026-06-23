@@ -68,7 +68,6 @@ export async function uploadBufferToS3(
     return { key, bucket: BUCKET_NAME, etag: res.ETag };
   } catch (err) {
     const e = err as Error;
-    // biome-ignore lint/suspicious/noConsole: Server error logging for S3 failures
     console.error("S3 upload failed", {
       bucket: BUCKET_NAME,
       key,

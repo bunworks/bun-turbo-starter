@@ -32,7 +32,7 @@
         "noExplicitAny": "warn",
         "noAssignInExpressions": "off",
         "noArrayIndexKey": "warn",
-        "noConsole": "warn"
+        "noConsole": "off"
       },
       "style": {
         "noNonNullAssertion": "warn",
