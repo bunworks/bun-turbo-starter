@@ -51,12 +51,7 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton
-                        render={
-                          // biome-ignore lint/a11y/useAnchorContent: render prop pattern, content is provided as children by the parent component
-                          <a href={subItem.url} />
-                        }
-                      >
+                      <SidebarMenuSubButton render={<a href={subItem.url} />}>
                         <span>{subItem.title}</span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

@@ -39,12 +39,7 @@ export function NavDocuments({
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton
-              render={
-                // biome-ignore lint/a11y/useAnchorContent: render prop pattern, content is provided as children by the parent component
-                <a href={item.url} />
-              }
-            >
+            <SidebarMenuButton render={<a href={item.url} />}>
               <item.icon />
               <span>{item.name}</span>
             </SidebarMenuButton>

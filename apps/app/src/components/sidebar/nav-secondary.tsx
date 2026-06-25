@@ -28,10 +28,7 @@ export function NavSecondary({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 tooltip={item.title}
-                render={
-                  // biome-ignore lint/a11y/useAnchorContent: render prop pattern, content is provided as children by the parent component
-                  <a href={item.url} />
-                }
+                render={<a href={item.url} />}
               >
                 <item.icon />
                 <span>{item.title}</span>
