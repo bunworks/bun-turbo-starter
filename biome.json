@@ -11,9 +11,7 @@
       "**",
       "!**/node_modules",
       "!**/.next",
-      "!**/packages/ui/src/**/*.tsx",
-      "!**/packages/ui/src/**/*.ts",
-      "!**/packages/ui/src/**/*.css",
+      "!**/packages/ui/**/*",
       "!**/tooling/**/*",
       "!**/apps/app/**/*.css"
     ]

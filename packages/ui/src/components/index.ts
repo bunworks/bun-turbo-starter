@@ -4,6 +4,8 @@ import { twMerge } from "tailwind-merge";
 export const cn = (...inputs: Parameters<typeof cx>) => twMerge(cx(inputs));
 
 // Export all components
+export * from "./accordion";
+export * from "./alert-dialog";
 export * from "./avatar";
 export * from "./badge";
 export * from "./breadcrumb";
@@ -22,9 +24,14 @@ export * from "./input-otp";
 export * from "./password-input";
 export * from "./label";
 export * from "./popover";
+export * from "./progress";
+export * from "./radio-group";
+export * from "./scroll-area";
 export * from "./select";
 export * from "./separator";
 export * from "./sidebar";
+export * from "./slider";
+export * from "./switch";
 export * from "./skeleton";
 export * from "./table";
 export * from "./tabs";

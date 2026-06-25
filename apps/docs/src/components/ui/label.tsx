@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
+    // biome-ignore lint/a11y/noLabelWithoutControl: generic wrapper component, htmlFor is provided via props at call site
     <label
       data-slot="label"
       className={cn(

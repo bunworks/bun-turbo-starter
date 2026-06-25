@@ -239,7 +239,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() ? true : false)
+            !!table.getIsSomePageRowsSelected()
           }
           indeterminate={
             table.getIsSomePageRowsSelected() &&

@@ -108,7 +108,10 @@ export function AppSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
-              render={<a href={paths.dashboard.root} />}
+              render={
+                // biome-ignore lint/a11y/useAnchorContent: render prop pattern, content is provided as children by the parent component
+                <a href={paths.dashboard.root} />
+              }
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <IconInnerShadowTop className="size-4" />
