@@ -83,6 +83,7 @@
     "apps/docs": {
       "name": "@acme/docs",
       "dependencies": {
+        "@base-ui/react": "^1.6.0",
         "@t3-oss/env-nextjs": "0.13.11",
         "@vercel/analytics": "^2.0.1",
         "class-variance-authority": "^0.7.1",

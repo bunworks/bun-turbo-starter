@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { FileQuestion, Home, Search } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
@@ -22,17 +22,13 @@ export default function NotFound() {
         </p>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button asChild>
-            <Link href="/">
-              <Home className="mr-2 h-4 w-4" />
-              На главную
-            </Link>
+          <Button render={<Link href="/" />}>
+            <Home className="mr-2 h-4 w-4" />
+            На главную
           </Button>
-          <Button variant="outline" asChild>
-            <Link href="/docs">
-              <Search className="mr-2 h-4 w-4" />
-              Документация
-            </Link>
+          <Button variant="outline" render={<Link href="/docs" />}>
+            <Search className="mr-2 h-4 w-4" />
+            Документация
           </Button>
         </div>
 

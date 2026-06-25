@@ -96,14 +96,14 @@ export function DocsHeader() {
             variant="ghost"
             size="sm"
             className="hidden md:inline-flex"
-            asChild
+            render={
+              <Link
+                href="https://github.com/bunworks/bun-turbo-starter"
+                target="_blank"
+              />
+            }
           >
-            <Link
-              href="https://github.com/bunworks/bun-turbo-starter"
-              target="_blank"
-            >
-              GitHub
-            </Link>
+            GitHub
           </Button>
 
           <Button

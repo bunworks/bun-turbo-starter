@@ -74,8 +74,12 @@ export function ForgotPasswordForm({
               Click the link in the email to reset your password. The link will
               expire in 1 hour.
             </p>
-            <Button asChild className="w-full" variant="outline">
-              <Link href={paths.auth.login}>Back to sign in</Link>
+            <Button
+              render={<Link href={paths.auth.login} />}
+              className="w-full"
+              variant="outline"
+            >
+              Back to sign in
             </Button>
           </div>
         </CardContent>
@@ -117,8 +121,12 @@ export function ForgotPasswordForm({
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Sending…" : "Send reset link"}
             </Button>
-            <Button asChild className="w-full" variant="outline">
-              <Link href={paths.auth.login}>Back to sign in</Link>
+            <Button
+              render={<Link href={paths.auth.login} />}
+              className="w-full"
+              variant="outline"
+            >
+              Back to sign in
             </Button>
           </form>
         </Form>
