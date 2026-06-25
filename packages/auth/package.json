@@ -24,7 +24,7 @@
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "@better-auth/cli": "1.4.21",
-    "@types/node": "26.0.0",
+    "@types/node": "26.0.1",
     "typescript": "6.0.3"
   }
 }
