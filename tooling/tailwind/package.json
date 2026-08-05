@@ -15,13 +15,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "4.3.2",
-    "postcss": "^8.5.16",
-    "tailwindcss": "4.3.2"
+    "@tailwindcss/postcss": "4.3.3",
+    "postcss": "^8.5.25",
+    "tailwindcss": "4.3.3"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/node": "26.1.1",
-    "typescript": "6.0.3"
+    "@types/node": "26.1.2",
+    "typescript": "7.0.2"
   }
 }

@@ -43,10 +43,10 @@
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "@types/bun": "1.3.14",
-    "@types/node": "26.1.1",
-    "@types/pg": "^8.20.0",
+    "@types/node": "26.1.2",
+    "@types/pg": "^8.20.4",
     "@types/ws": "^8.18.1",
     "drizzle-kit": "^0.31.10",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   }
 }
