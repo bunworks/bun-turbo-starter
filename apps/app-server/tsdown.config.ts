@@ -3,15 +3,15 @@ import { defineConfig } from "tsdown";
 export default defineConfig({
   entry: ["src/index.ts"],
   format: ["esm"],
-  dts: true,
+  dts: false,
   sourcemap: false,
   clean: true,
   minify: false,
   target: "es2022",
   outDir: "./dist",
-  treeshake: false,
+  treeshake: true,
   deps: {
+    neverBundle: true,
     alwaysBundle: [/@acme\/.*/],
-    neverBundle: ["sanitize-html"],
   },
 });

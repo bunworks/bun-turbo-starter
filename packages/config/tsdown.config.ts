@@ -7,7 +7,4 @@ export default defineConfig({
   sourcemap: false,
   clean: true,
   minify: false,
-  deps: {
-    neverBundle: ["@t3-oss/env-core", "zod"],
-  },
 });

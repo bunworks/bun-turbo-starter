@@ -56,9 +56,6 @@ export default async function createNextConfig(): Promise<NextConfig> {
       "@t3-oss/env-core",
     ],
 
-    /** We already do linting and typechecking as separate tasks in CI */
-    typescript: { ignoreBuildErrors: true },
-
     async headers() {
       return [{ source: "/:path*", headers: securityHeaders }];
     },

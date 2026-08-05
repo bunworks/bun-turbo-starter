@@ -1,7 +1,6 @@
 import { initAuth } from "@acme/auth";
 import { env } from "@acme/config";
-import { OtpSignInEmail, ResetPasswordEmail } from "@acme/emails";
-import { sendEmail } from "@acme/emails/send";
+import { OtpSignInEmail, ResetPasswordEmail, sendEmail } from "@acme/emails";
 
 const baseUrl = env.APP_URL ?? "http://localhost:3000";
 

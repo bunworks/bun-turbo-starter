@@ -1,10 +1,11 @@
 {
   "name": "@acme/app-server",
+  "private": true,
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.mjs",
   "scripts": {
     "build": "tsdown",
-    "check-types": "tsc -b",
+    "typecheck": "tsc --noEmit",
     "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
     "dev": "bun with-env bun run --hot src/index.ts",
     "start": "bun run dist/index.mjs",

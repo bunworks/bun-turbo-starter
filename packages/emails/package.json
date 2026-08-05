@@ -6,20 +6,25 @@
   "workspaces": [
     ".react-email"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist/**"
   ],
   "scripts": {
     "dev:email": "bun --env-file=../../.env run email dev -p 3002",
     "build": "tsdown",
-    "export": "email export"
+    "export": "email export",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@acme/config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
     "@radix-ui/colors": "3.0.0",
     "@react-email/components": "1.0.12",
     "@tailwindcss/typography": "0.5.20",
@@ -34,12 +39,13 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
     "@react-email/preview-server": "5.2.10",
     "@types/node": "26.1.2",
     "@types/nodemailer": "^8.0.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
-    "tsdown": "latest",
+    "tsdown": "0.22.14",
     "typescript": "7.0.2"
   }
 }
