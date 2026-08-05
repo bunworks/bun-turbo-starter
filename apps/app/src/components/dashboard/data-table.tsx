@@ -93,17 +93,23 @@ import {
 import {
   type ColumnDef,
   type ColumnFiltersState,
+  type ColumnVisibilityState,
+  columnFacetingFeature,
+  columnFilteringFeature,
+  columnVisibilityFeature,
+  createFacetedRowModel,
+  createFacetedUniqueValues,
+  createFilteredRowModel,
+  createPaginatedRowModel,
+  createSortedRowModel,
   flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   type Row,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
   type SortingState,
-  useReactTable,
-  type VisibilityState,
+  tableFeatures,
+  useTable,
 } from "@tanstack/react-table";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -113,6 +119,21 @@ import type { z } from "zod";
 
 // Use schema from @acme/validators
 export const schema = dataTableItemSchema;
+type DataTableItem = z.infer<typeof schema>;
+
+const dataTableFeatures = tableFeatures({
+  columnFacetingFeature,
+  columnFilteringFeature,
+  columnVisibilityFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  facetedRowModel: createFacetedRowModel(),
+  facetedUniqueValues: createFacetedUniqueValues(),
+  filteredRowModel: createFilteredRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  sortedRowModel: createSortedRowModel(),
+});
 
 // Create a separate component for the drag handle
 function DragHandle({ id }: { id: number }) {
@@ -135,7 +156,11 @@ function DragHandle({ id }: { id: number }) {
 }
 
 // Inline edit component for Target field
-function TargetCell({ row }: { row: Row<z.infer<typeof schema>> }) {
+function TargetCell({
+  row,
+}: {
+  row: Row<typeof dataTableFeatures, DataTableItem>;
+}) {
   const form = useForm<TargetFormData>({
     resolver: zodResolver(targetFormSchema),
     defaultValues: {
@@ -181,7 +206,11 @@ function TargetCell({ row }: { row: Row<z.infer<typeof schema>> }) {
 }
 
 // Inline edit component for Limit field
-function LimitCell({ row }: { row: Row<z.infer<typeof schema>> }) {
+function LimitCell({
+  row,
+}: {
+  row: Row<typeof dataTableFeatures, DataTableItem>;
+}) {
   const form = useForm<LimitFormData>({
     resolver: zodResolver(limitFormSchema),
     defaultValues: {
@@ -226,7 +255,7 @@ function LimitCell({ row }: { row: Row<z.infer<typeof schema>> }) {
   );
 }
 
-const columns: ColumnDef<z.infer<typeof schema>>[] = [
+const columns: ColumnDef<typeof dataTableFeatures, DataTableItem>[] = [
   {
     id: "drag",
     header: () => null,
@@ -365,7 +394,11 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
 ];
 
-function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
+function DraggableRow({
+  row,
+}: {
+  row: Row<typeof dataTableFeatures, DataTableItem>;
+}) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   });
@@ -398,7 +431,7 @@ export function DataTable({
   const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<ColumnVisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -419,7 +452,8 @@ export function DataTable({
     [data],
   );
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data,
     columns,
     state: {
@@ -436,12 +470,6 @@ export function DataTable({
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   function handleDragEnd(event: DragEndEvent) {
@@ -595,15 +623,13 @@ export function DataTable({
                 Rows per page
               </Label>
               <Select
-                value={`${table.getState().pagination.pageSize}`}
+                value={`${table.state.pagination.pageSize}`}
                 onValueChange={(value) => {
                   table.setPageSize(Number(value));
                 }}
               >
                 <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                  <SelectValue
-                    placeholder={table.getState().pagination.pageSize}
-                  />
+                  <SelectValue placeholder={table.state.pagination.pageSize} />
                 </SelectTrigger>
                 <SelectContent side="top">
                   {[10, 20, 30, 40, 50].map((pageSize) => (
@@ -615,7 +641,7 @@ export function DataTable({
               </Select>
             </div>
             <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
+              Page {table.state.pagination.pageIndex + 1} of{" "}
               {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
