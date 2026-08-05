@@ -24,7 +24,6 @@
     "check:fix": "biome check --write . --skip-parse-errors",
     "lint:ws": "bunx sherif@latest",
     "postinstall": "bun lint:ws",
-    "prepare": "lefthook install",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "ui-add": "turbo run ui-add"
@@ -32,7 +31,6 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.7",
     "@turbo/gen": "^2.10.8",
-    "lefthook": "^2.1.10",
     "turbo": "^2.10.8",
     "typescript": "7.0.2"
   },
