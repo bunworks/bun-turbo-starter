@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "clean": "git clean -xdf node_modules",
+    "clean": "bun scripts/clean.mjs",
     "clean:workspaces": "turbo run clean",
     "auth:generate": "bun --filter @acme/auth generate",
     "db:push": "turbo -F @acme/db push",
