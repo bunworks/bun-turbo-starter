@@ -7,16 +7,21 @@ import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
 import { cache } from "react";
 
-const baseUrl =
-  env.VERCEL_ENV === "production"
+const vercelUrl =
+  env.VERCEL_ENV === "production" && env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : env.VERCEL_ENV === "preview"
+    : env.VERCEL_ENV === "preview" && env.VERCEL_URL
       ? `https://${env.VERCEL_URL}`
-      : "http://localhost:3000";
+      : undefined;
+
+const baseUrl = vercelUrl ?? env.APP_URL;
+const productionUrl = env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : env.APP_URL;
 
 export const auth = initAuth({
   baseUrl,
-  productionUrl: `https://${env.VERCEL_PROJECT_PRODUCTION_URL ?? "localhost:3000"}`,
+  productionUrl,
   secret: env.AUTH_SECRET,
   googleClientId: env.AUTH_GOOGLE_ID,
   googleClientSecret: env.AUTH_GOOGLE_SECRET,

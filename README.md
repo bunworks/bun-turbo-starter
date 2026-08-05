@@ -194,11 +194,11 @@ bun auth:generate
 **Step 4: Start development server**
 
 ```bash
-# Start all apps in watch mode
+# Start the self-contained Next.js app (UI + /api routes)
 bun dev
 
-# Or start only Next.js app
-bun dev:next
+# Optional: also start docs, workers, and the standalone API server
+bun dev:all
 ```
 
 Open [http://localhost:3000](http://localhost:3000) 🎉
@@ -221,8 +221,9 @@ bun turbo gen init
 
 | Command | Description |
 |---------|-------------|
-| `bun dev` | Start all apps in development mode with watch |
-| `bun dev:next` | Start only Next.js app |
+| `bun dev` | Start the self-contained Next.js app (UI + built-in API) |
+| `bun dev:all` | Start all apps and workers in development mode |
+| `bun dev:next` | Alias for starting only the Next.js app |
 | `bun build` | Build all apps and packages |
 | `bun lint` | Run Biome linting |
 | `bun lint:fix` | Fix linting issues automatically |

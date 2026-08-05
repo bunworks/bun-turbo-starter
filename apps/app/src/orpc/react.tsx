@@ -30,17 +30,22 @@ const getQueryClient = () => {
   }
 };
 
-const getBaseUrl = () => {
-  // Explicit override: point the web client at a standalone API server.
-  if (env.NEXT_PUBLIC_API_URL) return env.NEXT_PUBLIC_API_URL;
-  if (typeof window !== "undefined") return window.location.origin;
-  if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`;
-  return `http://localhost:${env.PORT || 3000}`;
+const getApiUrl = () => {
+  // The standalone server is opt-in. By default, browser requests stay on the
+  // current origin and are handled by apps/app/src/app/api/orpc.
+  if (env.NEXT_PUBLIC_API_URL) {
+    return new URL("/api/orpc", env.NEXT_PUBLIC_API_URL).toString();
+  }
+  if (typeof window !== "undefined") {
+    return new URL("/api/orpc", window.location.origin).toString();
+  }
+  if (env.VERCEL_URL) return `https://${env.VERCEL_URL}/api/orpc`;
+  return `http://localhost:${env.PORT}/api/orpc`;
 };
 
 // Создаем RPCLink
 const link = new RPCLink({
-  url: `${getBaseUrl()}/api/orpc`,
+  url: getApiUrl(),
 });
 
 // Создаем oRPC клиент (используем глобальный $client если доступен для SSR оптимизации)

@@ -15,7 +15,7 @@ export const env = createEnv({
     POSTGRES_URL: z.url().optional(),
 
     // App
-    APP_URL: z.string().default("http://localhost:3000"),
+    APP_URL: z.url().default("http://localhost:3000"),
 
     // Email
     RESEND_API_KEY: z.string().optional(),
@@ -39,7 +39,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_APP_NAME: z.string().default("Acme Inc."),
     NEXT_PUBLIC_APP_SHORT_NAME: z.string().default("Acme"),
-    NEXT_PUBLIC_APP_URL: z.string().default("http://localhost:3000"),
+    NEXT_PUBLIC_APP_URL: z.url().default("http://localhost:3000"),
   },
   clientPrefix: "NEXT_PUBLIC_",
   runtimeEnv: {
