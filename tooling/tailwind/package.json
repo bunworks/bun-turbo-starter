@@ -16,12 +16,12 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.3.3",
-    "postcss": "^8.5.25",
+    "postcss": "^8.5.26",
     "tailwindcss": "4.3.3"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/node": "26.1.2",
+    "@types/node": "26.2.0",
     "typescript": "7.0.2"
   }
 }

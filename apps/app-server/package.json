@@ -18,8 +18,8 @@
     "@acme/db": "workspace:*",
     "@acme/emails": "workspace:*",
     "@acme/storage": "workspace:*",
-    "@orpc/server": "^1.14.14",
-    "hono": "4.13.0",
+    "@orpc/server": "^1.15.0",
+    "hono": "4.13.1",
     "superjson": "2.2.6",
     "zod": "4.4.3"
   },

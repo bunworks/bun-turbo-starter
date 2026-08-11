@@ -6,7 +6,7 @@ RUN apk add --no-cache libc6-compat
 # Set working directory
 WORKDIR /app
 # Install turbo globally
-RUN npm install -g turbo@2.10.8
+RUN npm install -g turbo@2.10.9
 COPY . .
 
 # Generate a partial monorepo with a pruned lockfile for a target workspace

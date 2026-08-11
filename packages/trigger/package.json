@@ -20,11 +20,11 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@trigger.dev/sdk": "4.5.9"
+    "@trigger.dev/sdk": "4.5.10"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/node": "26.1.2",
+    "@types/node": "26.2.0",
     "typescript": "7.0.2"
   }
 }
