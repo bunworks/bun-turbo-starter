@@ -1,5 +1,5 @@
 FROM node:24-alpine AS base
-RUN npm install -g bun@1.3.14
+RUN npm install -g bun@1.4.0
 
 FROM base AS builder
 RUN apk add --no-cache libc6-compat

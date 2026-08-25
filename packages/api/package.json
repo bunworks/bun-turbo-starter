@@ -25,13 +25,13 @@
     "@acme/validators": "workspace:*",
     "@orpc/contract": "^1.15.0",
     "@orpc/server": "^1.15.0",
-    "better-auth": "1.6.26",
+    "better-auth": "1.7.1",
     "superjson": "2.2.6",
     "zod": "4.4.3"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/node": "26.2.0",
+    "@types/node": "26.3.0",
     "typescript": "7.0.2"
   }
 }

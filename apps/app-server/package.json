@@ -19,13 +19,13 @@
     "@acme/emails": "workspace:*",
     "@acme/storage": "workspace:*",
     "@orpc/server": "^1.15.0",
-    "hono": "4.13.1",
+    "hono": "4.13.4",
     "superjson": "2.2.6",
     "zod": "4.4.3"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/bun": "1.3.14",
+    "@types/bun": "1.4.0",
     "tsdown": "0.22.14",
     "typescript": "7.0.2"
   }
