@@ -8,18 +8,18 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.mjs"
     }
   },
   "main": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
     "dev:email": "bun --env-file=../../.env run email dev -p 3002",
-    "build": "tsdown",
+    "build": "tsdown && tsc",
     "export": "email export",
     "typecheck": "tsc --noEmit"
   },

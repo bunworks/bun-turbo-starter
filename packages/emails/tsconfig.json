@@ -1,9 +1,10 @@
 {
-  "extends": "@acme/tsconfig/base.json",
+  "extends": "@acme/tsconfig/compiled-package.json",
   "include": [".", "env.ts"],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
     "moduleResolution": "Bundler",
+    "types": ["node"],
     "jsx": "react-jsx"
   }
 }

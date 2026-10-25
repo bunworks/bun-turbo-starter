@@ -5,18 +5,18 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.mjs"
     }
   },
   "main": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && tsc",
     "build:watch": "tsdown --watch",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsc",
