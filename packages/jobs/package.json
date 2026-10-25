@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@hatchet-dev/typescript-sdk": "1.29.0"
+    "@hatchet-dev/typescript-sdk": "1.43.0"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
