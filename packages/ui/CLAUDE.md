@@ -14,8 +14,12 @@ Radix-style props.
   key). Files land in `src/components/reui/` and are imported by subpath,
   `@acme/ui/reui/<name>` — not re-exported from the index, because
   `@reui/badge` / `@reui/alert` clash with the shadcn `Badge` / `Alert`.
-  ReUI items import `cn` from a bare `"cn"`: `scripts/fix-imports.ts` (run by
-  `ui-add`) rewrites it; if the CLI adds a `cn` npm dependency, remove it.
+  ReUI items import `cn` from a bare `"cn"` and siblings from
+  `"src/components//<name>"`: `scripts/fix-imports.ts` (run by `ui-add`)
+  rewrites both to relative paths; if the CLI adds a `cn` npm dependency,
+  remove it. Items that depend on shadcn components (e.g. `@reui/data-grid`)
+  stop at an overwrite prompt unless given `--overwrite`, which replaces those
+  components with their upstream `base-vega` versions — review that diff.
   ReUI state tokens (`success`, `info`, `warning`, `invert`, …) are already in
   `tooling/tailwind/theme.css`.
 - This package is excluded from Biome. Keep edits close to upstream shadcn so

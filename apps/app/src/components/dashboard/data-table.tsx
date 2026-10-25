@@ -1,13 +1,11 @@
 "use client";
 
 import {
-  Badge,
   Button,
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  Checkbox,
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -17,7 +15,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
@@ -36,18 +33,31 @@ import {
   SelectTrigger,
   SelectValue,
   Separator,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@acme/ui";
 import { useIsMobile } from "@acme/ui/hooks";
+import { Badge } from "@acme/ui/reui/badge";
+import {
+  DataGrid,
+  type DataGridFeatures,
+  dataGridFeatures,
+} from "@acme/ui/reui/data-grid/data-grid";
+import { DataGridColumnHeader } from "@acme/ui/reui/data-grid/data-grid-column-header";
+import { DataGridColumnVisibility } from "@acme/ui/reui/data-grid/data-grid-column-visibility";
+import { DataGridPagination } from "@acme/ui/reui/data-grid/data-grid-pagination";
+import { DataGridScrollArea } from "@acme/ui/reui/data-grid/data-grid-scroll-area";
+import {
+  DataGridTableRowSelect,
+  DataGridTableRowSelectAll,
+} from "@acme/ui/reui/data-grid/data-grid-table";
+import {
+  DataGridTableDndRowHandle,
+  DataGridTableDndRows,
+} from "@acme/ui/reui/data-grid/data-grid-table-dnd-rows";
+import { Frame, FrameFooter, FramePanel } from "@acme/ui/reui/frame";
 import {
   type DataTableItemData,
   dataTableItemSchema,
@@ -56,35 +66,12 @@ import {
   type TargetFormData,
   targetFormSchema,
 } from "@acme/validators";
-import {
-  closestCenter,
-  DndContext,
-  type DragEndEvent,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
-  type UniqueIdentifier,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import type { DragEndEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  IconChevronDown,
-  IconChevronLeft,
-  IconChevronRight,
-  IconChevronsLeft,
-  IconChevronsRight,
   IconCircleCheckFilled,
   IconDotsVertical,
-  IconGripVertical,
   IconLayoutColumns,
   IconLoader,
   IconPlus,
@@ -92,23 +79,11 @@ import {
 } from "@tabler/icons-react";
 import {
   type ColumnDef,
-  type ColumnFiltersState,
   type ColumnVisibilityState,
-  columnFacetingFeature,
-  columnFilteringFeature,
-  columnVisibilityFeature,
-  createFacetedRowModel,
-  createFacetedUniqueValues,
-  createFilteredRowModel,
-  createPaginatedRowModel,
-  createSortedRowModel,
-  flexRender,
+  type PaginationState,
   type Row,
-  rowPaginationFeature,
-  rowSelectionFeature,
-  rowSortingFeature,
+  type RowSelectionState,
   type SortingState,
-  tableFeatures,
   useTable,
 } from "@tanstack/react-table";
 import * as React from "react";
@@ -121,46 +96,8 @@ import type { z } from "zod";
 export const schema = dataTableItemSchema;
 type DataTableItem = z.infer<typeof schema>;
 
-const dataTableFeatures = tableFeatures({
-  columnFacetingFeature,
-  columnFilteringFeature,
-  columnVisibilityFeature,
-  rowPaginationFeature,
-  rowSelectionFeature,
-  rowSortingFeature,
-  facetedRowModel: createFacetedRowModel(),
-  facetedUniqueValues: createFacetedUniqueValues(),
-  filteredRowModel: createFilteredRowModel(),
-  paginatedRowModel: createPaginatedRowModel(),
-  sortedRowModel: createSortedRowModel(),
-});
-
-// Create a separate component for the drag handle
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({
-    id,
-  });
-
-  return (
-    <Button
-      {...attributes}
-      {...listeners}
-      variant="ghost"
-      size="icon"
-      className="text-muted-foreground size-7 hover:bg-transparent"
-    >
-      <IconGripVertical className="text-muted-foreground size-3" />
-      <span className="sr-only">Drag to reorder</span>
-    </Button>
-  );
-}
-
 // Inline edit component for Target field
-function TargetCell({
-  row,
-}: {
-  row: Row<typeof dataTableFeatures, DataTableItem>;
-}) {
+function TargetCell({ row }: { row: Row<DataGridFeatures, DataTableItem> }) {
   const form = useForm<TargetFormData>({
     resolver: zodResolver(targetFormSchema),
     defaultValues: {
@@ -192,7 +129,7 @@ function TargetCell({
               </FormLabel>
               <FormControl>
                 <Input
-                  className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+                  className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 ms-auto h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
                   id={`${row.original.id}-target`}
                   {...field}
                 />
@@ -206,11 +143,7 @@ function TargetCell({
 }
 
 // Inline edit component for Limit field
-function LimitCell({
-  row,
-}: {
-  row: Row<typeof dataTableFeatures, DataTableItem>;
-}) {
+function LimitCell({ row }: { row: Row<DataGridFeatures, DataTableItem> }) {
   const form = useForm<LimitFormData>({
     resolver: zodResolver(limitFormSchema),
     defaultValues: {
@@ -242,7 +175,7 @@ function LimitCell({
               </FormLabel>
               <FormControl>
                 <Input
-                  className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+                  className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 ms-auto h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
                   id={`${row.original.id}-limit`}
                   {...field}
                 />
@@ -255,88 +188,89 @@ function LimitCell({
   );
 }
 
-const columns: ColumnDef<typeof dataTableFeatures, DataTableItem>[] = [
+// Manual order and a column sort can't both win: `isSorted` mutes the grip
+// while the rows are sorted instead of letting a drop silently do nothing.
+const getColumns = (
+  isSorted: boolean,
+): ColumnDef<DataGridFeatures, DataTableItem>[] => [
   {
     id: "drag",
-    header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
+    cell: () => <DataGridTableDndRowHandle disabled={isSorted} />,
+    size: 36,
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: "select",
-    header: ({ table }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            !!table.getIsSomePageRowsSelected()
-          }
-          indeterminate={
-            table.getIsSomePageRowsSelected() &&
-            !table.getIsAllPageRowsSelected()
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      </div>
-    ),
+    header: () => <DataGridTableRowSelectAll />,
+    cell: ({ row }) => <DataGridTableRowSelect row={row} />,
+    size: 40,
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: "header",
-    header: "Header",
-    cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />;
-    },
+    id: "header",
+    header: ({ column }) => (
+      <DataGridColumnHeader title="Header" column={column} />
+    ),
+    cell: ({ row }) => <TableCellViewer item={row.original} />,
+    size: 260,
     enableHiding: false,
   },
   {
     accessorKey: "type",
-    header: "Section Type",
-    cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.type}
-        </Badge>
-      </div>
+    id: "type",
+    header: ({ column }) => (
+      <DataGridColumnHeader title="Section Type" column={column} />
     ),
+    cell: ({ row }) => <Badge variant="outline">{row.original.type}</Badge>,
+    size: 170,
   },
   {
     accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {row.original.status === "Done" ? (
-          <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-        ) : (
-          <IconLoader />
-        )}
-        {row.original.status}
-      </Badge>
+    id: "status",
+    header: ({ column }) => (
+      <DataGridColumnHeader title="Status" column={column} />
     ),
+    cell: ({ row }) =>
+      row.original.status === "Done" ? (
+        <Badge variant="success-light">
+          <IconCircleCheckFilled />
+          {row.original.status}
+        </Badge>
+      ) : (
+        <Badge variant="info-light">
+          <IconLoader />
+          {row.original.status}
+        </Badge>
+      ),
+    size: 130,
   },
   {
     accessorKey: "target",
-    header: () => <div className="w-full text-right">Target</div>,
+    id: "target",
+    header: "Target",
     cell: ({ row }) => <TargetCell row={row} />,
+    size: 100,
+    enableSorting: false,
+    meta: { headerClassName: "text-end", cellClassName: "text-end" },
   },
   {
     accessorKey: "limit",
-    header: () => <div className="w-full text-right">Limit</div>,
+    id: "limit",
+    header: "Limit",
     cell: ({ row }) => <LimitCell row={row} />,
+    size: 100,
+    enableSorting: false,
+    meta: { headerClassName: "text-end", cellClassName: "text-end" },
   },
   {
     accessorKey: "reviewer",
-    header: "Reviewer",
+    id: "reviewer",
+    header: ({ column }) => (
+      <DataGridColumnHeader title="Reviewer" column={column} />
+    ),
     cell: ({ row }) => {
       const isAssigned = row.original.reviewer !== "Assign reviewer";
 
@@ -367,21 +301,24 @@ const columns: ColumnDef<typeof dataTableFeatures, DataTableItem>[] = [
         </>
       );
     },
+    size: 190,
   },
   {
     id: "actions",
     cell: () => (
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
-            <IconDotsVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="text-muted-foreground"
+            >
+              <IconDotsVertical />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          }
+        />
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem>Edit</DropdownMenuItem>
           <DropdownMenuItem>Make a copy</DropdownMenuItem>
@@ -391,37 +328,11 @@ const columns: ColumnDef<typeof dataTableFeatures, DataTableItem>[] = [
         </DropdownMenuContent>
       </DropdownMenu>
     ),
+    size: 56,
+    enableSorting: false,
+    enableHiding: false,
   },
 ];
-
-function DraggableRow({
-  row,
-}: {
-  row: Row<typeof dataTableFeatures, DataTableItem>;
-}) {
-  const { transform, transition, setNodeRef, isDragging } = useSortable({
-    id: row.original.id,
-  });
-
-  return (
-    <TableRow
-      data-state={row.getIsSelected() && "selected"}
-      data-dragging={isDragging}
-      ref={setNodeRef}
-      className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
-      style={{
-        transform: CSS.Transform.toString(transform),
-        transition: transition,
-      }}
-    >
-      {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-        </TableCell>
-      ))}
-    </TableRow>
-  );
-}
 
 export function DataTable({
   data: initialData,
@@ -429,281 +340,149 @@ export function DataTable({
   data: z.infer<typeof schema>[];
 }) {
   const [data, setData] = React.useState(() => initialData);
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<ColumnVisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [pagination, setPagination] = React.useState({
+  const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const sortableId = React.useId();
-  const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {}),
-  );
-
-  const dataIds = React.useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
-    [data],
-  );
+  const isSorted = sorting.length > 0;
+  const columns = React.useMemo(() => getColumns(isSorted), [isSorted]);
 
   const table = useTable({
-    features: dataTableFeatures,
+    features: dataGridFeatures,
     data,
     columns,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
-      columnFilters,
       pagination,
     },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
   });
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (active && over && active.id !== over.id) {
-      setData((data) => {
-        const oldIndex = dataIds.indexOf(active.id);
-        const newIndex = dataIds.indexOf(over.id);
-        return arrayMove(data, oldIndex, newIndex);
-      });
-    }
+  // The sortable ids must match the rendered (current page) rows, in order.
+  const dataIds = table.getRowModel().rows.map((row) => row.id);
+
+  function handleDragEnd({ active, over }: DragEndEvent) {
+    if (!over || active.id === over.id) return;
+    setData((current) => {
+      const from = current.findIndex((item) => `${item.id}` === active.id);
+      const to = current.findIndex((item) => `${item.id}` === over.id);
+      return from === -1 || to === -1 ? current : arrayMove(current, from, to);
+    });
   }
 
   return (
-    <Tabs
-      defaultValue="outline"
-      className="w-full flex-col justify-start gap-6"
+    <DataGrid
+      table={table}
+      recordCount={data.length}
+      emptyMessage="No results."
+      tableLayout={{ rowsDraggable: true, columnsVisibility: true }}
     >
-      <div className="flex items-center justify-between px-4 lg:px-6">
-        <Label htmlFor="view-selector" className="sr-only">
-          View
-        </Label>
-        <Select defaultValue="outline">
-          <SelectTrigger
-            className="flex w-fit @4xl/main:hidden"
-            size="sm"
-            id="view-selector"
-          >
-            <SelectValue placeholder="Select a view" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="outline">Outline</SelectItem>
-            <SelectItem value="past-performance">Past Performance</SelectItem>
-            <SelectItem value="key-personnel">Key Personnel</SelectItem>
-            <SelectItem value="focus-documents">Focus Documents</SelectItem>
-          </SelectContent>
-        </Select>
-        <TabsList className="**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex">
-          <TabsTrigger value="outline">Outline</TabsTrigger>
-          <TabsTrigger value="past-performance">
-            Past Performance <Badge variant="secondary">3</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="key-personnel">
-            Key Personnel <Badge variant="secondary">2</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
-        </TabsList>
-        <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant="outline" size="sm">
-                <IconLayoutColumns />
-                <span className="hidden lg:inline">Customize Columns</span>
-                <span className="lg:hidden">Columns</span>
-                <IconChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide(),
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <IconPlus />
-            <span className="hidden lg:inline">Add Section</span>
-          </Button>
-        </div>
-      </div>
-      <TabsContent
-        value="outline"
-        className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
+      <Tabs
+        defaultValue="outline"
+        className="w-full flex-col justify-start gap-6"
       >
-        <div className="overflow-hidden rounded-lg border">
-          <DndContext
-            collisionDetection={closestCenter}
-            modifiers={[restrictToVerticalAxis]}
-            onDragEnd={handleDragEnd}
-            sensors={sensors}
-            id={sortableId}
-          >
-            <Table>
-              <TableHeader className="bg-muted sticky top-0 z-10">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id} colSpan={header.colSpan}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody className="**:data-[slot=table-cell]:first:w-8">
-                {table.getRowModel().rows?.length ? (
-                  <SortableContext
-                    items={dataIds}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {table.getRowModel().rows.map((row) => (
-                      <DraggableRow key={row.id} row={row} />
-                    ))}
-                  </SortableContext>
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </DndContext>
-        </div>
-        <div className="flex items-center justify-between px-4">
-          <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="flex w-full items-center gap-8 lg:w-fit">
-            <div className="hidden items-center gap-2 lg:flex">
-              <Label htmlFor="rows-per-page" className="text-sm font-medium">
-                Rows per page
-              </Label>
-              <Select
-                value={`${table.state.pagination.pageSize}`}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value));
-                }}
-              >
-                <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                  <SelectValue placeholder={table.state.pagination.pageSize} />
-                </SelectTrigger>
-                <SelectContent side="top">
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
-                    <SelectItem key={pageSize} value={`${pageSize}`}>
-                      {pageSize}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Page {table.state.pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
-            </div>
-            <div className="ml-auto flex items-center gap-2 lg:ml-0">
-              <Button
-                variant="outline"
-                className="hidden h-8 w-8 p-0 lg:flex"
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className="sr-only">Go to first page</span>
-                <IconChevronsLeft />
-              </Button>
-              <Button
-                variant="outline"
-                className="size-8"
-                size="icon"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className="sr-only">Go to previous page</span>
-                <IconChevronLeft />
-              </Button>
-              <Button
-                variant="outline"
-                className="size-8"
-                size="icon"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className="sr-only">Go to next page</span>
-                <IconChevronRight />
-              </Button>
-              <Button
-                variant="outline"
-                className="hidden size-8 lg:flex"
-                size="icon"
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className="sr-only">Go to last page</span>
-                <IconChevronsRight />
-              </Button>
-            </div>
+        <div className="flex items-center justify-between px-4 lg:px-6">
+          <Label htmlFor="view-selector" className="sr-only">
+            View
+          </Label>
+          <Select defaultValue="outline">
+            <SelectTrigger
+              className="flex w-fit @4xl/main:hidden"
+              size="sm"
+              id="view-selector"
+            >
+              <SelectValue placeholder="Select a view" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="outline">Outline</SelectItem>
+              <SelectItem value="past-performance">Past Performance</SelectItem>
+              <SelectItem value="key-personnel">Key Personnel</SelectItem>
+              <SelectItem value="focus-documents">Focus Documents</SelectItem>
+            </SelectContent>
+          </Select>
+          <TabsList className="hidden @4xl/main:flex">
+            <TabsTrigger value="outline">Outline</TabsTrigger>
+            <TabsTrigger value="past-performance">
+              Past Performance{" "}
+              <Badge variant="secondary" size="sm" radius="full">
+                3
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="key-personnel">
+              Key Personnel{" "}
+              <Badge variant="secondary" size="sm" radius="full">
+                2
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
+          </TabsList>
+          <div className="flex items-center gap-2">
+            <DataGridColumnVisibility
+              table={table}
+              trigger={
+                <Button variant="outline" size="sm">
+                  <IconLayoutColumns />
+                  <span className="hidden lg:inline">Customize Columns</span>
+                  <span className="lg:hidden">Columns</span>
+                </Button>
+              }
+            />
+            <Button variant="outline" size="sm">
+              <IconPlus />
+              <span className="hidden lg:inline">Add Section</span>
+            </Button>
           </div>
         </div>
-      </TabsContent>
-      <TabsContent
-        value="past-performance"
-        className="flex flex-col px-4 lg:px-6"
-      >
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-      </TabsContent>
-      <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-      </TabsContent>
-      <TabsContent
-        value="focus-documents"
-        className="flex flex-col px-4 lg:px-6"
-      >
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-      </TabsContent>
-    </Tabs>
+        <TabsContent value="outline" className="flex flex-col px-4 lg:px-6">
+          <Frame className="w-full" stacked dense>
+            <FramePanel className="p-0 shadow-none">
+              <DataGridScrollArea>
+                <DataGridTableDndRows
+                  dataIds={dataIds}
+                  handleDragEnd={handleDragEnd}
+                />
+              </DataGridScrollArea>
+            </FramePanel>
+            <FrameFooter className="flex-row flex-wrap items-center justify-between gap-2 py-1.5 pr-2 pl-2.5">
+              <div className="text-muted-foreground hidden text-sm tabular-nums lg:block">
+                {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                {table.getFilteredRowModel().rows.length} row(s) selected.
+              </div>
+              <DataGridPagination className="lg:w-auto" />
+            </FrameFooter>
+          </Frame>
+        </TabsContent>
+        <TabsContent
+          value="past-performance"
+          className="flex flex-col px-4 lg:px-6"
+        >
+          <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+        </TabsContent>
+        <TabsContent
+          value="key-personnel"
+          className="flex flex-col px-4 lg:px-6"
+        >
+          <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+        </TabsContent>
+        <TabsContent
+          value="focus-documents"
+          className="flex flex-col px-4 lg:px-6"
+        >
+          <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+        </TabsContent>
+      </Tabs>
+    </DataGrid>
   );
 }
 
@@ -753,9 +532,13 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
-      <DrawerTrigger>
-        <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {item.header}
+      <DrawerTrigger asChild>
+        <Button
+          variant="link"
+          className="text-foreground w-fit max-w-full px-0 text-left"
+          title={item.header}
+        >
+          <span className="truncate">{item.header}</span>
         </Button>
       </DrawerTrigger>
       <DrawerContent>
