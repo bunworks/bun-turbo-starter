@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "new-york",
+  "style": "base-vega",
   "rsc": true,
   "tsx": true,
   "tailwind": {
@@ -9,9 +9,13 @@
     "baseColor": "zinc",
     "cssVariables": true
   },
+  "iconLibrary": "lucide",
   "aliases": {
     "utils": "@acme/ui",
     "components": "src/components/",
     "ui": "src/components/"
+  },
+  "registries": {
+    "@reui": "https://reui.io/r/{style}/{name}.json"
   }
 }

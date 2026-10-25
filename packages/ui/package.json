@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     ".": "./src/components/index.ts",
-    "./hooks": "./src/hooks/index.ts"
+    "./hooks": "./src/hooks/index.ts",
+    "./reui/*": "./src/components/reui/*.tsx"
   },
   "license": "MIT",
   "scripts": {
@@ -13,7 +14,7 @@
     "lint": "biome lint .",
     "check": "biome check .",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "ui-add": "bunx shadcn@latest add && biome format --write src"
+    "ui-add": "bunx shadcn@latest add && bun scripts/fix-imports.ts && biome format --write src"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
