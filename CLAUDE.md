@@ -103,6 +103,9 @@ and run `tsc` by hand, build them first.
   `bun --env-file=../../.env`. Never commit it or print its values.
 - `src/proxy.ts` is only an optimistic redirect — always enforce auth in the
   procedure / page (`protectedProcedure`, session check).
+- oRPC is pinned to `2.0.0-beta.*` (npm `beta` tag; plain installs get v1).
+  v2 docs: https://orpc.dev. `RPCLink` takes `origin` + path-only `url`, and
+  `RPCHandler` rejects GET by default. v1 clients can't talk to a v2 server.
 - `README.md` mentions `apps/app-server` and `apps/docs`; they are not in this
   repo. `CONTRIBUTING.md` still says tRPC in places — the API is oRPC.
 - Windows dev machine is common here: prefer cross-platform scripts (Bun/TS)
