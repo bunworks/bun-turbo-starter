@@ -17,7 +17,7 @@
  */
 
 import type { Session } from "@acme/auth";
-import { logger } from "@acme/config";
+import { env, logger } from "@acme/config";
 import { db } from "@acme/db";
 import { ORPCError, os } from "@orpc/server";
 
@@ -101,13 +101,21 @@ export const protectedProcedure = publicProcedure.use(({ context, next }) => {
  *
  * @example ADMIN_EMAILS=admin@example.com,ops@example.com
  */
-export const adminProcedure = protectedProcedure.use(({ context, next }) => {
-  const adminEmails = (process.env.ADMIN_EMAILS ?? "")
+const adminEmails = new Set(
+  (env.ADMIN_EMAILS ?? "")
     .split(",")
     .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
+    .filter(Boolean),
+);
 
-  if (!adminEmails.includes(context.session.user.email.toLowerCase())) {
+if (adminEmails.size === 0) {
+  logger.warn("orpc.admin_emails_empty", {
+    hint: "Set ADMIN_EMAILS to grant adminProcedure access",
+  });
+}
+
+export const adminProcedure = protectedProcedure.use(({ context, next }) => {
+  if (!adminEmails.has(context.session.user.email.toLowerCase())) {
     throw new ORPCError("FORBIDDEN", {
       message: "Требуются права администратора",
     });

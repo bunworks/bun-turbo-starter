@@ -1,3 +1,4 @@
+import { logger } from "@acme/config";
 import { render } from "@react-email/components";
 import nodemailer from "nodemailer";
 import type Mail from "nodemailer/lib/mailer";
@@ -39,9 +40,9 @@ export const sendEmail = async (email: Emails) => {
     return transporter.sendMail(mailOptions);
   }
   if (!resend) {
-    console.log(
-      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work.",
-    );
+    logger.warn("email.resend_not_configured", {
+      hint: "Add RESEND_API_KEY to .env for emails to work",
+    });
     return Promise.resolve();
   }
   await resend.emails.send({
@@ -54,9 +55,9 @@ export const sendEmail = async (email: Emails) => {
 
 export const sendEmailHtml = async (email: EmailHtml) => {
   if (!resend) {
-    console.log(
-      "Resend is not configured. You need to add a RESEND_API_KEY in your .env file for emails to work.",
-    );
+    logger.warn("email.resend_not_configured", {
+      hint: "Add RESEND_API_KEY to .env for emails to work",
+    });
     return Promise.resolve();
   }
   await resend.emails.send({

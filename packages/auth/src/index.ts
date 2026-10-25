@@ -1,3 +1,4 @@
+import { logger } from "@acme/config";
 import { db } from "@acme/db";
 import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
 import { betterAuth } from "better-auth";
@@ -29,10 +30,15 @@ export function initAuth<
     /**
      * Built-in rate limiting protects auth endpoints (sign-in, OTP, password
      * reset) from brute-force and abuse. Tune per environment as needed.
+     *
+     * Counters live in Postgres (`rate_limits` table) so limits hold across
+     * serverless invocations and multiple instances; the default in-memory
+     * store is per-process and effectively disabled on Vercel.
      * @see https://www.better-auth.com/docs/concepts/rate-limit
      */
     rateLimit: {
       enabled: true,
+      storage: "database",
       window: 60,
       max: 100,
     },
@@ -77,8 +83,8 @@ export function initAuth<
           }
         : {},
     onAPIError: {
-      onError(error, ctx) {
-        console.error("BETTER AUTH API ERROR", error, ctx);
+      onError(error) {
+        logger.error("auth.api_error", error);
       },
     },
   } satisfies BetterAuthOptions;
