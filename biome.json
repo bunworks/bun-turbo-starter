@@ -14,7 +14,8 @@
       "!**/packages/ui/**/*",
       "!**/tooling/**/*",
       "!**/apps/app/**/*.css",
-      "!**/.claude/**/*.md"
+      "!**/.claude/**/*.md",
+      "!**/packages/db/migrations"
     ]
   },
   "formatter": {

@@ -1,16 +1,17 @@
 import { PGlite } from "@electric-sql/pglite";
-import { generateDrizzleJson, generateMigration } from "drizzle-kit/api";
 import { drizzle } from "drizzle-orm/pglite";
+import { migrate } from "drizzle-orm/pglite/migrator";
 
 import type { Database } from "./client";
+import { migrationsFolder } from "./migrations";
 import * as schema from "./schema";
 
 /**
- * In-memory Postgres (PGlite) with the current Drizzle schema applied.
+ * In-memory Postgres (PGlite) with every migration in `migrations/` applied.
  *
- * Tests get a real Postgres dialect without Docker or a running server.
- * The schema is diffed from an empty snapshot on every call, so each test
- * database starts clean and always matches `src/schema`.
+ * Tests get a real Postgres dialect without Docker or a running server, and
+ * exercise the same SQL that production runs — a migration that drifts from
+ * `src/schema` fails here (CI also fails on un-generated schema changes).
  *
  * @example
  *   const { db, close } = await createTestDb();
@@ -18,18 +19,9 @@ import * as schema from "./schema";
  */
 export async function createTestDb() {
   const client = new PGlite();
-  const db: Database = drizzle({ client, schema, casing: "snake_case" });
+  const pglite = drizzle({ client, schema, casing: "snake_case" });
+  await migrate(pglite, { migrationsFolder });
 
-  const empty = generateDrizzleJson({});
-  const current = generateDrizzleJson(
-    schema,
-    empty.id,
-    undefined,
-    "snake_case",
-  );
-  for (const statement of await generateMigration(empty, current)) {
-    await client.exec(statement);
-  }
-
+  const db: Database = pglite;
   return { db, close: () => client.close() };
 }

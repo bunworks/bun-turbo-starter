@@ -19,7 +19,7 @@ bun test                 # Bun's test runner over all *.test.ts (fast)
 bun test packages/api    # single package / file
 bun lint:ws              # sherif: workspace package.json consistency
 bun lint:deps            # knip: unused files / deps, unlisted deps
-bun e2e                  # Playwright (apps/app/e2e); needs Postgres + db:push
+bun e2e                  # Playwright (apps/app/e2e); needs Postgres + db:migrate
 ```
 
 Scope turbo to one workspace with `-F`: `bun turbo typecheck -F @acme/api`.
@@ -28,9 +28,11 @@ Database / auth (need `.env` with `POSTGRES_URL`; local services via
 `docker compose up -d` — Postgres :5432, MinIO :9001/:9002, inbucket :9000):
 
 ```bash
-bun db:push              # sync schema to DB (dev)
-bun db:generate          # create SQL migration in packages/db/migrations
-bun db:migrate           # apply migrations
+bun db:generate          # schema diff → new SQL migration in packages/db/migrations
+bun db:migrate           # apply pending migrations (local, CI e2e, production)
+bun db:check             # offline consistency check of migrations (CI runs it)
+bun db:baseline          # one-off: adopt a DB created by db:push, then db:migrate
+bun db:push              # throwaway prototyping only — never on shared DBs
 bun auth:generate        # regenerate Better Auth schema from config
 ```
 
@@ -38,8 +40,9 @@ bun auth:generate        # regenerate Better Auth schema from config
 
 `bun check:fix && bun lint:deps && bun typecheck && bun test` — the same
 gates as CI (`.github/workflows/ci.yml`: biome, sherif, knip, then
-`turbo run build typecheck test --affected`; a separate job runs Playwright
-against Postgres).
+`turbo run build typecheck test --affected`; a separate job migrates a fresh
+Postgres and runs Playwright). Schema edits also need `bun db:generate` —
+CI fails if `src/schema` has changes with no committed migration.
 
 ## Layout
 
@@ -94,8 +97,12 @@ and run `tsc` by hand, build them first.
   `~/orpc/server`; in client components
   `useQuery(orpc.post.list.queryOptions({ input }))` from `~/orpc/react`.
 - **Schema change**: edit `packages/db/src/schema/<domain>/`, export from the
-  domain `index.ts`, then `bun db:push` (dev) or `bun db:generate`. Use the
-  `/db-change` skill. Columns are camelCase in TS, `casing: "snake_case"` in SQL.
+  domain `index.ts`, then `bun db:generate`, review and commit the SQL in
+  `packages/db/migrations/`, and `bun db:migrate`. Use the `/db-change`
+  skill. Columns are camelCase in TS, `casing: "snake_case"` in SQL.
+  Generated migrations may be hand-edited (e.g. `IF NOT EXISTS`, data
+  backfills); never edit or reorder ones already applied anywhere shared.
+  PGlite tests (`createTestDb`) run the migrations, not the schema.
 - **Admin access** is `ADMIN_EMAILS` (comma-separated) checked in
   `adminProcedure`.
 - `@acme/api` stays free of the concrete `Auth` type: callers resolve the

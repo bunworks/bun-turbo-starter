@@ -79,10 +79,10 @@ Edit `.env` and add required values:
 - `BETTER_AUTH_SECRET` — authentication secret
 - `RESEND_API_KEY` — API key for email sending
 
-5. Push database schema:
+5. Apply database migrations:
 
 ```bash
-bun db:push
+bun db:migrate
 ```
 
 6. Generate Better Auth schema:
@@ -320,10 +320,17 @@ Select components from the shadcn/ui list.
 ### Modifying Schema
 
 1. Edit files in `packages/db/src/schema/`
-2. Apply changes:
+2. Generate a migration, review the SQL in `packages/db/migrations/`, and
+   commit it with the schema change (CI fails otherwise):
 
 ```bash
-bun db:push
+bun db:generate --name add_something
+```
+
+3. Apply it:
+
+```bash
+bun db:migrate
 ```
 
 ### Viewing Data

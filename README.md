@@ -183,8 +183,8 @@ cp .env.example .env
 **Step 2: Setup database**
 
 ```bash
-# Push schema to database
-bun db:push
+# Apply migrations (packages/db/migrations)
+bun db:migrate
 
 # (Optional) Open Drizzle Studio to view your database
 bun db:studio
@@ -239,7 +239,7 @@ bun turbo gen init
 | `bun check:fix`     | Fix all linting and formatting issues                    |
 | `bun typecheck`     | Type check all packages                                  |
 | `bun test`          | Run unit tests (bun:test)                                |
-| `bun db:push`       | Push database schema changes                             |
+| `bun db:push`       | Push schema without a migration (throwaway DBs only)     |
 | `bun db:generate`   | Generate SQL migrations from schema                      |
 | `bun db:migrate`    | Apply migrations                                         |
 | `bun db:studio`     | Open Drizzle Studio                                      |

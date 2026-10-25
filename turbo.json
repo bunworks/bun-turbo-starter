@@ -58,10 +58,6 @@
       "dependsOn": ["^build"],
       "cache": false
     },
-    "//#db:generate": {
-      "cache": false,
-      "interactive": true
-    },
     "deploy": {
       "dependsOn": ["^build"],
       "cache": false,

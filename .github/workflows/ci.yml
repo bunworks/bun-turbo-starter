@@ -45,6 +45,20 @@ jobs:
       - name: Unused files, exports and deps (knip)
         run: bun lint:deps
 
+      # Offline: snapshots/journal consistency, then fail if src/schema has
+      # changes that were never turned into a migration with `bun db:generate`.
+      - name: Migrations (drizzle-kit)
+        shell: bash
+        timeout-minutes: 5
+        run: |
+          bun db:check
+          bun db:generate
+          if [ -n "$(git status --porcelain packages/db/migrations)" ]; then
+            echo "::error::Schema changes without a migration. Run \`bun db:generate\` and commit packages/db/migrations."
+            git status --porcelain packages/db/migrations
+            exit 1
+          fi
+
       - name: Build, typecheck, test (affected)
         run: bun turbo run build typecheck test --affected
 
@@ -78,12 +92,12 @@ jobs:
           # the default secret. Throwaway value, scoped to this job.
           sed -i "s|^AUTH_SECRET=.*|AUTH_SECRET=$(openssl rand -base64 32)|" .env
 
-      # Also builds @acme/config, which drizzle.config.ts imports from dist/.
+      # Same path as production: versioned SQL from packages/db/migrations.
+      - name: Migrate DB
+        run: bun db:migrate
+
       - name: Build app
         run: bun turbo run build -F @acme/app
-
-      - name: Push DB schema
-        run: bun run --cwd packages/db push
 
       - name: Install Playwright browser
         working-directory: apps/app

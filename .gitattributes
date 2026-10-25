@@ -1,0 +1,13 @@
+# Check out text files with LF on every OS. Biome formats with LF, and
+# Windows' default `core.autocrlf=true` would otherwise produce CRLF working
+# copies that fail `bun check` (and show up as modified after `check:fix`).
+* text=auto eol=lf
+
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.woff binary
+*.woff2 binary

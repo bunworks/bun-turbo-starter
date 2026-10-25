@@ -28,19 +28,32 @@ Requested change: `$ARGUMENTS`
     for API input.
 - Add `relations(...)` if you need `db.query.<Table>.findMany({ with: ... })`.
 
-## 2. Apply
+## 2. Generate a migration
 
-Requires `POSTGRES_URL` in the root `.env` (local: `docker compose up -d postgres`).
+Every schema change ships as a migration — CI fails on schema changes
+without one.
 
-- Prototyping / local dev: `bun db:push` (interactive on destructive changes —
-  ask the user before confirming data loss).
-- Versioned migration: `bun db:generate`, review the SQL in
-  `packages/db/migrations/`, then `bun db:migrate`.
+1. `bun db:generate --name <short_snake_name>` (works offline; no database
+   needed). On a rename it
+   asks whether a column/table was renamed or replaced — ask the user; a
+   wrong answer drops data.
+2. Read the new `packages/db/migrations/NNNN_*.sql`. Watch for `DROP`,
+   type changes, and `NOT NULL` columns added to tables that have rows
+   (add a default or a backfill by hand-editing the SQL).
+3. `bun db:check`.
+4. Apply locally: `bun db:migrate` (needs `POSTGRES_URL` in the root `.env`;
+   `docker compose up -d postgres`). If the local DB was created with
+   `db:push` and migrate fails on existing tables: `bun db:baseline`, then
+   `bun db:migrate`.
 
-Tell the user which one you ran. Never run `drop` scripts.
+Commit the SQL together with `migrations/meta/`. Don't use `db:push` except
+on a throwaway database, and never edit a migration that is already applied
+on a shared environment — add a new one. Never run `drop` scripts.
 
 ## 3. Verify
 
-`bun turbo typecheck -F @acme/db -F @acme/api` and `bun test packages/db`.
+`bun turbo typecheck -F @acme/db -F @acme/api` and
+`bun test packages/db packages/api` (PGlite runs the migrations, so a broken
+migration fails here).
 Then update any API procedures that should expose the change (see the
 `new-api-endpoint` skill).

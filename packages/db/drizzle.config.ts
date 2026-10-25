@@ -1,16 +1,20 @@
-import { env } from "@acme/config";
 import type { Config } from "drizzle-kit";
 
-if (!env.POSTGRES_URL) {
-  throw new Error("Missing POSTGRES_URL");
-}
-
-const nonPoolingUrl = env.POSTGRES_URL.replace(":6543", ":5432");
+/**
+ * `generate` and `check` work offline (schema + migrations folder only), so
+ * credentials are optional here: CI can verify migrations without a database
+ * or a prior build. `push`, `migrate` and `studio` fail fast without a URL.
+ *
+ * Reads `process.env` directly instead of `@acme/config`, which is consumed
+ * from `dist/` and would force a build before every drizzle-kit command.
+ */
+const url = process.env.POSTGRES_URL;
 
 export default {
   schema: "./src/schema/index.ts",
   out: "./migrations",
   dialect: "postgresql",
-  dbCredentials: { url: nonPoolingUrl },
   casing: "snake_case",
+  // Use the direct (non-pooling) port for DDL on Supabase-style URLs.
+  ...(url && { dbCredentials: { url: url.replace(":6543", ":5432") } }),
 } satisfies Config;
