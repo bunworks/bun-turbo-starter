@@ -16,23 +16,23 @@
     "ui-add": "bunx shadcn@latest add && biome format --write src"
   },
   "dependencies": {
-    "@base-ui/react": "^1.7.0",
-    "@hookform/resolvers": "^5.9.1",
+    "@base-ui/react": "^1.9.0",
+    "@hookform/resolvers": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^4.4.0",
     "input-otp": "^1.5.0",
-    "lucide-react": "^1.34.0",
-    "react-day-picker": "^10.0.1",
-    "react-hook-form": "^7.86.0",
+    "lucide-react": "^1.61.0",
+    "react-day-picker": "^10.0.2",
+    "react-hook-form": "^7.91.0",
     "recharts": "^3.10.1",
     "sonner": "^2.0.8",
-    "tailwind-merge": "^3.6.0",
+    "tailwind-merge": "^3.7.0",
     "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/react": "19.2.18",
-    "react": "19.2.8",
+    "@types/react": "19.3.0",
+    "react": "19.3.1",
     "typescript": "7.0.2",
     "zod": "4.6.7"
   }
