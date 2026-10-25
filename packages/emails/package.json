@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "dev:email": "bun --env-file=../../.env run email dev -p 3002",
-    "build": "tsdown && tsc",
+    "build": "tsdown && tsc --tsBuildInfoFile dist/.tsbuildinfo",
     "export": "email export",
     "typecheck": "tsc --noEmit"
   },

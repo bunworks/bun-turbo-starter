@@ -16,9 +16,9 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "tsdown && tsc",
+    "build": "tsdown && tsc --tsBuildInfoFile dist/.tsbuildinfo",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsc",
+    "dev": "tsc --tsBuildInfoFile dist/.tsbuildinfo",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
