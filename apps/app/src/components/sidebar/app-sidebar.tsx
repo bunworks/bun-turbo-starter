@@ -85,8 +85,6 @@ const data = {
   ],
   navSecondary: [
     { title: "Settings", url: paths.settings.root, icon: IconSettings },
-    { title: "Get Help", url: "#", icon: IconHelp },
-    { title: "Search", url: "#", icon: IconSearch },
   ],
   documents: [
     { name: "Data Library", url: "#", icon: IconDatabase },
