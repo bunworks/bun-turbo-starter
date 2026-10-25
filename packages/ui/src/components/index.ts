@@ -33,6 +33,7 @@ export * from "./sidebar";
 export * from "./slider";
 export * from "./switch";
 export * from "./skeleton";
+export * from "./spinner";
 export * from "./table";
 export * from "./tabs";
 export * from "./textarea";

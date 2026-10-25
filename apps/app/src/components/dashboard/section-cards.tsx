@@ -1,5 +1,4 @@
 import {
-  Badge,
   Card,
   CardAction,
   CardDescription,
@@ -7,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@acme/ui";
+import { Badge } from "@acme/ui/reui/badge";
 import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 
 export function SectionCards() {
@@ -19,7 +19,7 @@ export function SectionCards() {
             $1,250.00
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
+            <Badge variant="success-light">
               <IconTrendingUp />
               +12.5%
             </Badge>
@@ -41,7 +41,7 @@ export function SectionCards() {
             1,234
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
+            <Badge variant="destructive-light">
               <IconTrendingDown />
               -20%
             </Badge>
@@ -63,7 +63,7 @@ export function SectionCards() {
             45,678
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
+            <Badge variant="success-light">
               <IconTrendingUp />
               +12.5%
             </Badge>
@@ -83,7 +83,7 @@ export function SectionCards() {
             4.5%
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
+            <Badge variant="success-light">
               <IconTrendingUp />
               +4.5%
             </Badge>
