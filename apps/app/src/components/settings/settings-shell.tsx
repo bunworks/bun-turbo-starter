@@ -35,9 +35,9 @@ export function SettingsShell({
 export function SettingsHeader() {
   return (
     <>
-      <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Настройки</h1>
       <p className="text-muted-foreground">
-        Manage your account settings and set e-mail preferences.
+        Управляйте настройками аккаунта и параметрами уведомлений по почте.
       </p>
     </>
   );

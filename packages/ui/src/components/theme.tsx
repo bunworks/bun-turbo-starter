@@ -168,17 +168,17 @@ export function ThemeToggle() {
         <SunIcon className="light:scale-100! auto:scale-0!" />
         <MoonIcon className="auto:scale-0! dark:scale-100!" />
         <MonitorIcon className="auto:scale-100!" />
-        <span className="sr-only">Toggle theme</span>
+        <span className="sr-only">Сменить тему</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+          Светлая
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+          Тёмная
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("auto")}>
-          System
+          Системная
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

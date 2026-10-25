@@ -31,12 +31,12 @@ import { z } from "zod";
 import { authClient } from "~/auth/client";
 
 const emailPasswordSchema = z.object({
-  email: z.email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  email: z.email("Некорректный адрес электронной почты"),
+  password: z.string().min(8, "Пароль должен содержать не менее 8 символов"),
 });
 
 const emailOtpSchema = z.object({
-  email: z.email("Invalid email address"),
+  email: z.email("Некорректный адрес электронной почты"),
 });
 
 type EmailPasswordData = z.infer<typeof emailPasswordSchema>;
@@ -68,36 +68,39 @@ export function UnifiedAuthForm({
         const { error } = await authClient.signUp.email({
           email: data.email,
           password: data.password,
-          name: data.email.split("@")[0] ?? "User",
+          name: data.email.split("@")[0] ?? "Пользователь",
         });
         if (error) {
           if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
-            toast.error("User already exists. Use another email.");
+            toast.error(
+              "Пользователь уже существует. Используйте другой адрес почты.",
+            );
           } else {
             toast.error(
-              error.message || "Failed to create account. Please try again.",
+              error.message ||
+                "Не удалось создать аккаунт. Попробуйте ещё раз.",
             );
           }
           return;
         }
-        toast.success("Account created successfully!");
+        toast.success("Аккаунт успешно создан!");
       } else {
         const { error } = await authClient.signIn.email({
           email: data.email,
           password: data.password,
         });
         if (error) {
-          toast.error(error.message || "Invalid email or password.");
+          toast.error(error.message || "Неверный адрес почты или пароль.");
           return;
         }
-        toast.success("Signed in successfully!");
+        toast.success("Вы успешно вошли!");
       }
       router.push(paths.dashboard.root);
     } catch (_error) {
       toast.error(
         mode === "signup"
-          ? "Failed to create account. Please try again."
-          : "Invalid email or password.",
+          ? "Не удалось создать аккаунт. Попробуйте ещё раз."
+          : "Неверный адрес почты или пароль.",
       );
     } finally {
       setLoading(false);
@@ -112,14 +115,16 @@ export function UnifiedAuthForm({
         type: "sign-in",
       });
       if (error) {
-        toast.error(error.message || "Failed to send code. Please try again.");
+        toast.error(
+          error.message || "Не удалось отправить код. Попробуйте ещё раз.",
+        );
         return;
       }
       localStorage.setItem("otp_email", data.email);
-      toast.success("Code sent! Check your email.");
+      toast.success("Код отправлен! Проверьте почту.");
       router.push(paths.auth.otp);
     } catch (_error) {
-      toast.error("Failed to send code. Please try again.");
+      toast.error("Не удалось отправить код. Попробуйте ещё раз.");
     } finally {
       setLoading(false);
     }
@@ -133,12 +138,12 @@ export function UnifiedAuthForm({
     <Card {...props}>
       <CardHeader className="text-center">
         <CardTitle className="text-xl">
-          {mode === "signup" ? "Create an account" : "Welcome back"}
+          {mode === "signup" ? "Создать аккаунт" : "С возвращением"}
         </CardTitle>
         <CardDescription>
           {mode === "signup"
-            ? "Choose your preferred sign up method"
-            : "Choose your preferred sign in method"}
+            ? "Выберите удобный способ регистрации"
+            : "Выберите удобный способ входа"}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -171,7 +176,7 @@ export function UnifiedAuthForm({
                 fill="#EA4335"
               />
             </svg>
-            Continue with Google
+            Продолжить через Google
           </Button>
 
           <div className="relative">
@@ -180,15 +185,15 @@ export function UnifiedAuthForm({
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">
-                Or
+                Или
               </span>
             </div>
           </div>
 
           <Tabs defaultValue="password" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="password">Password</TabsTrigger>
-              <TabsTrigger value="otp">Email code</TabsTrigger>
+              <TabsTrigger value="password">Пароль</TabsTrigger>
+              <TabsTrigger value="otp">Код из письма</TabsTrigger>
             </TabsList>
 
             <TabsContent value="password" className="space-y-4">
@@ -202,7 +207,7 @@ export function UnifiedAuthForm({
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>Электронная почта</FormLabel>
                         <FormControl>
                           <Input
                             type="email"
@@ -221,7 +226,7 @@ export function UnifiedAuthForm({
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel>Пароль</FormLabel>
                         <FormControl>
                           <PasswordInput
                             placeholder="••••••••"
@@ -243,18 +248,18 @@ export function UnifiedAuthForm({
                         href={paths.auth.forgotPassword}
                         className="text-sm text-primary underline-offset-4 hover:underline"
                       >
-                        Forgot password?
+                        Забыли пароль?
                       </Link>
                     </div>
                   )}
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading
                       ? mode === "signup"
-                        ? "Creating account…"
-                        : "Signing in…"
+                        ? "Создание аккаунта…"
+                        : "Вход…"
                       : mode === "signup"
-                        ? "Create account"
-                        : "Sign in"}
+                        ? "Создать аккаунт"
+                        : "Войти"}
                   </Button>
                 </form>
               </Form>
@@ -271,7 +276,7 @@ export function UnifiedAuthForm({
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>Электронная почта</FormLabel>
                         <FormControl>
                           <Input
                             type="email"
@@ -286,7 +291,7 @@ export function UnifiedAuthForm({
                     )}
                   />
                   <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Sending code…" : "Send code"}
+                    {loading ? "Отправка кода…" : "Отправить код"}
                   </Button>
                 </form>
               </Form>
@@ -296,22 +301,22 @@ export function UnifiedAuthForm({
           <div className="text-center text-sm">
             {mode === "signup" ? (
               <>
-                Already have an account?{" "}
+                Уже есть аккаунт?{" "}
                 <Link
                   href={paths.auth.login}
                   className="text-primary underline-offset-4 hover:underline"
                 >
-                  Sign in
+                  Войти
                 </Link>
               </>
             ) : (
               <>
-                Don&apos;t have an account?{" "}
+                Нет аккаунта?{" "}
                 <Link
                   href={paths.auth.signup}
                   className="text-primary underline-offset-4 hover:underline"
                 >
-                  Sign up
+                  Зарегистрироваться
                 </Link>
               </>
             )}

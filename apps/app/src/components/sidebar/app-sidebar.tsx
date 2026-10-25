@@ -36,60 +36,60 @@ import {
 const data = {
   navMain: [
     {
-      title: "Dashboard",
+      title: "Панель управления",
       url: paths.dashboard.root,
       icon: IconDashboard,
       isActive: true,
       items: [
-        { title: "Overview", url: paths.dashboard.root },
-        { title: "Analytics", url: "#" },
-        { title: "Reports", url: "#" },
+        { title: "Обзор", url: paths.dashboard.root },
+        { title: "Аналитика", url: "#" },
+        { title: "Отчёты", url: "#" },
       ],
     },
     {
-      title: "Lifecycle",
+      title: "Жизненный цикл",
       url: "#",
       icon: IconListDetails,
       items: [
-        { title: "Active", url: "#" },
-        { title: "Archived", url: "#" },
+        { title: "Активные", url: "#" },
+        { title: "Архив", url: "#" },
       ],
     },
     {
-      title: "Analytics",
+      title: "Аналитика",
       url: "#",
       icon: IconChartBar,
       items: [
-        { title: "Overview", url: "#" },
-        { title: "Trends", url: "#" },
+        { title: "Обзор", url: "#" },
+        { title: "Тренды", url: "#" },
       ],
     },
     {
-      title: "Projects",
+      title: "Проекты",
       url: "#",
       icon: IconFolder,
       items: [
-        { title: "Active Projects", url: "#" },
-        { title: "Archived", url: "#" },
+        { title: "Активные проекты", url: "#" },
+        { title: "Архив", url: "#" },
       ],
     },
     {
-      title: "Team",
+      title: "Команда",
       url: "#",
       icon: IconUsers,
       items: [
-        { title: "Members", url: "#" },
-        { title: "Roles", url: "#" },
+        { title: "Участники", url: "#" },
+        { title: "Роли", url: "#" },
       ],
     },
   ],
   navSecondary: [
-    { title: "Settings", url: paths.settings.root, icon: IconSettings },
+    { title: "Настройки", url: paths.settings.root, icon: IconSettings },
   ],
   documents: [
-    { name: "Data Library", url: "#", icon: IconDatabase },
-    { name: "Reports", url: "#", icon: IconReport },
-    { name: "Word Assistant", url: "#", icon: IconFileWord },
+    { name: "Библиотека данных", url: "#", icon: IconDatabase },
+    { name: "Отчёты", url: "#", icon: IconReport },
+    { name: "Помощник по Word", url: "#", icon: IconFileWord },
   ],
 };
 

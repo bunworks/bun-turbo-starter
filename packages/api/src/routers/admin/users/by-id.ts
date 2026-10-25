@@ -17,7 +17,7 @@ export const byId = adminProcedure
     });
 
     if (!found) {
-      throw new ORPCError("NOT_FOUND", { message: "User not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Пользователь не найден" });
     }
 
     return found;

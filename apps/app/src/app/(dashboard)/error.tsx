@@ -18,19 +18,20 @@ export default function DashboardError({
     <div className="flex flex-1 flex-col items-center justify-center gap-4 p-10">
       <div className="text-center space-y-2">
         <h2 className="text-xl font-semibold tracking-tight">
-          Something went wrong
+          Что-то пошло не так
         </h2>
         <p className="text-muted-foreground text-sm max-w-sm">
-          {error.message || "An unexpected error occurred. Please try again."}
+          {error.message ||
+            "Произошла непредвиденная ошибка. Попробуйте ещё раз."}
         </p>
         {error.digest && (
           <p className="text-muted-foreground/60 font-mono text-xs">
-            Error ID:&nbsp;{error.digest}
+            ID ошибки:&nbsp;{error.digest}
           </p>
         )}
       </div>
       <Button onClick={reset} variant="outline" size="sm">
-        Try again
+        Повторить
       </Button>
     </div>
   );

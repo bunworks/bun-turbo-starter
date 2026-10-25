@@ -47,6 +47,7 @@ import {
 } from "@acme/ui/reui/data-grid/data-grid";
 import { DataGridColumnHeader } from "@acme/ui/reui/data-grid/data-grid-column-header";
 import { DataGridColumnVisibility } from "@acme/ui/reui/data-grid/data-grid-column-visibility";
+import type { DataGridI18nOverrides } from "@acme/ui/reui/data-grid/data-grid-i18n";
 import { DataGridPagination } from "@acme/ui/reui/data-grid/data-grid-pagination";
 import { DataGridScrollArea } from "@acme/ui/reui/data-grid/data-grid-scroll-area";
 import {
@@ -96,6 +97,41 @@ import type { z } from "zod";
 export const schema = dataTableItemSchema;
 type DataTableItem = z.infer<typeof schema>;
 
+const dataGridI18n: DataGridI18nOverrides = {
+  labels: {
+    sortAscending: "По возрастанию",
+    sortDescending: "По убыванию",
+    pinColumnStart: "Закрепить слева",
+    pinColumnEnd: "Закрепить справа",
+    moveColumnStart: "Сдвинуть влево",
+    moveColumnEnd: "Сдвинуть вправо",
+    columnsMenu: "Столбцы",
+    unpinColumn: (title) => `Открепить столбец «${title}»`,
+    toggleColumns: "Показать или скрыть столбцы",
+    rowCreate: "Добавить строку",
+    pinRow: "Закрепить строку",
+    unpinRow: "Открепить строку",
+    selectRow: "Выбрать строку",
+    selectAll: "Выбрать все",
+    expandRow: "Развернуть строку",
+    collapseRow: "Свернуть строку",
+    dragToReorder: "Перетащите, чтобы изменить порядок",
+    dragToReorderRow: "Перетащите строку, чтобы изменить порядок",
+    reorderingUnavailable: "Изменение порядка недоступно",
+    loading: "Загрузка…",
+    empty: "Нет данных",
+    allRowsLoaded: "Все записи загружены",
+    rowsPerPage: "Строк на странице",
+    paginationInfo: ({ from, to, count }) => `${from} - ${to} из ${count}`,
+    previousPage: "Предыдущая страница",
+    nextPage: "Следующая страница",
+    goToPage: (page) => `Перейти на страницу ${page}`,
+    filterSelectedCount: (count) => `Выбрано: ${count}`,
+    filterNoResults: "Ничего не найдено.",
+    filterClear: "Сбросить фильтры",
+  },
+};
+
 // Inline edit component for Target field
 function TargetCell({ row }: { row: Row<DataGridFeatures, DataTableItem> }) {
   const form = useForm<TargetFormData>({
@@ -107,9 +143,9 @@ function TargetCell({ row }: { row: Row<DataGridFeatures, DataTableItem> }) {
 
   const onSubmit = async (_data: TargetFormData) => {
     toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-      loading: `Saving ${row.original.header}`,
-      success: "Done",
-      error: "Error",
+      loading: `Сохранение: ${row.original.header}`,
+      success: "Готово",
+      error: "Ошибка",
     });
   };
 
@@ -125,7 +161,7 @@ function TargetCell({ row }: { row: Row<DataGridFeatures, DataTableItem> }) {
                 htmlFor={`${row.original.id}-target`}
                 className="sr-only"
               >
-                Target
+                Цель
               </FormLabel>
               <FormControl>
                 <Input
@@ -153,9 +189,9 @@ function LimitCell({ row }: { row: Row<DataGridFeatures, DataTableItem> }) {
 
   const onSubmit = async (_data: LimitFormData) => {
     toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-      loading: `Saving ${row.original.header}`,
-      success: "Done",
-      error: "Error",
+      loading: `Сохранение: ${row.original.header}`,
+      success: "Готово",
+      error: "Ошибка",
     });
   };
 
@@ -171,7 +207,7 @@ function LimitCell({ row }: { row: Row<DataGridFeatures, DataTableItem> }) {
                 htmlFor={`${row.original.id}-limit`}
                 className="sr-only"
               >
-                Limit
+                Лимит
               </FormLabel>
               <FormControl>
                 <Input
@@ -212,7 +248,7 @@ const getColumns = (
     accessorKey: "header",
     id: "header",
     header: ({ column }) => (
-      <DataGridColumnHeader title="Header" column={column} />
+      <DataGridColumnHeader title="Заголовок" column={column} />
     ),
     cell: ({ row }) => <TableCellViewer item={row.original} />,
     size: 260,
@@ -222,7 +258,7 @@ const getColumns = (
     accessorKey: "type",
     id: "type",
     header: ({ column }) => (
-      <DataGridColumnHeader title="Section Type" column={column} />
+      <DataGridColumnHeader title="Тип раздела" column={column} />
     ),
     cell: ({ row }) => <Badge variant="outline">{row.original.type}</Badge>,
     size: 170,
@@ -231,10 +267,10 @@ const getColumns = (
     accessorKey: "status",
     id: "status",
     header: ({ column }) => (
-      <DataGridColumnHeader title="Status" column={column} />
+      <DataGridColumnHeader title="Статус" column={column} />
     ),
     cell: ({ row }) =>
-      row.original.status === "Done" ? (
+      row.original.status === "Готово" ? (
         <Badge variant="success-light">
           <IconCircleCheckFilled />
           {row.original.status}
@@ -250,7 +286,7 @@ const getColumns = (
   {
     accessorKey: "target",
     id: "target",
-    header: "Target",
+    header: "Цель",
     cell: ({ row }) => <TargetCell row={row} />,
     size: 100,
     enableSorting: false,
@@ -259,7 +295,7 @@ const getColumns = (
   {
     accessorKey: "limit",
     id: "limit",
-    header: "Limit",
+    header: "Лимит",
     cell: ({ row }) => <LimitCell row={row} />,
     size: 100,
     enableSorting: false,
@@ -269,10 +305,10 @@ const getColumns = (
     accessorKey: "reviewer",
     id: "reviewer",
     header: ({ column }) => (
-      <DataGridColumnHeader title="Reviewer" column={column} />
+      <DataGridColumnHeader title="Проверяющий" column={column} />
     ),
     cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== "Assign reviewer";
+      const isAssigned = row.original.reviewer !== "Назначить проверяющего";
 
       if (isAssigned) {
         return row.original.reviewer;
@@ -281,7 +317,7 @@ const getColumns = (
       return (
         <>
           <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
+            Проверяющий
           </Label>
           <Select>
             <SelectTrigger
@@ -289,7 +325,7 @@ const getColumns = (
               size="sm"
               id={`${row.original.id}-reviewer`}
             >
-              <SelectValue placeholder="Assign reviewer" />
+              <SelectValue placeholder="Назначить проверяющего" />
             </SelectTrigger>
             <SelectContent align="end">
               <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
@@ -315,16 +351,16 @@ const getColumns = (
               className="text-muted-foreground"
             >
               <IconDotsVertical />
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">Открыть меню</span>
             </Button>
           }
         />
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
+        <DropdownMenuContent align="end" className="w-44">
+          <DropdownMenuItem>Изменить</DropdownMenuItem>
+          <DropdownMenuItem>Создать копию</DropdownMenuItem>
+          <DropdownMenuItem>В избранное</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+          <DropdownMenuItem variant="destructive">Удалить</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
@@ -385,7 +421,8 @@ export function DataTable({
     <DataGrid
       table={table}
       recordCount={data.length}
-      emptyMessage="No results."
+      emptyMessage="Нет результатов."
+      i18n={dataGridI18n}
       tableLayout={{ rowsDraggable: true, columnsVisibility: true }}
     >
       <Tabs
@@ -394,7 +431,7 @@ export function DataTable({
       >
         <div className="flex items-center justify-between px-4 lg:px-6">
           <Label htmlFor="view-selector" className="sr-only">
-            View
+            Вид
           </Label>
           <Select defaultValue="outline">
             <SelectTrigger
@@ -402,30 +439,36 @@ export function DataTable({
               size="sm"
               id="view-selector"
             >
-              <SelectValue placeholder="Select a view" />
+              <SelectValue placeholder="Выберите вид" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="outline">Outline</SelectItem>
-              <SelectItem value="past-performance">Past Performance</SelectItem>
-              <SelectItem value="key-personnel">Key Personnel</SelectItem>
-              <SelectItem value="focus-documents">Focus Documents</SelectItem>
+              <SelectItem value="outline">Структура</SelectItem>
+              <SelectItem value="past-performance">
+                Прошлые результаты
+              </SelectItem>
+              <SelectItem value="key-personnel">Ключевой персонал</SelectItem>
+              <SelectItem value="focus-documents">
+                Основные документы
+              </SelectItem>
             </SelectContent>
           </Select>
           <TabsList className="hidden @4xl/main:flex">
-            <TabsTrigger value="outline">Outline</TabsTrigger>
+            <TabsTrigger value="outline">Структура</TabsTrigger>
             <TabsTrigger value="past-performance">
-              Past Performance{" "}
+              Прошлые результаты{" "}
               <Badge variant="secondary" size="sm" radius="full">
                 3
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="key-personnel">
-              Key Personnel{" "}
+              Ключевой персонал{" "}
               <Badge variant="secondary" size="sm" radius="full">
                 2
               </Badge>
             </TabsTrigger>
-            <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
+            <TabsTrigger value="focus-documents">
+              Основные документы
+            </TabsTrigger>
           </TabsList>
           <div className="flex items-center gap-2">
             <DataGridColumnVisibility
@@ -433,14 +476,14 @@ export function DataTable({
               trigger={
                 <Button variant="outline" size="sm">
                   <IconLayoutColumns />
-                  <span className="hidden lg:inline">Customize Columns</span>
-                  <span className="lg:hidden">Columns</span>
+                  <span className="hidden lg:inline">Настроить столбцы</span>
+                  <span className="lg:hidden">Столбцы</span>
                 </Button>
               }
             />
             <Button variant="outline" size="sm">
               <IconPlus />
-              <span className="hidden lg:inline">Add Section</span>
+              <span className="hidden lg:inline">Добавить раздел</span>
             </Button>
           </div>
         </div>
@@ -456,8 +499,8 @@ export function DataTable({
             </FramePanel>
             <FrameFooter className="flex-row flex-wrap items-center justify-between gap-2 py-1.5 pr-2 pl-2.5">
               <div className="text-muted-foreground hidden text-sm tabular-nums lg:block">
-                {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                {table.getFilteredRowModel().rows.length} row(s) selected.
+                Выбрано строк: {table.getFilteredSelectedRowModel().rows.length}{" "}
+                из {table.getFilteredRowModel().rows.length}.
               </div>
               <DataGridPagination className="lg:w-auto" />
             </FrameFooter>
@@ -487,21 +530,21 @@ export function DataTable({
 }
 
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: "Январь", desktop: 186, mobile: 80 },
+  { month: "Февраль", desktop: 305, mobile: 200 },
+  { month: "Март", desktop: 237, mobile: 120 },
+  { month: "Апрель", desktop: 73, mobile: 190 },
+  { month: "Май", desktop: 209, mobile: 130 },
+  { month: "Июнь", desktop: 214, mobile: 140 },
 ];
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Компьютер",
     color: "var(--primary)",
   },
   mobile: {
-    label: "Mobile",
+    label: "Телефон",
     color: "var(--primary)",
   },
 } satisfies ChartConfig;
@@ -524,9 +567,9 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
 
   const onSubmit = async (_data: DataTableItemData) => {
     toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-      loading: "Saving changes...",
-      success: "Changes saved!",
-      error: "Failed to save changes",
+      loading: "Сохранение изменений…",
+      success: "Изменения сохранены!",
+      error: "Не удалось сохранить изменения",
     });
   };
 
@@ -545,7 +588,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
         <DrawerHeader className="gap-1">
           <DrawerTitle>{item.header}</DrawerTitle>
           <DrawerDescription>
-            Showing total visitors for the last 6 months
+            Общее число посетителей за последние 6 месяцев
           </DrawerDescription>
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
@@ -616,7 +659,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                 name="header"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="header">Header</FormLabel>
+                    <FormLabel htmlFor="header">Заголовок</FormLabel>
                     <FormControl>
                       <Input id="header" {...field} />
                     </FormControl>
@@ -630,35 +673,43 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                   name="type"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="type">Type</FormLabel>
+                      <FormLabel htmlFor="type">Тип</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger id="type" className="w-full">
-                            <SelectValue placeholder="Select a type" />
+                            <SelectValue placeholder="Выберите тип" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Table of Contents">
-                            Table of Contents
+                          <SelectItem value="Титульная страница">
+                            Титульная страница
                           </SelectItem>
-                          <SelectItem value="Executive Summary">
-                            Executive Summary
+                          <SelectItem value="Оглавление">Оглавление</SelectItem>
+                          <SelectItem value="Описание">Описание</SelectItem>
+                          <SelectItem value="Технический раздел">
+                            Технический раздел
                           </SelectItem>
-                          <SelectItem value="Technical Approach">
-                            Technical Approach
+                          <SelectItem value="Простой язык">
+                            Простой язык
                           </SelectItem>
-                          <SelectItem value="Design">Design</SelectItem>
-                          <SelectItem value="Capabilities">
-                            Capabilities
+                          <SelectItem value="Юридический раздел">
+                            Юридический раздел
                           </SelectItem>
-                          <SelectItem value="Focus Documents">
-                            Focus Documents
+                          <SelectItem value="Визуальный раздел">
+                            Визуальный раздел
                           </SelectItem>
-                          <SelectItem value="Narrative">Narrative</SelectItem>
-                          <SelectItem value="Cover Page">Cover Page</SelectItem>
+                          <SelectItem value="Финансовый раздел">
+                            Финансовый раздел
+                          </SelectItem>
+                          <SelectItem value="Исследование">
+                            Исследование
+                          </SelectItem>
+                          <SelectItem value="Планирование">
+                            Планирование
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -670,24 +721,20 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                   name="status"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="status">Status</FormLabel>
+                      <FormLabel htmlFor="status">Статус</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger id="status" className="w-full">
-                            <SelectValue placeholder="Select a status" />
+                            <SelectValue placeholder="Выберите статус" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Done">Done</SelectItem>
-                          <SelectItem value="In Progress">
-                            In Progress
-                          </SelectItem>
-                          <SelectItem value="Not Started">
-                            Not Started
-                          </SelectItem>
+                          <SelectItem value="Готово">Готово</SelectItem>
+                          <SelectItem value="В процессе">В процессе</SelectItem>
+                          <SelectItem value="Не начато">Не начато</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -701,7 +748,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                   name="target"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="target">Target</FormLabel>
+                      <FormLabel htmlFor="target">Цель</FormLabel>
                       <FormControl>
                         <Input id="target" {...field} />
                       </FormControl>
@@ -714,7 +761,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                   name="limit"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="limit">Limit</FormLabel>
+                      <FormLabel htmlFor="limit">Лимит</FormLabel>
                       <FormControl>
                         <Input id="limit" {...field} />
                       </FormControl>
@@ -728,14 +775,14 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                 name="reviewer"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="reviewer">Reviewer</FormLabel>
+                    <FormLabel htmlFor="reviewer">Проверяющий</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger id="reviewer" className="w-full">
-                          <SelectValue placeholder="Select a reviewer" />
+                          <SelectValue placeholder="Выберите проверяющего" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -756,9 +803,9 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
           </Form>
         </div>
         <DrawerFooter>
-          <Button onClick={form.handleSubmit(onSubmit)}>Submit</Button>
+          <Button onClick={form.handleSubmit(onSubmit)}>Отправить</Button>
           <DrawerClose asChild>
-            <Button variant="outline">Done</Button>
+            <Button variant="outline">Готово</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

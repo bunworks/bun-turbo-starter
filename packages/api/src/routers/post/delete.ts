@@ -19,7 +19,7 @@ export const deletePost = adminProcedure
       .returning({ id: Post.id });
 
     if (!deleted) {
-      throw new ORPCError("NOT_FOUND", { message: "Post not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Публикация не найдена" });
     }
 
     return { success: true, id: deleted.id };

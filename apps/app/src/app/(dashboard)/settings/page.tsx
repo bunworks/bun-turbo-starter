@@ -16,7 +16,7 @@ export default async function SettingsAccountPage() {
       <AccountForm
         initialData={{
           name: user?.name || "",
-          language: user?.language || "en",
+          language: user?.language || "ru",
         }}
       />
     </SettingsShell>

@@ -22,35 +22,35 @@ export default function ResetPasswordEmail({
   resetLink?: string;
 }) {
   return (
-    <Html>
+    <Html lang="ru">
       <Head />
-      <Preview>Reset your password - {APP_CONFIG.shortName}</Preview>
+      <Preview>Сброс пароля - {APP_CONFIG.shortName}</Preview>
       <Tailwind config={emailTailwindConfig}>
         <Body className="mx-auto my-auto bg-white font-sans">
           <Container className="mx-auto my-[40px] w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
             <Heading className="mx-0 my-[30px] p-0 text-center text-[24px] font-normal text-black">
-              Reset your password for{" "}
+              Сброс пароля в{" "}
               <Link href={env.APP_URL} className="text-black">
                 <strong>{APP_CONFIG.shortName}</strong>
               </Link>
             </Heading>
             <Text className="text-[14px] leading-[24px] text-black">
-              Hello,
+              Здравствуйте!
             </Text>
             <Text className="text-[14px] leading-[24px] text-black">
-              We received a request to reset your password. Click the button
-              below to create a new password:
+              Мы получили запрос на сброс вашего пароля. Нажмите кнопку ниже,
+              чтобы задать новый пароль:
             </Text>
             <Section className="my-[32px] text-center">
               <Button
                 className="rounded bg-[#000000] px-[20px] py-[12px] text-center text-[14px] font-semibold text-white no-underline"
                 href={resetLink}
               >
-                Reset Password
+                Сбросить пароль
               </Button>
             </Section>
             <Text className="text-[14px] leading-[24px] text-black">
-              Or copy and paste this URL into your browser:
+              Или скопируйте и вставьте эту ссылку в браузер:
             </Text>
             <Link
               href={resetLink}
@@ -59,16 +59,16 @@ export default function ResetPasswordEmail({
               {resetLink}
             </Link>
             <Text className="text-[14px] leading-[24px] text-black">
-              This link will expire in 1 hour for security reasons.
+              В целях безопасности ссылка действительна в течение 1 часа.
             </Text>
             <Text className="text-[14px] leading-[24px] text-black">
-              If you didn't request a password reset, please ignore this email
-              or contact support if you have concerns.
+              Если вы не запрашивали сброс пароля, проигнорируйте это письмо или
+              свяжитесь со службой поддержки, если у вас есть опасения.
             </Text>
             <Hr className="mx-0 my-[26px] w-full border border-solid border-[#eaeaea]" />
             <Text className="text-[12px] leading-[24px] text-[#666666]">
-              This is an automated message from {APP_CONFIG.shortName}. Please
-              do not reply to this email.
+              Это автоматическое сообщение от {APP_CONFIG.shortName}.
+              Пожалуйста, не отвечайте на него.
             </Text>
           </Container>
         </Body>

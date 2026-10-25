@@ -17,7 +17,7 @@ export const byId = publicProcedure
     });
 
     if (!post) {
-      throw new ORPCError("NOT_FOUND", { message: "Post not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Публикация не найдена" });
     }
 
     return post;
