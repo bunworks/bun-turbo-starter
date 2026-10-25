@@ -12,7 +12,11 @@ re-run that step before moving on.
 1. `bun check:fix` — Biome lint + format with auto-fix. Then `bun check` must
    pass. Warnings are fine; errors are not.
 2. `bun lint:ws` — sherif workspace consistency (matching dependency versions
-   across `package.json` files, sorted fields).
+   across `package.json` files, sorted fields). Then `bun lint:deps` — knip:
+   unused files and dependencies, imports of undeclared packages (errors);
+   unused exports are warnings. Fix by declaring / removing the dependency,
+   or teach `knip.json` about an entry point it can't see — don't blanket
+   ignore.
 3. `bun typecheck` — turbo runs `^build` first, so `config`, `emails`,
    `storage` get built. Scope with `bun turbo typecheck -F <pkg>` while
    iterating on one package.

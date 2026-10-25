@@ -1,7 +1,7 @@
 import "server-only";
 
 import { initAuth } from "@acme/auth";
-import { env } from "@acme/config";
+import { env, logger } from "@acme/config";
 import { OtpSignInEmail, ResetPasswordEmail, sendEmail } from "@acme/emails";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
@@ -40,9 +40,7 @@ export const auth = initAuth({
   }) => {
     if (type === "forget-password") {
       if (!url) {
-        console.error(
-          `[Auth] Missing reset URL for forget-password email to ${email}`,
-        );
+        logger.error("auth.reset_email_missing_url");
         throw new Error(
           "Cannot send password reset email: reset URL is missing",
         );
@@ -54,7 +52,7 @@ export const auth = initAuth({
       });
     } else {
       if (!otp) {
-        console.error(`[Auth] Missing OTP for ${type} email to ${email}`);
+        logger.error("auth.otp_email_missing_otp", undefined, { type });
         throw new Error(`Cannot send ${type} email: OTP is missing`);
       }
       await sendEmail({

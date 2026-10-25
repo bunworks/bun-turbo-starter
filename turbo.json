@@ -54,6 +54,10 @@
       "dependsOn": ["^build"],
       "outputs": []
     },
+    "e2e": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
     "//#db:generate": {
       "cache": false,
       "interactive": true
@@ -88,10 +92,8 @@
     "AWS_S3_BUCKET",
     "TRIGGER_SECRET_KEY",
     "TRIGGER_PROJECT_REF",
-    "INNGEST_EVENT_KEY",
-    "INNGEST_SIGNING_KEY",
-    "INNGEST_BASE_URL",
-    "HATCHET_CLIENT_TOKEN"
+    "HATCHET_CLIENT_TOKEN",
+    "ADMIN_EMAILS"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",

@@ -16,10 +16,10 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsdown && tsc",
+    "build": "tsdown && tsc --tsBuildInfoFile dist/.tsbuildinfo",
     "build:watch": "tsdown --watch",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsc",
+    "dev": "tsc --tsBuildInfoFile dist/.tsbuildinfo",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {

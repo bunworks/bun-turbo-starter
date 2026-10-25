@@ -28,4 +28,9 @@ concurrentScripts = 16 # (cpu count or GOMAXPROCS) x2
 # default depends on lockfile configVersion and workspaces:
 # - configVersion = 1: "isolated" if using workspaces, otherwise "hoisted"
 # - configVersion = 0: "hoisted"
-linker = "hoisted"
+linker = "isolated"
+
+[test]
+# Root `bun test` runs every package's tests in one process; preload the API
+# test env here too (packages/api/bunfig.toml covers `bun test` in-package).
+preload = ["./packages/api/test/setup.ts"]

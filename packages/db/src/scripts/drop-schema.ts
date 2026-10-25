@@ -1,20 +1,21 @@
-import { sql } from "@vercel/postgres";
+import { logger } from "@acme/config";
+import { sql } from "drizzle-orm";
+import { db } from "../client";
 
 async function dropSchema() {
   try {
-    console.log("🗑️  Dropping database schema...");
+    logger.info("db.drop_schema.start");
 
     // Drop all tables in the public schema
-    await sql`DROP SCHEMA public CASCADE`;
-    await sql`CREATE SCHEMA public`;
-    await sql`GRANT ALL ON SCHEMA public TO public`;
+    await db.execute(sql`DROP SCHEMA public CASCADE`);
+    await db.execute(sql`CREATE SCHEMA public`);
+    await db.execute(sql`GRANT ALL ON SCHEMA public TO public`);
 
-    console.log("✅ Database schema dropped successfully!");
-  } catch (error) {
-    console.error("❌ Error dropping schema:", error);
-    process.exit(1);
-  } finally {
+    logger.info("db.drop_schema.done");
     process.exit(0);
+  } catch (error) {
+    logger.error("db.drop_schema.failed", error);
+    process.exit(1);
   }
 }
 

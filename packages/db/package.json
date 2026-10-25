@@ -14,6 +14,9 @@
     },
     "./schema": {
       "default": "./src/schema/index.ts"
+    },
+    "./testing": {
+      "default": "./src/testing.ts"
     }
   },
   "license": "MIT",
@@ -34,20 +37,21 @@
   },
   "dependencies": {
     "@acme/config": "workspace:*",
-    "@neondatabase/serverless": "^1.1.0",
-    "@vercel/postgres": "0.10.0",
-    "drizzle-orm": "0.45.2",
+    "@neondatabase/serverless": "^1.2.0",
+    "drizzle-orm": "0.45.4",
     "drizzle-zod": "0.8.3",
-    "pg": "^8.23.0",
+    "pg": "^8.23.1",
+    "ws": "^8.22.0",
     "zod": "4.6.7"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@types/bun": "1.4.0",
+    "@electric-sql/pglite": "^0.5.11",
+    "@types/bun": "1.4.4",
     "@types/node": "26.6.5",
     "@types/pg": "^8.23.1",
-    "@types/ws": "^8.18.1",
-    "drizzle-kit": "^0.31.10",
+    "@types/ws": "^8.18.2",
+    "drizzle-kit": "^0.31.11",
     "typescript": "7.0.2"
   }
 }

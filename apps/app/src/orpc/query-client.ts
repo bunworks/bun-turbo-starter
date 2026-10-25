@@ -1,8 +1,12 @@
+import { createHydrationOptions } from "@orpc/tanstack-query";
 import {
   defaultShouldDehydrateQuery,
   QueryClient,
 } from "@tanstack/react-query";
-import SuperJSON from "superjson";
+
+// oRPC's own serializer keeps Date, Map, Set, BigInt, etc. intact across
+// RSC prefetch -> client hydration, matching what RPCLink does on the wire.
+const hydration = createHydrationOptions();
 
 export const createQueryClient = () =>
   new QueryClient({
@@ -13,7 +17,7 @@ export const createQueryClient = () =>
         staleTime: 30 * 1000,
       },
       dehydrate: {
-        serializeData: SuperJSON.serialize,
+        ...hydration.dehydrate,
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) ||
           query.state.status === "pending",
@@ -26,8 +30,6 @@ export const createQueryClient = () =>
           return false;
         },
       },
-      hydrate: {
-        deserializeData: SuperJSON.deserialize,
-      },
+      hydrate: hydration.hydrate,
     },
   });

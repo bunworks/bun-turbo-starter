@@ -24,14 +24,16 @@
     "check": "biome check . --skip-parse-errors",
     "check:fix": "biome check --write . --skip-parse-errors",
     "lint:ws": "sherif",
+    "lint:deps": "knip",
     "postinstall": "bun lint:ws",
     "test": "turbo run test",
+    "e2e": "turbo run e2e",
     "typecheck": "turbo run typecheck",
     "ui-add": "turbo run ui-add"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.3",
-    "@turbo/gen": "2.11.10",
+    "knip": "6.42.1",
     "sherif": "1.13.0",
     "turbo": "2.11.10",
     "typescript": "7.0.2"

@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "dev:email": "bun --env-file=../../.env run email dev -p 3002",
-    "build": "tsdown && tsc",
+    "build": "tsdown && tsc --tsBuildInfoFile dist/.tsbuildinfo",
     "export": "email export",
     "typecheck": "tsc --noEmit"
   },
@@ -27,16 +27,11 @@
     "@acme/config": "workspace:*",
     "@radix-ui/colors": "3.0.0",
     "@react-email/components": "1.0.12",
-    "@tailwindcss/typography": "0.5.20",
     "nodemailer": "^10.2.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-email": "6.11.3",
-    "resend": "^6.34.1",
-    "sharp": "^0.35.5",
-    "tailwindcss": "4.3.3",
-    "tailwindcss-animate": "1.0.7",
-    "zod": "4.6.7"
+    "resend": "^6.34.1"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
