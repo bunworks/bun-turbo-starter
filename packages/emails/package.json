@@ -28,24 +28,24 @@
     "@radix-ui/colors": "3.0.0",
     "@react-email/components": "1.0.12",
     "@tailwindcss/typography": "0.5.20",
-    "nodemailer": "^9.0.5",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "react-email": "6.9.2",
-    "resend": "^6.22.1",
-    "sharp": "^0.35.3",
+    "nodemailer": "^10.2.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-email": "6.11.3",
+    "resend": "^6.34.1",
+    "sharp": "^0.35.5",
     "tailwindcss": "4.3.3",
     "tailwindcss-animate": "1.0.7",
-    "zod": "4.4.3"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
     "@react-email/preview-server": "5.2.10",
-    "@types/node": "26.3.0",
-    "@types/nodemailer": "^8.0.1",
-    "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.5",
-    "tsdown": "0.22.14",
+    "@types/node": "26.6.5",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "tsdown": "0.23.2",
     "typescript": "7.0.2"
   }
 }

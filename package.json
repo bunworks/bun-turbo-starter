@@ -30,13 +30,13 @@
     "ui-add": "turbo run ui-add"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.10",
-    "@turbo/gen": "2.10.11",
+    "@biomejs/biome": "2.6.3",
+    "@turbo/gen": "2.11.10",
     "sherif": "1.13.0",
-    "turbo": "2.10.11",
+    "turbo": "2.11.10",
     "typescript": "7.0.2"
   },
-  "packageManager": "bun@1.4.0",
+  "packageManager": "bun@1.4.4",
   "workspaces": [
     "apps/*",
     "packages/*",
