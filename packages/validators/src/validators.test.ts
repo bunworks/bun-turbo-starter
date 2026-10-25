@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { accountFormSchema } from "./account";
 import { loginFormSchema } from "./login";
 import { otpFormSchema } from "./otp";
+import { changePasswordFormSchema } from "./password";
 import { profileFormSchema } from "./profile";
 
 describe("profileFormSchema", () => {
@@ -81,5 +82,64 @@ describe("otpFormSchema", () => {
 
   test("rejects codes that are not exactly 6 digits", () => {
     expect(otpFormSchema.safeParse({ otp: "12345" }).success).toBe(false);
+  });
+});
+
+describe("changePasswordFormSchema", () => {
+  const valid = {
+    currentPassword: "old-password",
+    newPassword: "new-password-1",
+    confirmPassword: "new-password-1",
+    revokeOtherSessions: true,
+  };
+
+  test("accepts a valid password change", () => {
+    expect(changePasswordFormSchema.safeParse(valid).success).toBe(true);
+  });
+
+  test("requires the current password", () => {
+    const result = changePasswordFormSchema.safeParse({
+      ...valid,
+      currentPassword: "",
+    });
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects a new password shorter than 8 characters", () => {
+    const result = changePasswordFormSchema.safeParse({
+      ...valid,
+      newPassword: "short",
+      confirmPassword: "short",
+    });
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects a new password longer than 128 characters", () => {
+    const long = "x".repeat(129);
+    const result = changePasswordFormSchema.safeParse({
+      ...valid,
+      newPassword: long,
+      confirmPassword: long,
+    });
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects mismatched confirmation on the confirm field", () => {
+    const result = changePasswordFormSchema.safeParse({
+      ...valid,
+      confirmPassword: "different-password",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0]?.path).toEqual(["confirmPassword"]);
+  });
+
+  test("rejects reusing the current password", () => {
+    const result = changePasswordFormSchema.safeParse({
+      ...valid,
+      newPassword: valid.currentPassword,
+      confirmPassword: valid.currentPassword,
+    });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0]?.path).toEqual(["newPassword"]);
   });
 });
