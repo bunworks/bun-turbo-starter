@@ -10,15 +10,6 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { env } from "~/env";
 import { createQueryClient } from "./query-client";
 
-/**
- * Глобальная переменная для SSR оптимизации
- * Устанавливается в orpc/server.ts
- */
-declare global {
-  // eslint-disable-next-line no-var
-  var $client: RouterClient<typeof appRouter> | undefined;
-}
-
 let clientQueryClientSingleton: QueryClient | undefined;
 const getQueryClient = () => {
   if (typeof window === "undefined") {

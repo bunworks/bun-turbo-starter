@@ -1,0 +1,31 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "rules": {
+    "exports": "warn",
+    "types": "warn"
+  },
+  "workspaces": {
+    ".": {
+      "entry": [".claude/hooks/*.ts", "scripts/*.mjs"]
+    },
+    "apps/app": {
+      "ignoreDependencies": ["@acme/db", "@tailwindcss/postcss"]
+    },
+    "packages/auth": {
+      "entry": ["script/auth-cli.ts"]
+    },
+    "packages/db": {
+      "drizzle": false,
+      "entry": ["drizzle.config.ts", "src/scripts/*.ts"]
+    },
+    "packages/emails": {
+      "ignoreDependencies": ["@react-email/preview-server"]
+    },
+    "packages/trigger": {
+      "entry": ["trigger.config.ts", "src/tasks/**/*.ts"]
+    },
+    "tooling/tailwind": {
+      "ignoreDependencies": ["@tailwindcss/postcss", "postcss", "tailwindcss"]
+    }
+  }
+}

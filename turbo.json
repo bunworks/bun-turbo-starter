@@ -54,6 +54,10 @@
       "dependsOn": ["^build"],
       "outputs": []
     },
+    "e2e": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
     "//#db:generate": {
       "cache": false,
       "interactive": true

@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
 import {
   Controller,
   FormProvider,
@@ -102,23 +104,33 @@ function FormLabel({
   );
 }
 
-function FormControl({ ...props }: React.ComponentProps<"div">) {
+/**
+ * Puts the field's id and ARIA attributes on its single child (the actual
+ * control), so `FormLabel`'s `htmlFor` points at the input itself. Props set
+ * explicitly on the child win, matching shadcn's Radix `Slot` behaviour.
+ *
+ * `data-slot` is intentionally not forwarded: it would overwrite the child's
+ * own slot (e.g. `data-slot="input"`), which other styles select on.
+ */
+function FormControl({
+  children,
+  ...props
+}: Omit<React.HTMLAttributes<HTMLElement>, "children"> & {
+  children: React.ReactElement<Record<string, unknown>>;
+}) {
   const { error, formItemId, formDescriptionId, formMessageId } =
     useFormField();
 
-  return (
-    <div
-      data-slot="form-control"
-      id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
-  );
+  return useRender({
+    render: children,
+    props: mergeProps<"input">(props, {
+      id: formItemId,
+      "aria-describedby": !error
+        ? `${formDescriptionId}`
+        : `${formDescriptionId} ${formMessageId}`,
+      "aria-invalid": !!error,
+    }),
+  });
 }
 
 function FormDescription({ className, ...props }: React.ComponentProps<"p">) {

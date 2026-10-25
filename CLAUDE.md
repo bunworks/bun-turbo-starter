@@ -15,9 +15,11 @@ bun run build            # turbo build of everything
 bun typecheck            # tsc across all workspaces (needs ^build)
 bun check                # biome lint + format check
 bun check:fix            # biome auto-fix (lint + format)
-bun test                 # Bun's test runner over all *.test.ts (fast, what CI runs)
-bun test packages/validators   # single package / file
+bun test                 # Bun's test runner over all *.test.ts (fast)
+bun test packages/api    # single package / file
 bun lint:ws              # sherif: workspace package.json consistency
+bun lint:deps            # knip: unused files / deps, unlisted deps
+bun e2e                  # Playwright (apps/app/e2e); needs Postgres + db:push
 ```
 
 Scope turbo to one workspace with `-F`: `bun turbo typecheck -F @acme/api`.
@@ -34,8 +36,10 @@ bun auth:generate        # regenerate Better Auth schema from config
 
 ## Before declaring work done
 
-`bun check:fix && bun typecheck && bun test` — the same gates as CI
-(`.github/workflows/ci.yml`: build, lint + sherif, format, typecheck, test).
+`bun check:fix && bun lint:deps && bun typecheck && bun test` — the same
+gates as CI (`.github/workflows/ci.yml`: biome, sherif, knip, then
+`turbo run build typecheck test --affected`; a separate job runs Playwright
+against Postgres).
 
 ## Layout
 
@@ -96,6 +100,12 @@ and run `tsc` by hand, build them first.
   `adminProcedure`.
 - `@acme/api` stays free of the concrete `Auth` type: callers resolve the
   session via `auth.api.getSession` and pass it into `createORPCContext`.
+- **Testing procedures**: `call(procedure, input, { context })` from
+  `@orpc/server` against an in-memory PGlite DB — `setupTestApi()` and
+  `createSession()` in `packages/api/test/helpers.ts` (built on
+  `createTestDb()` from `@acme/db/testing`). See `routers/post/post.test.ts`.
+  `packages/api/test/setup.ts` is preloaded via `bunfig.toml` (root and
+  package) to pin env before modules read it.
 
 ## Gotchas
 
@@ -110,3 +120,9 @@ and run `tsc` by hand, build them first.
   repo. `CONTRIBUTING.md` still says tRPC in places — the API is oRPC.
 - Windows dev machine is common here: prefer cross-platform scripts (Bun/TS)
   over bash-only one-liners in package scripts and hooks.
+- Bun uses the **isolated** linker (`bunfig.toml`): a package can only import
+  what its own `package.json` declares. "Cannot find module" after adding an
+  import means a missing dependency, not a broken install. PostCSS plugins
+  resolve from `apps/app`, so `@tailwindcss/postcss` is declared there too.
+- Test files (`*.test.ts`) are excluded from package `tsconfig`s, so
+  `bun typecheck` does not cover them.

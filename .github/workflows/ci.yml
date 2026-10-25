@@ -19,10 +19,14 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          # `turbo --affected` diffs against the PR base / previous push;
+          # a shallow clone would mark every package as changed.
+          fetch-depth: 0
 
       - name: Setup
         uses: ./tooling/github/setup
@@ -31,11 +35,35 @@ jobs:
         shell: bash
         run: cp .env.example .env
 
-      - name: Build
-        run: bun run build
+      # Repo-wide and fast, so not worth scoping to affected packages.
+      - name: Lint + format (Biome)
+        run: bun check
 
-  lint:
+      - name: Workspace consistency (sherif)
+        run: bun lint:ws
+
+      - name: Unused files, exports and deps (knip)
+        run: bun lint:deps
+
+      - name: Build, typecheck, test (affected)
+        run: bun turbo run build typecheck test --affected
+
+  e2e:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: acme
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v5
 
@@ -44,44 +72,29 @@ jobs:
 
       - name: Copy env
         shell: bash
-        run: cp .env.example .env
+        run: |
+          cp .env.example .env
+          # `next start` runs in production mode, where Better Auth refuses
+          # the default secret. Throwaway value, scoped to this job.
+          sed -i "s|^AUTH_SECRET=.*|AUTH_SECRET=$(openssl rand -base64 32)|" .env
 
-      - name: Lint
-        run: bun lint && bun lint:ws
+      # Also builds @acme/config, which drizzle.config.ts imports from dist/.
+      - name: Build app
+        run: bun turbo run build -F @acme/app
 
-  format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
+      - name: Push DB schema
+        run: bun run --cwd packages/db push
 
-      - name: Setup
-        uses: ./tooling/github/setup
+      - name: Install Playwright browser
+        working-directory: apps/app
+        run: bunx playwright install --with-deps chromium
 
-      - name: Format
-        run: bun format
+      - name: E2E tests
+        run: bun turbo run e2e -F @acme/app
 
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Setup
-        uses: ./tooling/github/setup
-
-      - name: Typecheck
-        run: bun typecheck
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Setup
-        uses: ./tooling/github/setup
-
-      - name: Copy env
-        shell: bash
-        run: cp .env.example .env
-
-      - name: Test
-        run: bun test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: apps/app/playwright-report
+          retention-days: 7
