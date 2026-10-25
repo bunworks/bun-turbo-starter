@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(bun check*)",
+      "Bash(bun lint*)",
+      "Bash(bun format*)",
+      "Bash(bun typecheck*)",
+      "Bash(bun test*)",
+      "Bash(bun run build*)",
+      "Bash(bun run test*)",
+      "Bash(bun run typecheck*)",
+      "Bash(bun turbo typecheck*)",
+      "Bash(bun turbo build*)",
+      "Bash(bun turbo test*)",
+      "Bash(bun x biome *)",
+      "Bash(bun install)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "Bash(git branch*)",
+      "mcp__shadcn__*",
+      "mcp__next-devtools__*"
+    ],
+    "ask": [
+      "Bash(bun db:push*)",
+      "Bash(bun db:migrate*)",
+      "Bash(bun auth:generate*)",
+      "Bash(bun add *)",
+      "Bash(bun remove *)",
+      "Bash(git push*)",
+      "Bash(docker compose down*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.*.local)",
+      "Bash(bun --filter @acme/db drop*)",
+      "Bash(bun turbo -F @acme/db drop*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR/.claude/hooks/protect-files.ts\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR/.claude/hooks/format.ts\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  },
+  "enabledMcpjsonServers": ["shadcn", "next-devtools"]
+}
