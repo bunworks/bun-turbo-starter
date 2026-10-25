@@ -4,8 +4,8 @@ import { z } from "zod";
 export const otpFormSchema = z.object({
   otp: z
     .string()
-    .length(6, "Code must be exactly 6 digits")
-    .regex(/^\d+$/, "Code must contain only digits"),
+    .length(6, "Код должен состоять ровно из 6 цифр")
+    .regex(/^\d+$/, "Код должен содержать только цифры"),
 });
 
 export type OTPFormData = z.infer<typeof otpFormSchema>;

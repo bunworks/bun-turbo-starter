@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 import { UnifiedAuthForm } from "~/components/auth";
 
 export const metadata: Metadata = {
-  title: "Sign Up",
-  description: "Create a new account",
+  title: "Регистрация",
+  description: "Создайте новый аккаунт",
 };
 
 export default function SignUpPage() {

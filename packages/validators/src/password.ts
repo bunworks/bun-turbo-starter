@@ -6,26 +6,26 @@ export const PASSWORD_MAX_LENGTH = 128;
 
 export const changePasswordFormSchema = z
   .object({
-    currentPassword: z.string().min(1, "Current password is required"),
+    currentPassword: z.string().min(1, "Введите текущий пароль"),
     newPassword: z
       .string()
       .min(
         PASSWORD_MIN_LENGTH,
-        `Password must be at least ${PASSWORD_MIN_LENGTH} characters`,
+        `Пароль должен содержать не менее ${PASSWORD_MIN_LENGTH} символов`,
       )
       .max(
         PASSWORD_MAX_LENGTH,
-        `Password must not be longer than ${PASSWORD_MAX_LENGTH} characters`,
+        `Пароль не должен быть длиннее ${PASSWORD_MAX_LENGTH} символов`,
       ),
-    confirmPassword: z.string().min(1, "Please confirm your new password"),
+    confirmPassword: z.string().min(1, "Подтвердите новый пароль"),
     revokeOtherSessions: z.boolean(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: "Пароли не совпадают",
     path: ["confirmPassword"],
   })
   .refine((data) => data.newPassword !== data.currentPassword, {
-    message: "New password must be different from the current one",
+    message: "Новый пароль должен отличаться от текущего",
     path: ["newPassword"],
   });
 

@@ -52,11 +52,11 @@ export function PasswordForm() {
     });
 
     if (error) {
-      setServerError(error.message || "Failed to change password");
+      setServerError(error.message || "Не удалось изменить пароль");
       return;
     }
 
-    toast.success("Password changed successfully");
+    toast.success("Пароль успешно изменён");
     form.reset(defaultValues);
   }
 
@@ -71,7 +71,7 @@ export function PasswordForm() {
         {serverError && (
           <Alert variant="destructive">
             <CircleAlert />
-            <AlertTitle>Couldn't change your password</AlertTitle>
+            <AlertTitle>Не удалось изменить пароль</AlertTitle>
             <AlertDescription>{serverError}</AlertDescription>
           </Alert>
         )}
@@ -82,7 +82,7 @@ export function PasswordForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground font-medium">
-                Current password
+                Текущий пароль
               </FormLabel>
               <FormControl>
                 <PasswordInput
@@ -102,7 +102,7 @@ export function PasswordForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground font-medium">
-                New password
+                Новый пароль
               </FormLabel>
               <FormControl>
                 <PasswordInput
@@ -112,7 +112,7 @@ export function PasswordForm() {
                 />
               </FormControl>
               <FormDescription>
-                Use at least {PASSWORD_MIN_LENGTH} characters.
+                Используйте не менее {PASSWORD_MIN_LENGTH} символов.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -125,7 +125,7 @@ export function PasswordForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground font-medium">
-                Confirm new password
+                Подтвердите новый пароль
               </FormLabel>
               <FormControl>
                 <PasswordInput
@@ -155,10 +155,11 @@ export function PasswordForm() {
                   htmlFor="revoke-other-sessions"
                   className="text-foreground font-medium"
                 >
-                  Sign out of other devices
+                  Выйти на других устройствах
                 </FormLabel>
                 <FormDescription>
-                  Ends every other session so only this device stays signed in.
+                  Завершает все остальные сеансы, чтобы вход остался только на
+                  этом устройстве.
                 </FormDescription>
               </div>
             </FormItem>
@@ -167,7 +168,7 @@ export function PasswordForm() {
 
         <div>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Changing password…" : "Change password"}
+            {isSubmitting ? "Изменение пароля…" : "Изменить пароль"}
           </Button>
         </div>
       </form>

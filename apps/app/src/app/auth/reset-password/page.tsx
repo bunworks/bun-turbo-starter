@@ -5,8 +5,8 @@ import { Suspense } from "react";
 import { ResetPasswordForm } from "~/components/auth";
 
 export const metadata: Metadata = {
-  title: "Reset Password",
-  description: "Set a new password for your account",
+  title: "Сброс пароля",
+  description: "Задайте новый пароль для своего аккаунта",
 };
 
 export default function ResetPasswordPage() {
@@ -22,7 +22,7 @@ export default function ResetPasswordPage() {
           </div>
           {APP_CONFIG.name}
         </a>
-        <Suspense fallback={<div>Loading…</div>}>
+        <Suspense fallback={<div>Загрузка…</div>}>
           <ResetPasswordForm />
         </Suspense>
       </div>

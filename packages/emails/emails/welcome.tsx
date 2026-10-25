@@ -22,24 +22,24 @@ export default function WelcomeEmail({
   username: string;
 }) {
   return (
-    <Html>
+    <Html lang="ru">
       <Head />
-      <Preview>Welcome to {APP_CONFIG.shortName}</Preview>
+      <Preview>Добро пожаловать в {APP_CONFIG.shortName}</Preview>
       <Tailwind config={emailTailwindConfig}>
         <Body className="mx-auto my-auto bg-white font-sans">
           <Container className="mx-auto my-[40px] w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
             <Heading className="mx-0 my-[30px] p-0 text-center text-[24px] font-normal text-black">
-              Welcome to{" "}
+              Добро пожаловать в{" "}
               <Link href={env.APP_URL} className="text-black">
                 <strong>{APP_CONFIG.shortName}</strong>
               </Link>
             </Heading>
             <Text className="text-[14px] leading-[24px] text-black">
-              Hello {username},
+              Здравствуйте, {username}!
             </Text>
             <Text className="text-[14px] leading-[24px] text-black">
-              We're excited to welcome you to {APP_CONFIG.shortName}! Your
-              account has been successfully created at{" "}
+              Рады приветствовать вас в {APP_CONFIG.shortName}! Ваш аккаунт
+              успешно создан на{" "}
               <Link href={env.APP_URL} className="text-black">
                 <strong>{env.APP_URL.replace(/^https?:\/\//, "")}</strong>
               </Link>
@@ -50,12 +50,12 @@ export default function WelcomeEmail({
                 className="rounded bg-[#000000] px-5 py-3 text-center text-[14px] font-semibold text-white no-underline"
                 href={env.APP_URL}
               >
-                Get Started Now
+                Начать работу
               </Button>
             </Section>
             <Text className="text-[14px] leading-[24px] text-black">
-              If the button above doesn't work, copy and paste this URL into
-              your web browser:
+              Если кнопка выше не работает, скопируйте и вставьте эту ссылку в
+              браузер:
             </Text>
             <Text className="mb-[20px]">
               <Link href={env.APP_URL} className="text-black no-underline">
@@ -64,10 +64,11 @@ export default function WelcomeEmail({
             </Text>
             <Hr className="mx-0 my-[26px] w-full border border-solid border-[#eaeaea]" />
             <Text className="text-[12px] leading-[24px] text-[#666666]">
-              This email was sent to{" "}
-              <span className="text-black">{username}</span>. If you did not
-              create an account on {APP_CONFIG.shortName}, please ignore this
-              email or contact our support team if you have any concerns.
+              Это письмо отправлено на{" "}
+              <span className="text-black">{username}</span>. Если вы не
+              создавали аккаунт в {APP_CONFIG.shortName}, проигнорируйте это
+              письмо или свяжитесь со службой поддержки, если у вас есть
+              опасения.
             </Text>
           </Container>
         </Body>

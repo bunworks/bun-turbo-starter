@@ -108,7 +108,9 @@ export const adminProcedure = protectedProcedure.use(({ context, next }) => {
     .filter(Boolean);
 
   if (!adminEmails.includes(context.session.user.email.toLowerCase())) {
-    throw new ORPCError("FORBIDDEN", { message: "Admin access required" });
+    throw new ORPCError("FORBIDDEN", {
+      message: "Требуются права администратора",
+    });
   }
 
   return next();

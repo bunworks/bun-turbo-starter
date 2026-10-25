@@ -48,10 +48,10 @@ export function LoginForm({
       });
       // Store email in localStorage or URL to pre-fill OTP form
       localStorage.setItem("otp_email", data.email);
-      toast.success("Code sent! Check your email.");
+      toast.success("Код отправлен! Проверьте почту.");
       router.push(paths.auth.otp);
     } catch (_error) {
-      toast.error("Failed to send code. Please try again.");
+      toast.error("Не удалось отправить код. Попробуйте ещё раз.");
     } finally {
       setLoading(false);
     }
@@ -61,8 +61,8 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>Login with your email address</CardDescription>
+          <CardTitle className="text-xl">С возвращением</CardTitle>
+          <CardDescription>Войдите по адресу электронной почты</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -72,7 +72,7 @@ export function LoginForm({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Электронная почта</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -85,7 +85,7 @@ export function LoginForm({
                 )}
               />
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Sending code..." : "Send Login Code"}
+                {loading ? "Отправка кода…" : "Отправить код для входа"}
               </Button>
             </form>
           </Form>
@@ -95,7 +95,7 @@ export function LoginForm({
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
+                Или продолжите через
               </span>
             </div>
           </div>
@@ -127,7 +127,7 @@ export function LoginForm({
                 fill="#EA4335"
               />
             </svg>
-            Sign in with Google
+            Войти через Google
           </Button>
         </CardContent>
       </Card>

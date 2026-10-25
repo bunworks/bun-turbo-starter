@@ -13,10 +13,12 @@ export const metadata: Metadata = {
     env.VERCEL_ENV === "production" ? APP_CONFIG.url : "http://localhost:3000",
   ),
   title: "Bun Turbo Starter",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  description:
+    "Простой монорепозиторий с общим бэкендом для веб- и мобильных приложений",
   openGraph: {
     title: "Bun Turbo Starter",
-    description: "Simple monorepo with shared backend for web & mobile apps",
+    description:
+      "Простой монорепозиторий с общим бэкендом для веб- и мобильных приложений",
     url: APP_CONFIG.url,
     siteName: "Bun Turbo Starter",
   },
@@ -40,7 +42,7 @@ const geistMono = Geist_Mono({
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ru" suppressHydrationWarning>
       <body
         className={cn(
           "bg-background text-foreground min-h-screen font-sans antialiased",

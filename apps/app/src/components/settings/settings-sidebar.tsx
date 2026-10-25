@@ -8,32 +8,32 @@ import { usePathname } from "next/navigation";
 
 const sidebarNavItems = [
   {
-    title: "Profile",
+    title: "Профиль",
     href: paths.settings.profile,
     icon: User,
   },
   {
-    title: "Account",
+    title: "Аккаунт",
     href: paths.settings.root,
     icon: Circle,
   },
   {
-    title: "Security",
+    title: "Безопасность",
     href: paths.settings.security,
     icon: KeyRound,
   },
   {
-    title: "Appearance",
+    title: "Оформление",
     href: paths.settings.appearance,
     icon: Globe,
   },
   {
-    title: "Notifications",
+    title: "Уведомления",
     href: paths.settings.notifications,
     icon: Bell,
   },
   {
-    title: "Display",
+    title: "Отображение",
     href: paths.settings.display,
     icon: Monitor,
   },

@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 import { OTPForm } from "~/components/auth";
 
 export const metadata: Metadata = {
-  title: "Verify Code",
-  description: "Enter your verification code",
+  title: "Подтверждение кода",
+  description: "Введите код подтверждения",
 };
 
 export default function OTPPage() {

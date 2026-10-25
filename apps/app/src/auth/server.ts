@@ -49,7 +49,7 @@ export const auth = initAuth({
       }
       await sendEmail({
         to: [email],
-        subject: "Reset Your Password",
+        subject: "Сброс пароля",
         react: ResetPasswordEmail({ resetLink: url }),
       });
     } else {
@@ -59,7 +59,10 @@ export const auth = initAuth({
       }
       await sendEmail({
         to: [email],
-        subject: type === "sign-in" ? "Your Sign In Code" : "Verify Your Email",
+        subject:
+          type === "sign-in"
+            ? "Ваш код для входа"
+            : "Подтвердите адрес электронной почты",
         react: OtpSignInEmail({ otp, isSignUp: type !== "sign-in" }),
       });
     }

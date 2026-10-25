@@ -17,25 +17,28 @@ export default function SettingsError({
   return (
     <div className="space-y-6 p-10 pb-16 max-w-5xl">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Настройки</h1>
         <p className="text-muted-foreground">
-          Manage your account settings and set e-mail preferences.
+          Управляйте настройками аккаунта и параметрами уведомлений по почте.
         </p>
       </div>
 
       <div className="flex items-center justify-center rounded-lg border p-16">
         <div className="text-center space-y-3">
-          <h2 className="text-lg font-semibold">Failed to load settings</h2>
+          <h2 className="text-lg font-semibold">
+            Не удалось загрузить настройки
+          </h2>
           <p className="text-muted-foreground text-sm max-w-sm">
-            {error.message || "An unexpected error occurred. Please try again."}
+            {error.message ||
+              "Произошла непредвиденная ошибка. Попробуйте ещё раз."}
           </p>
           {error.digest && (
             <p className="text-muted-foreground/60 font-mono text-xs">
-              Error ID:&nbsp;{error.digest}
+              ID ошибки:&nbsp;{error.digest}
             </p>
           )}
           <Button onClick={reset} variant="outline" size="sm">
-            Try again
+            Повторить
           </Button>
         </div>
       </div>
