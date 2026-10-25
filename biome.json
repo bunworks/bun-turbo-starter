@@ -13,7 +13,8 @@
       "!**/.next",
       "!**/packages/ui/**/*",
       "!**/tooling/**/*",
-      "!**/apps/app/**/*.css"
+      "!**/apps/app/**/*.css",
+      "!**/.claude/**/*.md"
     ]
   },
   "formatter": {

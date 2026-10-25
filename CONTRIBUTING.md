@@ -242,7 +242,7 @@ This project uses [Biome](https://biomejs.dev) for formatting and linting.
 - Prefer functional components
 - Use Server Components by default in Next.js
 - Add `'use client'` only when necessary
-- Follow principles from `.kiro/steering/AGENTS.md`
+- Follow the conventions in [`CLAUDE.md`](./CLAUDE.md) (also read by Claude Code)
 
 ### Auto-formatting
 

@@ -54,3 +54,6 @@ dist/
 
 # tanstack
 .tanstack
+# claude code (personal overrides)
+.claude/settings.local.json
+CLAUDE.local.md
