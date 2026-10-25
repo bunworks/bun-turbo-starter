@@ -32,7 +32,7 @@
     "studio": "bun --env-file=../../.env run drizzle-kit studio",
     "drop": "bun --env-file=../../.env run src/scripts/drop-schema.ts",
     "generate": "bun --env-file=../../.env run drizzle-kit generate",
-    "migrate": "bun --env-file=../../.env run drizzle-kit migrate",
+    "migrate": "bun --env-file=../../.env run src/scripts/migrate.ts",
     "baseline": "bun --env-file=../../.env run src/scripts/baseline.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"

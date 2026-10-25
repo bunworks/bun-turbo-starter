@@ -57,15 +57,92 @@ export async function baselineMigrations(
     )
   `);
 
-  const [tracked] = await rows<{ count: number }>(
-    db,
-    sql`select count(*)::int as "count" from ${MIGRATIONS_SCHEMA}.${MIGRATIONS_TABLE}`,
-  );
-  if (tracked && tracked.count > 0) return "already-tracked";
+  if ((await appliedMigrationCount(db)) > 0) return "already-tracked";
 
   await db.execute(sql`
     insert into ${MIGRATIONS_SCHEMA}.${MIGRATIONS_TABLE} ("hash", "created_at")
     values (${init.hash}, ${init.folderMillis})
   `);
   return "baselined";
+}
+
+/** Rows in the migrations table (0 when it doesn't exist yet). */
+export async function appliedMigrationCount(db: Database) {
+  const [table] = await rows<{ name: string | null }>(
+    db,
+    sql`select to_regclass('drizzle.__drizzle_migrations')::text as "name"`,
+  );
+  if (!table?.name) return 0;
+
+  const [tracked] = await rows<{ count: number }>(
+    db,
+    sql`select count(*)::int as "count" from ${MIGRATIONS_SCHEMA}.${MIGRATIONS_TABLE}`,
+  );
+  return tracked?.count ?? 0;
+}
+
+interface PgErrorLike {
+  code?: string;
+  message?: string;
+  detail?: string;
+  // AggregateError: Node tries every address `localhost` resolves to.
+  errors?: { message?: string }[];
+}
+
+// Postgres SQLSTATEs for "object already exists".
+const ALREADY_EXISTS = new Set(["42P07", "42710", "42701", "42P06"]);
+// Node / pg network errors.
+const UNREACHABLE = new Set([
+  "ECONNREFUSED",
+  "ENOTFOUND",
+  "ETIMEDOUT",
+  "ECONNRESET",
+]);
+
+/** Drizzle wraps driver errors (`DrizzleQueryError`); the SQLSTATE is on a cause. */
+function findPgError(error: unknown): PgErrorLike {
+  let current: unknown = error;
+  for (let depth = 0; current && depth < 5; depth++) {
+    const candidate = current as PgErrorLike & { cause?: unknown };
+    if (candidate.code) return candidate;
+    current = candidate.cause;
+  }
+  return error instanceof Error ? { message: error.message } : {};
+}
+
+/**
+ * Turns a failed `migrate()` into a readable message plus the next step.
+ * drizzle-kit's own `migrate` prints only a spinner and exit code 1.
+ */
+export function explainMigrationError(error: unknown): {
+  message: string;
+  hint?: string;
+} {
+  const pg = findPgError(error);
+  const text = pg.message || pg.errors?.[0]?.message || String(error);
+  const message = [text, pg.detail]
+    .filter(Boolean)
+    .join("\n  ")
+    .concat(pg.code ? ` (${pg.code})` : "");
+
+  if (pg.code && ALREADY_EXISTS.has(pg.code)) {
+    return {
+      message,
+      hint:
+        "The database already contains this schema, most likely created with " +
+        "`bun db:push` before migrations existed. Adopt it once with " +
+        "`bun db:baseline`, then run `bun db:migrate` again.\n" +
+        "If these tables belong to another app, point POSTGRES_URL at a " +
+        "dedicated database instead.",
+    };
+  }
+  if (pg.code && UNREACHABLE.has(pg.code)) {
+    return {
+      message,
+      hint:
+        "Can't reach Postgres. Check POSTGRES_URL in the root .env; for the " +
+        "local database run `docker compose up -d postgres`.",
+    };
+  }
+  return { message };
 }

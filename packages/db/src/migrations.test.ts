@@ -4,7 +4,12 @@ import { readMigrationFiles } from "drizzle-orm/migrator";
 import { drizzle } from "drizzle-orm/pglite";
 import { migrate } from "drizzle-orm/pglite/migrator";
 
-import { baselineMigrations, migrationsFolder } from "./migrations";
+import {
+  appliedMigrationCount,
+  baselineMigrations,
+  explainMigrationError,
+  migrationsFolder,
+} from "./migrations";
 import * as schema from "./schema";
 
 const migrations = readMigrationFiles({ migrationsFolder });
@@ -55,6 +60,58 @@ describe("baselineMigrations", () => {
     const { client, db } = await pushedDb(0);
 
     await expect(baselineMigrations(db)).rejects.toThrow(/fresh database/);
+    await client.close();
+  });
+});
+
+describe("explainMigrationError", () => {
+  it("points a pushed database at db:baseline", async () => {
+    const { client, db } = await pushedDb(1);
+
+    const error = await migrate(db, { migrationsFolder }).catch((e) => e);
+    const { message, hint } = explainMigrationError(error);
+
+    expect(message).toContain('relation "accounts" already exists');
+    expect(message).toContain("(42P07)");
+    expect(hint).toContain("bun db:baseline");
+    await client.close();
+  });
+
+  it("suggests starting Postgres when it is unreachable", () => {
+    const error = new Error("Failed query", {
+      cause: Object.assign(new Error("connect ECONNREFUSED 127.0.0.1:5432"), {
+        code: "ECONNREFUSED",
+      }),
+    });
+
+    expect(explainMigrationError(error).hint).toContain("docker compose");
+  });
+
+  it("uses the first inner message of an AggregateError", () => {
+    const error = Object.assign(
+      new AggregateError([new Error("connect ECONNREFUSED ::1:5432")], ""),
+      { code: "ECONNREFUSED" },
+    );
+
+    expect(explainMigrationError(error).message).toBe(
+      "connect ECONNREFUSED ::1:5432 (ECONNREFUSED)",
+    );
+  });
+
+  it("returns the message without a hint for other errors", () => {
+    expect(explainMigrationError(new Error("boom"))).toEqual({
+      message: "boom",
+    });
+  });
+});
+
+describe("appliedMigrationCount", () => {
+  it("counts tracked migrations, 0 before the table exists", async () => {
+    const { client, db } = await pushedDb(0);
+
+    expect(await appliedMigrationCount(db)).toBe(0);
+    await migrate(db, { migrationsFolder });
+    expect(await appliedMigrationCount(db)).toBe(migrations.length);
     await client.close();
   });
 });
