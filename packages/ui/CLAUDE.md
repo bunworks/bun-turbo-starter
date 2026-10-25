@@ -9,6 +9,15 @@ Radix-style props.
   `export * from "./<name>";` to `src/components/index.ts` — consumers import
   only from `@acme/ui`.
 - `cn` lives in `src/components/index.ts`; components import it from `"."`.
+- **ReUI** (`@reui` registry in `components.json`, style `base-vega`): add
+  with `bun ui-add @reui/<name>` (free components and `c-*` examples need no
+  key). Files land in `src/components/reui/` and are imported by subpath,
+  `@acme/ui/reui/<name>` — not re-exported from the index, because
+  `@reui/badge` / `@reui/alert` clash with the shadcn `Badge` / `Alert`.
+  ReUI items import `cn` from a bare `"cn"`: `scripts/fix-imports.ts` (run by
+  `ui-add`) rewrites it; if the CLI adds a `cn` npm dependency, remove it.
+  ReUI state tokens (`success`, `info`, `warning`, `invert`, …) are already in
+  `tooling/tailwind/theme.css`.
 - This package is excluded from Biome. Keep edits close to upstream shadcn so
   future `shadcn add --overwrite` diffs stay readable.
 - Theme tokens are in `tooling/tailwind/theme.css`; use semantic classes
