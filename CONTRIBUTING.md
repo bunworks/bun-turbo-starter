@@ -210,18 +210,22 @@ git push origin feature/feature-name
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation
 
 ## Related Issues
+
 Closes #123
 
 ## How to Test
+
 1. Step 1
 2. Step 2
 
