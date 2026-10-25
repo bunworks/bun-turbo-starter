@@ -2,7 +2,7 @@
 
 import { paths } from "@acme/config";
 import { cn } from "@acme/ui";
-import { Bell, Circle, Globe, Monitor, User } from "lucide-react";
+import { Bell, Circle, Globe, KeyRound, Monitor, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,6 +16,11 @@ const sidebarNavItems = [
     title: "Account",
     href: paths.settings.root,
     icon: Circle,
+  },
+  {
+    title: "Security",
+    href: paths.settings.security,
+    icon: KeyRound,
   },
   {
     title: "Appearance",
