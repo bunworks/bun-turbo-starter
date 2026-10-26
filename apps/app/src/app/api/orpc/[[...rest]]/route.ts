@@ -3,7 +3,6 @@ import { logger } from "@acme/config";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
 
-
 const handler = new RPCHandler(appRouter, {
   interceptors: [
     onError((error) => {

@@ -29,6 +29,20 @@ import * as schema from "../schema";
  * humans, and `@acme/config` is consumed from `dist/`, which would force a
  * build before the first migration on a fresh clone.
  */
+/**
+ * A dropped connection also rejects the running query, and that rejection is
+ * what `main` reports. Without listeners, the same failure is re-emitted as an
+ * unhandled `error` event (on the pool or a checked-out client) and dumps a
+ * stack trace over the readable message.
+ */
+function silenceConnectionErrors(pool: Pool | NeonPool) {
+  const ignore = () => {};
+  pool.on("error", ignore);
+  pool.on("connect", (client: { on(event: "error", fn: () => void): void }) =>
+    client.on("error", ignore),
+  );
+}
+
 function connect(url: string) {
   // pg / Neon wait forever by default; fail fast with a readable error.
   const connectionTimeoutMillis = 15_000;
@@ -40,9 +54,7 @@ function connect(url: string) {
       connectionString: url,
       connectionTimeoutMillis,
     });
-    // A dropped connection also rejects the running query; that rejection is
-    // reported below. Without a listener the pool would crash the process.
-    pool.on("error", () => {});
+    silenceConnectionErrors(pool);
     const db = drizzleNeon({ client: pool, ...options });
     return {
       db: db as Database,
@@ -55,7 +67,7 @@ function connect(url: string) {
     connectionString: url.replace(":6543", ":5432"),
     connectionTimeoutMillis,
   });
-  pool.on("error", () => {});
+  silenceConnectionErrors(pool);
   const db = drizzlePg({ client: pool, ...options });
   return {
     db: db as Database,

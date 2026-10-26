@@ -80,6 +80,15 @@ and run `tsc` by hand, build them first.
 - Internal imports use workspace names (`@acme/db`, `@acme/ui`); inside
   `apps/app` use the `~/` alias for `src/`.
 - Server Components by default; add `"use client"` only when needed.
+- Next config: **Cache Components** (PPR), `typedRoutes`, `reactCompiler`.
+  Request-time reads (`getSession()`, `api.*` from `~/orpc/server`,
+  `headers()`, `cookies()`) go in an async component inside `<Suspense>` —
+  never at a layout's top level (see `(dashboard)/layout.tsx`,
+  `settings/page.tsx`); the build fails otherwise. No route segment configs
+  (`dynamic`, `runtime`, `revalidate`): cache with `"use cache"`. Links and
+  `router.push` are route-checked (`bun typecheck` runs `next typegen`). No
+  `Math.random()`/`Date.now()` in render of prerendered components.
+  Don't hand-write `useMemo`/`useCallback` for performance.
 - Env vars: add to the Zod schema in `packages/config/src/env.ts` (or
   `apps/app/src/env.ts` for app-only / `NEXT_PUBLIC_*`), to `runtimeEnv`, to
   `.env.example`, and to `globalEnv` in `turbo.json` if it affects builds.
