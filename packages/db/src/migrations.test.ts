@@ -98,6 +98,16 @@ describe("explainMigrationError", () => {
     );
   });
 
+  it("explains a connection dropped mid-migration", () => {
+    const error = new Error("Failed query: rollback", {
+      cause: new Error("Connection terminated unexpectedly"),
+    });
+    const { message, hint } = explainMigrationError(error);
+
+    expect(message).toBe("Connection terminated unexpectedly");
+    expect(hint).toContain("nothing was applied");
+  });
+
   it("returns the message without a hint for other errors", () => {
     expect(explainMigrationError(new Error("boom"))).toEqual({
       message: "boom",

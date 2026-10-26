@@ -43,19 +43,32 @@ const securityHeaders = [
 
 export default async function createNextConfig(): Promise<NextConfig> {
   const config: NextConfig = {
-    /** Enables hot reloading for local packages without a build step */
     output: "standalone",
+    /**
+     * Workspace packages consumed as TypeScript source (`exports` → src/).
+     * Packages that ship a built `dist/` (@acme/config, @acme/emails,
+     * @acme/storage) don't belong here.
+     */
     transpilePackages: [
       "@acme/api",
       "@acme/auth",
-      "@acme/config",
       "@acme/db",
       "@acme/jobs",
       "@acme/ui",
       "@acme/validators",
-      "@t3-oss/env-nextjs",
-      "@t3-oss/env-core",
     ],
+    /** `Link href` / `router.push` are checked against the app's routes. */
+    typedRoutes: true,
+    /** Automatic memoization; no hand-written useMemo/useCallback needed. */
+    reactCompiler: true,
+    /**
+     * Partial Prerendering: each route gets a static shell; request-time
+     * reads (session, headers) stream in behind <Suspense>. Cache with
+     * "use cache" instead of route segment configs (`dynamic`, `revalidate`).
+     * @see https://nextjs.org/docs/app/guides/authentication-with-cache-components
+     */
+    cacheComponents: true,
+    partialPrefetching: true,
 
     async headers() {
       return [{ source: "/:path*", headers: securityHeaders }];

@@ -13,12 +13,16 @@ export interface PgErrorLike {
  */
 export function findPgError(error: unknown): PgErrorLike {
   let current: unknown = error;
+  let innermost: unknown = error;
   for (let depth = 0; current && depth < 5; depth++) {
     const candidate = current as PgErrorLike & { cause?: unknown };
     if (candidate.code) return candidate;
+    innermost = current;
     current = candidate.cause;
   }
-  return error instanceof Error ? { message: error.message } : {};
+  // No SQLSTATE anywhere (e.g. a dropped connection): the innermost cause
+  // says what happened; the wrapper only says which query was running.
+  return innermost instanceof Error ? { message: innermost.message } : {};
 }
 
 /**

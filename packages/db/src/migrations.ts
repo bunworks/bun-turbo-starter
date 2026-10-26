@@ -118,12 +118,15 @@ export function explainMigrationError(error: unknown): {
         "dedicated database instead.",
     };
   }
-  if (pg.code && UNREACHABLE.has(pg.code)) {
+  const dropped = /connection terminated/i.test(text);
+  if ((pg.code && UNREACHABLE.has(pg.code)) || dropped) {
     return {
       message,
       hint:
-        "Can't reach Postgres. Check POSTGRES_URL in the root .env; for the " +
-        "local database run `docker compose up -d postgres`.",
+        "Can't reach Postgres or the connection dropped; migrations run in a " +
+        "transaction, so nothing was applied. Check POSTGRES_URL in the root " +
+        ".env and the network, then retry; for the local database run " +
+        "`docker compose up -d postgres`.",
     };
   }
   return { message };

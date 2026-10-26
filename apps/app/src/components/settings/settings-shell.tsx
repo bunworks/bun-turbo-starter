@@ -1,3 +1,4 @@
+import { Skeleton } from "@acme/ui";
 import { Frame, FramePanel } from "@acme/ui/reui/frame";
 
 import type { ReactNode } from "react";
@@ -40,5 +41,20 @@ export function SettingsHeader() {
         Управляйте настройками аккаунта и параметрами уведомлений по почте.
       </p>
     </>
+  );
+}
+
+/** Placeholder for a settings form while its data streams in. */
+export function SettingsFormSkeleton() {
+  return (
+    <div className="flex flex-col gap-5">
+      {["a", "b", "c"].map((key) => (
+        <div key={key} className="flex flex-col gap-2">
+          <Skeleton className="h-4 w-24 rounded-md" />
+          <Skeleton className="h-10 w-full rounded-md" />
+        </div>
+      ))}
+      <Skeleton className="mt-2 h-10 w-28 rounded-md" />
+    </div>
   );
 }

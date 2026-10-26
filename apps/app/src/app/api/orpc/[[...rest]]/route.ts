@@ -3,8 +3,6 @@ import { logger } from "@acme/config";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 const handler = new RPCHandler(appRouter, {
   interceptors: [
