@@ -85,9 +85,13 @@ and run `tsc` by hand, build them first.
   `headers()`, `cookies()`) go in an async component inside `<Suspense>` —
   never at a layout's top level (see `(dashboard)/layout.tsx`,
   `settings/page.tsx`); the build fails otherwise. No route segment configs
-  (`dynamic`, `runtime`, `revalidate`): cache with `"use cache"`. Links and
-  `router.push` are route-checked (`bun typecheck` runs `next typegen`). No
-  `Math.random()`/`Date.now()` in render of prerendered components.
+  (`dynamic`, `runtime`, `revalidate`): cache with `"use cache"`. Remove
+  `dynamic = "force-dynamic"`; `dynamic = "force-static"` requires a separate
+  migration. Replace `revalidate` with `cacheLife` inside a `"use cache"`
+  scope. `runtime = "edge"` is unsupported; remove it and use the default
+  Node.js runtime. Links and `router.push` are route-checked (`bun typecheck`
+  runs `next typegen`). No `Math.random()`/`Date.now()` in render of
+  prerendered components.
   Don't hand-write `useMemo`/`useCallback` for performance.
 - Env vars: add to the Zod schema in `packages/config/src/env.ts` (or
   `apps/app/src/env.ts` for app-only / `NEXT_PUBLIC_*`), to `runtimeEnv`, to
