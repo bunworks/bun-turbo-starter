@@ -1,11 +1,18 @@
 /**
- * Minimal dependency-free structured logger.
+ * Minimal structured logger.
  *
  * Emits one JSON line per entry so logs are machine-parseable in any
  * environment (Vercel, Docker, etc.) and play nicely with log drains and
  * OpenTelemetry collectors. This is the single sanctioned place in the
  * codebase that is allowed to call `console.*`.
+ *
+ * Lines written inside a traced operation carry `trace_id` / `span_id`
+ * (OpenTelemetry log data model names), so logs and traces can be joined.
+ * Only `@opentelemetry/api` is used: without a registered SDK (tests,
+ * scripts) there is no active span and the fields are simply omitted.
  */
+
+import { isSpanContextValid, trace } from "@opentelemetry/api";
 
 type LogLevel = "debug" | "info" | "warn" | "error";
 
@@ -35,6 +42,12 @@ function serializeError(error: unknown): LogMeta {
   return { error: String(error) };
 }
 
+function traceFields(): LogMeta {
+  const context = trace.getActiveSpan()?.spanContext();
+  if (!context || !isSpanContextValid(context)) return {};
+  return { trace_id: context.traceId, span_id: context.spanId };
+}
+
 function write(level: LogLevel, message: string, meta?: LogMeta): void {
   if (LEVEL_PRIORITY[level] < LEVEL_PRIORITY[minLevel]) {
     return;
@@ -44,6 +57,7 @@ function write(level: LogLevel, message: string, meta?: LogMeta): void {
     level,
     time: new Date().toISOString(),
     msg: message,
+    ...traceFields(),
     ...meta,
   };
 

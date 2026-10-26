@@ -93,7 +93,12 @@ and run `tsc` by hand, build them first.
   `apps/app/src/env.ts` for app-only / `NEXT_PUBLIC_*`), to `runtimeEnv`, to
   `.env.example`, and to `globalEnv` in `turbo.json` if it affects builds.
   Never read `process.env` directly in new code.
-- Log with `logger` from `@acme/config`, not `console.log`.
+- Log with `logger` from `@acme/config`, not `console.log`. Lines inside a
+  request carry `trace_id` / `span_id` from the active OpenTelemetry span.
+  Tracing is wired in `apps/app/src/instrumentation.ts` (`@vercel/otel` +
+  `ORPCInstrumentation` from `@orpc/opentelemetry`, the v2 beta of
+  `@orpc/otel`): every oRPC call gets spans under Next's request span. Set
+  `OTEL_EXPORTER_OTLP_ENDPOINT` to ship them; Vercel collects them itself.
 - Conventional Commits: `feat(api): …`, `fix(db): …`.
 
 ## Key patterns
