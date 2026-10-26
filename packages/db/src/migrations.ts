@@ -3,6 +3,7 @@ import { sql } from "drizzle-orm";
 import { readMigrationFiles } from "drizzle-orm/migrator";
 
 import type { Database } from "./client";
+import { findPgError } from "./errors";
 
 /** Absolute path to the drizzle-kit `out` folder (`packages/db/migrations`). */
 export const migrationsFolder = fileURLToPath(
@@ -81,14 +82,6 @@ export async function appliedMigrationCount(db: Database) {
   return tracked?.count ?? 0;
 }
 
-interface PgErrorLike {
-  code?: string;
-  message?: string;
-  detail?: string;
-  // AggregateError: Node tries every address `localhost` resolves to.
-  errors?: { message?: string }[];
-}
-
 // Postgres SQLSTATEs for "object already exists".
 const ALREADY_EXISTS = new Set(["42P07", "42710", "42701", "42P06"]);
 // Node / pg network errors.
@@ -98,17 +91,6 @@ const UNREACHABLE = new Set([
   "ETIMEDOUT",
   "ECONNRESET",
 ]);
-
-/** Drizzle wraps driver errors (`DrizzleQueryError`); the SQLSTATE is on a cause. */
-function findPgError(error: unknown): PgErrorLike {
-  let current: unknown = error;
-  for (let depth = 0; current && depth < 5; depth++) {
-    const candidate = current as PgErrorLike & { cause?: unknown };
-    if (candidate.code) return candidate;
-    current = candidate.cause;
-  }
-  return error instanceof Error ? { message: error.message } : {};
-}
 
 /**
  * Turns a failed `migrate()` into a readable message plus the next step.

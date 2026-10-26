@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
-import { call, ORPCError } from "@orpc/server";
+import { call, isDefinedError, ORPCError } from "@orpc/server";
 
 import {
   ADMIN_EMAIL,
@@ -25,6 +25,8 @@ describe("post.create", () => {
 
     await expect(promise).rejects.toBeInstanceOf(ORPCError);
     await expect(promise).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+    // Declared via .errors() on protectedProcedure, so typed on the client.
+    expect(isDefinedError(await promise.catch((e) => e))).toBe(true);
   });
 
   it("creates a post that list and byId return", async () => {
@@ -68,7 +70,11 @@ describe("post.byId", () => {
       { context: api.context() },
     );
 
-    await expect(promise).rejects.toMatchObject({ code: "NOT_FOUND" });
+    await expect(promise).rejects.toMatchObject({
+      code: "NOT_FOUND",
+      message: "Публикация не найдена",
+    });
+    expect(isDefinedError(await promise.catch((e) => e))).toBe(true);
   });
 });
 
@@ -82,9 +88,26 @@ describe("post.delete", () => {
     );
 
     await expect(promise).rejects.toMatchObject({ code: "FORBIDDEN" });
+    expect(isDefinedError(await promise.catch((e) => e))).toBe(true);
   });
 
-  it("lets admins delete a post", async () => {
+  it("lets users with the admin role delete, without ADMIN_EMAILS", async () => {
+    const admin = await createSession(api.db, { role: "admin" });
+    const post = await call(
+      postRouter.create,
+      { title: "By role", content: "Post" },
+      { context: api.context(admin) },
+    );
+
+    const result = await call(
+      postRouter.delete,
+      { id: post?.id ?? "" },
+      { context: api.context(admin) },
+    );
+    expect(result.success).toBe(true);
+  });
+
+  it("lets ADMIN_EMAILS accounts delete a post", async () => {
     const admin = await createSession(api.db, { email: ADMIN_EMAIL });
     const post = await call(
       postRouter.create,

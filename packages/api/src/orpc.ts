@@ -17,9 +17,10 @@
  */
 
 import type { Session } from "@acme/auth";
-import { env, logger } from "@acme/config";
+import { isAdmin } from "@acme/auth/roles";
+import { logger } from "@acme/config";
 import { db } from "@acme/db";
-import { ORPCError, os } from "@orpc/server";
+import { os } from "@orpc/server";
 
 export interface CreateORPCContextOptions {
   /** Request headers, kept on the context for procedures that need them. */
@@ -76,19 +77,28 @@ export const publicProcedure = o.use(timingMiddleware);
  * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
  * the session is valid and guarantees `context.session.user` is not null.
  *
+ * Errors declared with `.errors()` are part of the procedure's type: clients
+ * narrow them with `isDefinedError(error)` and get `error.code` / `error.data`
+ * typed. Procedures add their own (e.g. NOT_FOUND) the same way.
+ *
  * @see https://orpc.dev/docs/server/procedures
+ * @see https://orpc.dev/docs/client/error-handling
  */
-export const protectedProcedure = publicProcedure.use(({ context, next }) => {
-  if (!context.session?.user) {
-    throw new ORPCError("UNAUTHORIZED");
-  }
+export const protectedProcedure = publicProcedure
+  .errors({
+    UNAUTHORIZED: { message: "Войдите в аккаунт, чтобы продолжить" },
+  })
+  .use(({ context, next, errors }) => {
+    if (!context.session?.user) {
+      throw errors.UNAUTHORIZED();
+    }
 
-  return next({
-    context: {
-      session: { ...context.session, user: context.session.user },
-    },
+    return next({
+      context: {
+        session: { ...context.session, user: context.session.user },
+      },
+    });
   });
-});
 
 /**
  * Admin (privileged) procedure
@@ -96,33 +106,23 @@ export const protectedProcedure = publicProcedure.use(({ context, next }) => {
  * Builds on `protectedProcedure` and additionally verifies that the
  * authenticated user has admin privileges.
  *
- * Admin access is granted to emails listed in the ADMIN_EMAILS environment
- * variable (comma-separated).
- *
- * @example ADMIN_EMAILS=admin@example.com,ops@example.com
+ * Admin = the `admin` role from Better Auth's admin plugin (assigned with
+ * `authClient.admin.setRole`), or an email listed in ADMIN_EMAILS — the
+ * bootstrap list. Listed accounts are also given the role on sign-up and on
+ * sign-in (see `initAuth`), which is what the plugin's own /api/auth/admin/*
+ * endpoints check; the email fallback covers sessions started before that.
  */
-const adminEmails = new Set(
-  (env.ADMIN_EMAILS ?? "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean),
-);
+export const adminProcedure = protectedProcedure
+  .errors({
+    FORBIDDEN: { message: "Требуются права администратора" },
+  })
+  .use(({ context, next, errors }) => {
+    if (!isAdmin(context.session.user)) {
+      throw errors.FORBIDDEN();
+    }
 
-if (adminEmails.size === 0) {
-  logger.warn("orpc.admin_emails_empty", {
-    hint: "Set ADMIN_EMAILS to grant adminProcedure access",
+    return next();
   });
-}
-
-export const adminProcedure = protectedProcedure.use(({ context, next }) => {
-  if (!adminEmails.has(context.session.user.email.toLowerCase())) {
-    throw new ORPCError("FORBIDDEN", {
-      message: "Требуются права администратора",
-    });
-  }
-
-  return next();
-});
 
 // Export the context type for use in other files
 export type ORPCContext = ReturnType<typeof createORPCContext>;

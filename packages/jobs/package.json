@@ -6,19 +6,26 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
+    },
+    "./workflows": {
+      "types": "./dist/workflows/index.d.ts",
+      "default": "./src/workflows/index.ts"
     }
   },
   "license": "MIT",
   "scripts": {
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "bun run src/worker.ts",
+    "worker": "bun --env-file=../../.env --watch run src/worker.ts",
+    "start": "bun run src/worker.ts",
     "format": "biome format .",
     "lint": "biome lint .",
     "check": "biome check .",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
+    "@acme/config": "workspace:*",
+    "@acme/emails": "workspace:*",
     "@hatchet-dev/typescript-sdk": "1.43.0"
   },
   "devDependencies": {

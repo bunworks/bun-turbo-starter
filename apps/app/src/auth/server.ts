@@ -2,9 +2,10 @@ import "server-only";
 
 import { initAuth } from "@acme/auth";
 import { env, logger } from "@acme/config";
-import { OtpSignInEmail, ResetPasswordEmail, sendEmail } from "@acme/emails";
+import { dispatchEmail } from "@acme/jobs";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
+import { after } from "next/server";
 import { cache } from "react";
 
 const vercelUrl =
@@ -26,7 +27,18 @@ export const auth = initAuth({
   googleClientId: env.AUTH_GOOGLE_ID,
   googleClientSecret: env.AUTH_GOOGLE_SECRET,
   extraPlugins: [nextCookies()],
-  // sendEmail is used by the internal emailOTP plugin and password reset
+  // Send emails after the response. `after` only works inside a request
+  // (route handler, server action); elsewhere the promise, which Better Auth
+  // already guards with `.catch`, just runs unawaited.
+  runInBackground: (promise) => {
+    try {
+      after(promise);
+    } catch {
+      void promise;
+    }
+  },
+  // Used by the emailOTP plugin and password reset. Goes through the Hatchet
+  // `send-email` task when HATCHET_CLIENT_TOKEN is set, inline otherwise.
   sendEmail: async ({
     email,
     otp,
@@ -45,23 +57,25 @@ export const auth = initAuth({
           "Cannot send password reset email: reset URL is missing",
         );
       }
-      await sendEmail({
+      await dispatchEmail({
+        template: "reset-password",
         to: [email],
         subject: "Сброс пароля",
-        react: ResetPasswordEmail({ resetLink: url }),
+        props: { resetLink: url },
       });
     } else {
       if (!otp) {
         logger.error("auth.otp_email_missing_otp", undefined, { type });
         throw new Error(`Cannot send ${type} email: OTP is missing`);
       }
-      await sendEmail({
+      await dispatchEmail({
+        template: "otp-sign-in",
         to: [email],
         subject:
           type === "sign-in"
             ? "Ваш код для входа"
             : "Подтвердите адрес электронной почты",
-        react: OtpSignInEmail({ otp, isSignUp: type !== "sign-in" }),
+        props: { otp, isSignUp: type !== "sign-in" },
       });
     }
   },

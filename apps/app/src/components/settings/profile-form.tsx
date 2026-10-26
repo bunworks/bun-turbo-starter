@@ -3,6 +3,7 @@
 import { Button, Input, Label, Textarea, toast } from "@acme/ui";
 import { type ProfileFormValues, profileFormSchema } from "@acme/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isDefinedError } from "@orpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "lucide-react";
 import Image from "next/image";
@@ -28,6 +29,7 @@ export function ProfileForm({
     },
     mode: "onChange",
   });
+  const { errors } = form.formState;
 
   const updateProfile = useMutation({
     ...orpc.user.updateProfile.mutationOptions(),
@@ -37,8 +39,13 @@ export function ProfileForm({
         queryKey: orpc.user.key(),
       });
     },
-    onError: (err: Error) => {
-      toast.error(err.message || "Не удалось обновить профиль");
+    onError: (error) => {
+      // Defined errors (`.errors()` on the procedure) are typed: code + data.
+      if (isDefinedError(error) && error.code === "CONFLICT") {
+        form.setError(error.data.field, { message: error.message });
+        return;
+      }
+      toast.error(error.message || "Не удалось обновить профиль");
     },
   });
 
@@ -91,8 +98,19 @@ export function ProfileForm({
         <Input
           id="username"
           placeholder="shadcn"
+          aria-invalid={!!errors.username}
+          aria-describedby={errors.username ? "username-error" : undefined}
           {...form.register("username")}
         />
+        {errors.username && (
+          <p
+            id="username-error"
+            role="alert"
+            className="text-sm text-destructive"
+          >
+            {errors.username.message}
+          </p>
+        )}
         <p className="text-sm text-amber-700/70">
           Это ваше публичное имя. Это может быть настоящее имя или псевдоним.
           Менять его можно не чаще одного раза в 30 дней.
@@ -106,8 +124,15 @@ export function ProfileForm({
           id="email"
           type="email"
           placeholder="email@example.com"
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? "email-error" : undefined}
           {...form.register("email")}
         />
+        {errors.email && (
+          <p id="email-error" role="alert" className="text-sm text-destructive">
+            {errors.email.message}
+          </p>
+        )}
         <p className="text-sm text-muted-foreground">
           Подтверждённые адреса электронной почты можно изменить в настройках
           почты.
@@ -121,8 +146,15 @@ export function ProfileForm({
           id="bio"
           placeholder="Расскажите немного о себе"
           className="resize-none"
+          aria-invalid={!!errors.bio}
+          aria-describedby={errors.bio ? "bio-error" : undefined}
           {...form.register("bio")}
         />
+        {errors.bio && (
+          <p id="bio-error" role="alert" className="text-sm text-destructive">
+            {errors.bio.message}
+          </p>
+        )}
         <p className="text-sm text-muted-foreground">
           Упоминайте других пользователей и организации через @, чтобы добавить
           ссылку на них.

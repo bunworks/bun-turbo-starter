@@ -11,6 +11,7 @@ package scripts.
 
 ```bash
 bun dev                  # Next.js app on :3000 (turbo watch, @acme/app + deps)
+bun jobs:dev             # Hatchet worker (watch); needs HATCHET_CLIENT_TOKEN
 bun run build            # turbo build of everything
 bun typecheck            # tsc across all workspaces (needs ^build)
 bun check                # biome lint + format check
@@ -59,7 +60,7 @@ packages/config     @t3-oss/env-core `env`, structured `logger`, `paths`
 packages/db         Drizzle schema, env-aware client (node-postgres / Neon HTTP)
 packages/emails     React Email templates + send (Resend / nodemailer)
 packages/storage    S3 helpers (MinIO locally)
-packages/jobs       Hatchet worker     packages/trigger  Trigger.dev tasks
+packages/jobs       Hatchet tasks + worker (background jobs, emails)
 packages/ui         shadcn/ui components (Base UI), `cn`
 packages/validators shared Zod form schemas (+ bun:test tests)
 tooling/*           shared tsconfig, tailwind theme, GitHub Action setup
@@ -93,7 +94,9 @@ and run `tsc` by hand, build them first.
   `protectedProcedure`, or `adminProcedure` (`packages/api/src/orpc.ts`),
   exported through the domain `index.ts` and wired into
   `routers/index.ts`. Clients get types automatically — no codegen.
-  Use the `/new-api-endpoint` skill.
+  Expected failures: `.errors({ NOT_FOUND: { message } })` + `throw
+  errors.NOT_FOUND()`, narrowed on the client with `isDefinedError`; not
+  `new ORPCError(...)`, which arrives untyped. Use the `/new-api-endpoint` skill.
 - **Calling the API**: in RSC `await api.post.list({...})` from
   `~/orpc/server`; in client components
   `useQuery(orpc.post.list.queryOptions({ input }))` from `~/orpc/react`.
@@ -104,8 +107,19 @@ and run `tsc` by hand, build them first.
   Generated migrations may be hand-edited (e.g. `IF NOT EXISTS`, data
   backfills); never edit or reorder ones already applied anywhere shared.
   PGlite tests (`createTestDb`) run the migrations, not the schema.
-- **Admin access** is `ADMIN_EMAILS` (comma-separated) checked in
-  `adminProcedure`.
+- **Admin access**: the `admin` role from Better Auth's admin plugin
+  (`authClient.admin.setRole`, bans, impersonation under
+  `/api/auth/admin/*`). `ADMIN_EMAILS` is the bootstrap list: those accounts
+  get the role on sign-up / sign-in and always pass `adminProcedure`. Role
+  checks live in `@acme/auth/roles` (no better-auth import — usable from
+  `@acme/api`).
+- **Background jobs** (Hatchet, `packages/jobs`): declare tasks in
+  `src/workflows/` and register them in `src/worker.ts`. App code imports
+  only `@acme/jobs` (e.g. `dispatchEmail`), never `@acme/jobs/workflows` at
+  module level: creating the Hatchet client throws without
+  HATCHET_CLIENT_TOKEN. Without a token, `@acme/jobs` runs the work inline.
+  Task inputs must be JSON — emails travel as `TemplateEmail`
+  (`template` + `props`, see `packages/emails/templates.ts`).
 - `@acme/api` stays free of the concrete `Auth` type: callers resolve the
   session via `auth.api.getSession` and pass it into `createORPCContext`.
 - **Testing procedures**: `call(procedure, input, { context })` from

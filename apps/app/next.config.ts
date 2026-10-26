@@ -50,6 +50,7 @@ export default async function createNextConfig(): Promise<NextConfig> {
       "@acme/auth",
       "@acme/config",
       "@acme/db",
+      "@acme/jobs",
       "@acme/ui",
       "@acme/validators",
       "@t3-oss/env-nextjs",

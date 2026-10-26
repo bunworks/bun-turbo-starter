@@ -1,5 +1,4 @@
 import { eq, Post } from "@acme/db";
-import { ORPCError } from "@orpc/server";
 import { z } from "zod";
 
 import { publicProcedure } from "../../orpc";
@@ -10,14 +9,15 @@ import { publicProcedure } from "../../orpc";
  * Throws NOT_FOUND when no post matches the given id.
  */
 export const byId = publicProcedure
+  .errors({ NOT_FOUND: { message: "Публикация не найдена" } })
   .input(z.object({ id: z.string().uuid() }))
-  .handler(async ({ context, input }) => {
+  .handler(async ({ context, input, errors }) => {
     const post = await context.db.query.Post.findFirst({
       where: eq(Post.id, input.id),
     });
 
     if (!post) {
-      throw new ORPCError("NOT_FOUND", { message: "Публикация не найдена" });
+      throw errors.NOT_FOUND();
     }
 
     return post;

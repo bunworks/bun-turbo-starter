@@ -1,9 +1,11 @@
 import { logger } from "@acme/config";
-import { db } from "@acme/db";
+import { type Database, db } from "@acme/db";
 import type { BetterAuthOptions, BetterAuthPlugin } from "better-auth";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { emailOTP, oAuthProxy } from "better-auth/plugins";
+import { admin, emailOTP, oAuthProxy } from "better-auth/plugins";
+
+import { ADMIN_ROLE, hasAdminRole, isAdminEmail } from "./roles";
 
 export function initAuth<
   TExtraPlugins extends BetterAuthPlugin[] = [],
@@ -19,14 +21,33 @@ export function initAuth<
     url?: string;
     type: "sign-in" | "email-verification" | "forget-password" | "change-email";
   }) => Promise<void>;
+  /**
+   * Runs a promise after the response is sent (e.g. Next.js `after`, Vercel
+   * `waitUntil`). Without it, emails are awaited inside the request.
+   */
+  runInBackground?: (promise: Promise<unknown>) => void;
   extraPlugins?: TExtraPlugins;
+  /** Defaults to the app database; tests pass an in-memory PGlite one. */
+  database?: Database;
 }) {
   const config = {
-    database: drizzleAdapter(db, {
+    database: drizzleAdapter(options.database ?? db, {
       provider: "pg",
     }),
     baseURL: options.baseUrl,
     secret: options.secret,
+    /**
+     * OTP, password-reset and verification emails go through Better Auth's
+     * background tasks: the response no longer waits for the email provider,
+     * so a slow or failing provider can't break sign-in, and response time
+     * doesn't reveal whether an account exists. Failures are logged.
+     * @see https://www.better-auth.com/docs/reference/options#advanced
+     */
+    ...(options.runInBackground && {
+      advanced: {
+        backgroundTasks: { handler: options.runInBackground },
+      },
+    }),
     /**
      * Built-in rate limiting protects auth endpoints (sign-in, OTP, password
      * reset) from brute-force and abuse. Tune per environment as needed.
@@ -70,8 +91,39 @@ export function initAuth<
           }
         },
       }),
+      /**
+       * Roles, bans and impersonation; endpoints under /api/auth/admin/*
+       * (`authClient.admin.*`). `adminProcedure` checks the same role.
+       * @see https://www.better-auth.com/docs/plugins/admin
+       */
+      admin({ adminRoles: [ADMIN_ROLE] }),
       ...(options.extraPlugins ?? []),
     ],
+    // ADMIN_EMAILS bootstrap: listed emails sign up as admins, and existing
+    // listed accounts are promoted on their next sign-in.
+    databaseHooks: {
+      user: {
+        create: {
+          async before(user) {
+            if (!isAdminEmail(user.email)) return;
+            return { data: { ...user, role: ADMIN_ROLE } };
+          },
+        },
+      },
+      session: {
+        create: {
+          async after(session, ctx) {
+            if (!ctx) return;
+            const adapter = ctx.context.internalAdapter;
+            const user = await adapter.findUserById(session.userId);
+            if (!user || !isAdminEmail(user.email)) return;
+            // `role` comes from the admin plugin; the adapter types the base user.
+            if (hasAdminRole((user as { role?: unknown }).role)) return;
+            await adapter.updateUser(user.id, { role: ADMIN_ROLE });
+          },
+        },
+      },
+    },
     socialProviders:
       options.googleClientId && options.googleClientSecret
         ? {

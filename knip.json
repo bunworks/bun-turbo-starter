@@ -21,9 +21,6 @@
     "packages/emails": {
       "ignoreDependencies": ["@react-email/preview-server"]
     },
-    "packages/trigger": {
-      "entry": ["trigger.config.ts", "src/tasks/**/*.ts"]
-    },
     "tooling/tailwind": {
       "ignoreDependencies": ["@tailwindcss/postcss", "postcss", "tailwindcss"]
     }

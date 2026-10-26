@@ -9,7 +9,7 @@ export const ADMIN_EMAIL = "admin@test.local";
 /** Inserts a user row and returns a matching Better Auth session. */
 export async function createSession(
   db: Database,
-  overrides: { email?: string; name?: string } = {},
+  overrides: { email?: string; name?: string; role?: string } = {},
 ): Promise<Session> {
   const now = new Date();
   const [row] = await db
@@ -18,6 +18,7 @@ export async function createSession(
       id: crypto.randomUUID(),
       name: overrides.name ?? "Test User",
       email: overrides.email ?? `${crypto.randomUUID()}@test.local`,
+      role: overrides.role ?? "user",
     })
     .returning();
   if (!row) throw new Error("Failed to insert test user");

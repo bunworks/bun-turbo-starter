@@ -19,6 +19,7 @@
     "dev": "turbo watch dev -F @acme/app...",
     "dev:all": "turbo watch dev --continue",
     "dev:next": "turbo watch dev -F @acme/app...",
+    "jobs:dev": "bun run --cwd packages/jobs worker",
     "format": "biome format . --skip-parse-errors",
     "format:fix": "biome format --write . --skip-parse-errors",
     "lint": "biome lint . --skip-parse-errors",

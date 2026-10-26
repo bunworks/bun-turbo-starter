@@ -30,11 +30,10 @@ access level can't be inferred.
 
 One file per procedure: `packages/api/src/routers/<domain>/<kebab-name>.ts`.
 Follow the existing style — JSDoc with an `@example`, `context.db` for queries,
-`ORPCError` for failures:
+and **expected failures declared with `.errors()`** and thrown via `errors.*`:
 
 ```ts
 import { eq, Post } from "@acme/db";
-import { ORPCError } from "@orpc/server";
 import { z } from "zod";
 
 import { protectedProcedure } from "../../orpc";
@@ -45,21 +44,29 @@ import { protectedProcedure } from "../../orpc";
  * @example client.post.rename({ id, title: "New title" })
  */
 export const rename = protectedProcedure
+  .errors({ NOT_FOUND: { message: "Публикация не найдена" } })
   .input(z.object({ id: z.uuid(), title: z.string().max(256) }))
-  .handler(async ({ context, input }) => {
+  .handler(async ({ context, input, errors }) => {
     const [post] = await context.db
       .update(Post)
       .set({ title: input.title })
       .where(eq(Post.id, input.id))
       .returning();
 
-    if (!post) throw new ORPCError("NOT_FOUND", { message: "Post not found" });
+    if (!post) throw errors.NOT_FOUND();
     return post;
   });
 ```
 
-Error codes: `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `BAD_REQUEST`,
-`CONFLICT`. Never return another user's data from a `protectedProcedure`
+Declared errors are part of the procedure's type: the client narrows them
+with `isDefinedError(error)` (from `@orpc/client`) and gets `error.code` and
+schema-typed `error.data` (see `user/update-profile.ts` + `profile-form.tsx`,
+which maps `CONFLICT` to a form field). Don't `throw new ORPCError(...)` for
+expected cases — it reaches the client untyped. `UNAUTHORIZED` and
+`FORBIDDEN` are already declared on `protectedProcedure` / `adminProcedure`.
+Codes map to HTTP status by name (`NOT_FOUND` → 404, `CONFLICT` → 409, …);
+DB unique violations: `isUniqueViolation(error, "<constraint>")` from
+`@acme/db`. Never return another user's data from a `protectedProcedure`
 without an ownership check.
 
 ## 4. Wire it up

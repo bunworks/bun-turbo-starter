@@ -1,4 +1,4 @@
-import { hatchet } from "../client";
+import { hatchet } from "./client";
 
 /**
  * Cron-triggered workflow — runs every hour at :00.

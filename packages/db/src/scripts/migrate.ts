@@ -28,7 +28,11 @@ async function main() {
     return 1;
   }
 
-  const pool = new Pool({ connectionString: url.replace(":6543", ":5432") });
+  const pool = new Pool({
+    connectionString: url.replace(":6543", ":5432"),
+    // pg waits forever by default; fail fast with a readable error instead.
+    connectionTimeoutMillis: 15_000,
+  });
   const pg = drizzle({ client: pool, schema, casing: "snake_case" });
   const db: Database = pg;
 

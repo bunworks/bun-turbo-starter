@@ -9,6 +9,11 @@ export const user = pgTable("users", {
   username: text("username"),
   bio: text("bio"),
   language: text("language").default("en"),
+  // Better Auth admin plugin
+  role: text("role"),
+  banned: boolean("banned").default(false),
+  banReason: text("ban_reason"),
+  banExpires: timestamp("ban_expires"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

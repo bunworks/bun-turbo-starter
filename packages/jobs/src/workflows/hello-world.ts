@@ -1,4 +1,4 @@
-import { hatchet } from "../client";
+import { hatchet } from "./client";
 
 export interface HelloWorldInput {
   name: string;

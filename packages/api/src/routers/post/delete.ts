@@ -1,5 +1,4 @@
 import { eq, Post } from "@acme/db";
-import { ORPCError } from "@orpc/server";
 import { z } from "zod";
 
 import { adminProcedure } from "../../orpc";
@@ -11,15 +10,16 @@ import { adminProcedure } from "../../orpc";
  * to admins to prevent abuse.
  */
 export const deletePost = adminProcedure
+  .errors({ NOT_FOUND: { message: "Публикация не найдена" } })
   .input(z.object({ id: z.string().uuid() }))
-  .handler(async ({ context, input }) => {
+  .handler(async ({ context, input, errors }) => {
     const [deleted] = await context.db
       .delete(Post)
       .where(eq(Post.id, input.id))
       .returning({ id: Post.id });
 
     if (!deleted) {
-      throw new ORPCError("NOT_FOUND", { message: "Публикация не найдена" });
+      throw errors.NOT_FOUND();
     }
 
     return { success: true, id: deleted.id };
