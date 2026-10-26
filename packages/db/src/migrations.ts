@@ -118,7 +118,7 @@ export function explainMigrationError(error: unknown): {
         "dedicated database instead.",
     };
   }
-  const dropped = /connection terminated/i.test(text);
+  const dropped = /connection (terminated|error)/i.test(text);
   if ((pg.code && UNREACHABLE.has(pg.code)) || dropped) {
     return {
       message,
