@@ -20,14 +20,18 @@
     "build:watch": "tsdown --watch",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsc --tsBuildInfoFile dist/.tsbuildinfo",
+    "test": "bun test",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
+    "@opentelemetry/api": "1.9.1",
     "@t3-oss/env-core": "0.13.11",
     "zod": "4.6.7"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
+    "@opentelemetry/context-async-hooks": "2.8.0",
+    "@types/bun": "1.4.4",
     "@types/node": "26.6.5",
     "tsdown": "0.23.2",
     "typescript": "7.0.2"
