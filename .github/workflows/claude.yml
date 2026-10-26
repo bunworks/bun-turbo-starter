@@ -45,5 +45,9 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # CodeRabbit reviews that mention @claude would otherwise fail with
+          # "Workflow initiated by non-human actor". Keep this an explicit
+          # list; '*' would let any bot trigger a job with write access.
+          allowed_bots: coderabbitai
           additional_permissions: |
             actions: read
