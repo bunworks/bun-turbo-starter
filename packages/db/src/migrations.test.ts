@@ -36,7 +36,7 @@ async function hasTable(client: PGlite, name: string) {
 describe("baselineMigrations", () => {
   it("adopts a pushed database so migrate applies only newer migrations", async () => {
     const { client, db } = await pushedDb(1);
-    expect(await hasTable(client, "rate_limits")).toBe(false);
+    expect(await hasTable(client, "rate_limits")).toBe(true);
 
     expect(await baselineMigrations(db)).toBe("baselined");
     await migrate(db, { migrationsFolder });

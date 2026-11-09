@@ -35,8 +35,8 @@
     "ui-add": "turbo run ui-add"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.6.3",
-    "knip": "6.42.1",
+    "@biomejs/biome": "^2.6.6",
+    "knip": "^6.44.2",
     "sherif": "1.13.0",
     "turbo": "2.11.10",
     "typescript": "7.0.2"
