@@ -22,6 +22,7 @@ This project follows the [Contributor Covenant Code of Conduct](./CODE_OF_CONDUC
 ### For First-Time Contributors
 
 Look for issues labeled:
+
 - `good first issue` — simple tasks perfect for your first contribution
 - `help wanted` — tasks where community help is needed
 - `documentation` — documentation improvements
@@ -29,6 +30,7 @@ Look for issues labeled:
 ### Reporting Issues
 
 Before creating an issue:
+
 1. Check if a similar issue already exists
 2. Use the issue template (if available)
 3. Provide detailed information:
@@ -40,6 +42,7 @@ Before creating an issue:
 ### Suggesting Features
 
 For new features:
+
 1. Create an issue describing your proposal
 2. Wait for discussion before starting work
 3. Ensure the feature aligns with project goals
@@ -75,6 +78,7 @@ cp .env.example .env
 ```
 
 Edit `.env` and add required values:
+
 - `POSTGRES_URL` — Neon database URL
 - `BETTER_AUTH_SECRET` — authentication secret
 - `RESEND_API_KEY` — API key for email sending
@@ -143,6 +147,7 @@ git checkout -b fix/bug-description
 ```
 
 Use prefixes:
+
 - `feature/` — new functionality
 - `fix/` — bug fixes
 - `docs/` — documentation changes
