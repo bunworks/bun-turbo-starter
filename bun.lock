@@ -6,7 +6,7 @@
       "name": "@acme/root",
       "devDependencies": {
         "@biomejs/biome": "^2.6.6",
-        "knip": "^6.44.2",
+        "knip": "^6.45.1",
         "sherif": "1.13.0",
         "turbo": "2.11.10",
         "typescript": "7.0.2",
