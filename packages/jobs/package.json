@@ -26,7 +26,7 @@
   "dependencies": {
     "@acme/config": "workspace:*",
     "@acme/emails": "workspace:*",
-    "@hatchet-dev/typescript-sdk": "1.46.0"
+    "@hatchet-dev/typescript-sdk": "1.46.2"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",

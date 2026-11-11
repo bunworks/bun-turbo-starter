@@ -30,10 +30,10 @@
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
-    "@opentelemetry/context-async-hooks": "3.0.0",
+    "@opentelemetry/context-async-hooks": "3.1.1",
     "@types/bun": "1.4.4",
     "@types/node": "26.6.6",
-    "tsdown": "0.23.4",
+    "tsdown": "0.23.7",
     "typescript": "7.0.2"
   }
 }

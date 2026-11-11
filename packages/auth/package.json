@@ -20,7 +20,7 @@
   "dependencies": {
     "@acme/config": "workspace:*",
     "@acme/db": "workspace:*",
-    "better-auth": "1.7.15"
+    "better-auth": "1.7.20"
   },
   "devDependencies": {
     "@acme/tsconfig": "workspace:*",
