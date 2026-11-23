@@ -341,6 +341,18 @@ RESEND_API_KEY=
 # NEXT_PUBLIC_API_URL=https://api.your-domain.com
 ```
 
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:19994c5ec407b88d92bcda41ba7ed17ae32a20e53a8ee31ee9b4bb1ec3287396 -->
+
+For Yandex Cloud Postbox, set `EMAIL_FROM` to a verified Postbox sender address:
+
+```bash
+EMAIL_FROM="Acme <no-reply@example.com>"
+```
+
+<!-- /coderabbit-ai-generated:v1 -->
+
 ### Other Platforms
 
 This starter can be deployed to any platform that supports Next.js:
