@@ -60,7 +60,7 @@ packages
   ├─ emails
   │   └─ Email templates with React Email + Yandex Postbox / Resend
   ├─ storage
-  │   └─ S3-compatible storage (AWS SDK v3, works with MinIO locally)
+  │   └─ Object storage: Yandex Cloud (primary) + S3/MinIO fallback
   ├─ ui
   │   └─ UI package for the webapp using shadcn-ui
   └─ validators
@@ -179,6 +179,8 @@ cp .env.example .env
 # - AUTH_SECRET (generate with: openssl rand -base64 32)
 # - YANDEX_POSTBOX_ACCESS_KEY_ID / YANDEX_POSTBOX_SECRET_ACCESS_KEY
 #   (optional, primary email provider) or RESEND_API_KEY (optional, fallback)
+# - YANDEX_STORAGE_ACCESS_KEY_ID / YANDEX_STORAGE_SECRET_ACCESS_KEY
+#   (optional; object storage — leave empty to use local MinIO)
 ```
 
 **Step 2: Setup database**
@@ -337,6 +339,11 @@ YANDEX_POSTBOX_ACCESS_KEY_ID=
 YANDEX_POSTBOX_SECRET_ACCESS_KEY=
 RESEND_API_KEY=
 
+# Storage (optional): Yandex Cloud Object Storage; AWS_* is the fallback
+YANDEX_STORAGE_ACCESS_KEY_ID=
+YANDEX_STORAGE_SECRET_ACCESS_KEY=
+YANDEX_STORAGE_BUCKET=acme-files
+
 # API origin (optional) — point the web client at a standalone app-server
 # NEXT_PUBLIC_API_URL=https://api.your-domain.com
 ```
@@ -377,7 +384,7 @@ This starter can be deployed to any platform that supports Next.js:
 │   ├── config/           # Env config + structured logger
 │   ├── db/               # Drizzle schema & env-aware client
 │   ├── emails/           # Email templates
-│   ├── storage/          # S3-compatible storage helpers
+│   ├── storage/          # Object storage helpers (Yandex Cloud, S3/MinIO)
 │   ├── ui/               # Shared UI components
 │   └── validators/       # Shared Zod schemas
 └── tooling/

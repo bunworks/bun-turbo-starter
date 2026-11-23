@@ -84,6 +84,9 @@ Edit `.env` and add required values:
 - `YANDEX_POSTBOX_ACCESS_KEY_ID` / `YANDEX_POSTBOX_SECRET_ACCESS_KEY` —
   Yandex Cloud Postbox static access key (primary email provider)
 - `RESEND_API_KEY` — Resend API key (fallback email provider)
+- `YANDEX_STORAGE_ACCESS_KEY_ID` / `YANDEX_STORAGE_SECRET_ACCESS_KEY` —
+  Yandex Cloud Object Storage static access key (primary storage provider;
+  leave empty to use the local MinIO container)
 
 5. Apply database migrations:
 

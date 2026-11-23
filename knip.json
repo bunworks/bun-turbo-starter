@@ -22,6 +22,9 @@
       "entry": ["send.test.ts"],
       "ignoreDependencies": ["@react-email/preview-server"]
     },
+    "packages/storage": {
+      "entry": ["src/s3.test.ts"]
+    },
     "tooling/tailwind": {
       "ignoreDependencies": ["@tailwindcss/postcss", "postcss", "tailwindcss"]
     }

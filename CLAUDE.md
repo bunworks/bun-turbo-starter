@@ -59,7 +59,7 @@ packages/auth       Better Auth `initAuth()` — single source of auth config
 packages/config     @t3-oss/env-core `env`, structured `logger`, `paths`
 packages/db         Drizzle schema, env-aware client (node-postgres / Neon HTTP)
 packages/emails     React Email templates + send (Yandex Postbox → Resend)
-packages/storage    S3 helpers (MinIO locally)
+packages/storage    Object storage — Yandex Cloud (primary), S3/MinIO fallback
 packages/jobs       Hatchet tasks + worker (background jobs, emails)
 packages/ui         shadcn/ui components (Base UI), `cn`
 packages/validators shared Zod form schemas (+ bun:test tests)

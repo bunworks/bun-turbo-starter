@@ -40,6 +40,15 @@ export const env = createEnv({
     // Hatchet (background jobs). Unset: @acme/jobs runs work inline.
     HATCHET_CLIENT_TOKEN: z.string().optional(),
 
+    // Object storage. Yandex Cloud Object Storage is the primary provider;
+    // the AWS_* variables below are the fallback (MinIO locally / AWS S3).
+    YANDEX_STORAGE_ENDPOINT: z.url().default("https://storage.yandexcloud.net"),
+    YANDEX_STORAGE_REGION: z.string().default("ru-central1"),
+    YANDEX_STORAGE_ACCESS_KEY_ID: z.string().optional(),
+    YANDEX_STORAGE_SECRET_ACCESS_KEY: z.string().optional(),
+    // Defaults to AWS_S3_BUCKET when unset.
+    YANDEX_STORAGE_BUCKET: z.string().optional(),
+
     // AWS S3
     AWS_S3_ENDPOINT: z.string().optional(),
     AWS_S3_FORCE_PATH_STYLE: z.string().optional(),
@@ -75,6 +84,12 @@ export const env = createEnv({
     AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
     ADMIN_EMAILS: process.env.ADMIN_EMAILS,
     HATCHET_CLIENT_TOKEN: process.env.HATCHET_CLIENT_TOKEN,
+    YANDEX_STORAGE_ENDPOINT: process.env.YANDEX_STORAGE_ENDPOINT,
+    YANDEX_STORAGE_REGION: process.env.YANDEX_STORAGE_REGION,
+    YANDEX_STORAGE_ACCESS_KEY_ID: process.env.YANDEX_STORAGE_ACCESS_KEY_ID,
+    YANDEX_STORAGE_SECRET_ACCESS_KEY:
+      process.env.YANDEX_STORAGE_SECRET_ACCESS_KEY,
+    YANDEX_STORAGE_BUCKET: process.env.YANDEX_STORAGE_BUCKET,
     AWS_S3_ENDPOINT: process.env.AWS_S3_ENDPOINT,
     AWS_S3_FORCE_PATH_STYLE: process.env.AWS_S3_FORCE_PATH_STYLE,
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
