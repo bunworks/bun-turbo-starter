@@ -35,13 +35,13 @@
     "ui-add": "turbo run ui-add"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.6.6",
-    "knip": "^6.45.1",
+    "@biomejs/biome": "^2.6.8",
+    "knip": "^6.48.0",
     "sherif": "1.13.0",
-    "turbo": "2.11.10",
+    "turbo": "2.11.13",
     "typescript": "7.0.2"
   },
-  "packageManager": "bun@1.4.4",
+  "packageManager": "bun@1.4.5",
   "workspaces": [
     "apps/*",
     "packages/*",
