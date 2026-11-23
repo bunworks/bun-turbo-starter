@@ -19,6 +19,7 @@
       "entry": ["drizzle.config.ts", "src/scripts/*.ts"]
     },
     "packages/emails": {
+      "entry": ["send.test.ts"],
       "ignoreDependencies": ["@react-email/preview-server"]
     },
     "tooling/tailwind": {

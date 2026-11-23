@@ -58,7 +58,7 @@ packages
   ├─ db
   │   └─ Drizzle ORM with an env-aware driver (node-postgres / Neon HTTP)
   ├─ emails
-  │   └─ Email templates with React Email + Resend / nodemailer
+  │   └─ Email templates with React Email + Yandex Postbox / Resend
   ├─ storage
   │   └─ S3-compatible storage (AWS SDK v3, works with MinIO locally)
   ├─ ui
@@ -177,7 +177,8 @@ cp .env.example .env
 # Edit .env with your credentials
 # - POSTGRES_URL (local docker-compose Postgres, or get one from neon.tech)
 # - AUTH_SECRET (generate with: openssl rand -base64 32)
-# - RESEND_API_KEY (optional, get from resend.com)
+# - YANDEX_POSTBOX_ACCESS_KEY_ID / YANDEX_POSTBOX_SECRET_ACCESS_KEY
+#   (optional, primary email provider) or RESEND_API_KEY (optional, fallback)
 ```
 
 **Step 2: Setup database**
@@ -331,8 +332,10 @@ AUTH_SECRET=your-secret-key
 AUTH_GOOGLE_ID=optional-google-oauth-id
 AUTH_GOOGLE_SECRET=optional-google-oauth-secret
 
-# Email (optional)
-RESEND_API_KEY=re_your_api_key
+# Email (optional): Yandex Cloud Postbox first, Resend as fallback
+YANDEX_POSTBOX_ACCESS_KEY_ID=
+YANDEX_POSTBOX_SECRET_ACCESS_KEY=
+RESEND_API_KEY=
 
 # API origin (optional) — point the web client at a standalone app-server
 # NEXT_PUBLIC_API_URL=https://api.your-domain.com
