@@ -81,7 +81,9 @@ Edit `.env` and add required values:
 
 - `POSTGRES_URL` — Neon database URL
 - `BETTER_AUTH_SECRET` — authentication secret
-- `RESEND_API_KEY` — API key for email sending
+- `YANDEX_POSTBOX_ACCESS_KEY_ID` / `YANDEX_POSTBOX_SECRET_ACCESS_KEY` —
+  Yandex Cloud Postbox static access key (primary email provider)
+- `RESEND_API_KEY` — Resend API key (fallback email provider)
 
 5. Apply database migrations:
 

@@ -17,7 +17,14 @@ export const env = createEnv({
     // App
     APP_URL: z.url().default("http://localhost:3000"),
 
-    // Email
+    // Email. Sending order: Yandex Cloud Postbox (HTTPS API), then Resend.
+    // Postbox uses a service account static access key (AWS Signature V4).
+    YANDEX_POSTBOX_ENDPOINT: z
+      .url()
+      .default("https://postbox.cloud.yandex.net"),
+    YANDEX_POSTBOX_REGION: z.string().default("ru-central1"),
+    YANDEX_POSTBOX_ACCESS_KEY_ID: z.string().optional(),
+    YANDEX_POSTBOX_SECRET_ACCESS_KEY: z.string().optional(),
     RESEND_API_KEY: z.string().optional(),
     EMAIL_SANDBOX_ENABLED: z.coerce.boolean().optional().default(false),
     EMAIL_SANDBOX_HOST: z.string().default("localhost"),
@@ -54,6 +61,11 @@ export const env = createEnv({
     VERCEL_PROJECT_PRODUCTION_URL: process.env.VERCEL_PROJECT_PRODUCTION_URL,
     POSTGRES_URL: process.env.POSTGRES_URL,
     APP_URL: process.env.APP_URL,
+    YANDEX_POSTBOX_ENDPOINT: process.env.YANDEX_POSTBOX_ENDPOINT,
+    YANDEX_POSTBOX_REGION: process.env.YANDEX_POSTBOX_REGION,
+    YANDEX_POSTBOX_ACCESS_KEY_ID: process.env.YANDEX_POSTBOX_ACCESS_KEY_ID,
+    YANDEX_POSTBOX_SECRET_ACCESS_KEY:
+      process.env.YANDEX_POSTBOX_SECRET_ACCESS_KEY,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_SANDBOX_ENABLED: process.env.EMAIL_SANDBOX_ENABLED === "true",
     EMAIL_SANDBOX_HOST: process.env.EMAIL_SANDBOX_HOST,

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@acme/config": "workspace:*",
+    "@aws-sdk/client-sesv2": "3.1175.0",
     "@radix-ui/colors": "3.0.0",
     "@react-email/components": "1.0.12",
     "nodemailer": "^10.6.1",

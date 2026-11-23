@@ -1,7 +1,7 @@
 {
   "extends": "@acme/tsconfig/compiled-package.json",
   "include": [".", "env.ts"],
-  "exclude": ["dist", "build", "node_modules"],
+  "exclude": ["dist", "build", "node_modules", "**/*.test.ts"],
   "compilerOptions": {
     "moduleResolution": "Bundler",
     "types": ["node"],
